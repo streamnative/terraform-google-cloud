@@ -196,6 +196,12 @@ variable "horizontal_pod_autoscaling" {
   type = bool
 }
 
+variable "kubernetes_version" {
+  default = "1.19.9-gke.1900"
+  description = "The version of Kubernetes to use for the cluster. Defaults to \"1.19\"."
+  type = string
+}
+
 variable "node_pool_autoscaling" {
   default        = true
   description = "Enable autoscaling of the default node pool. Defaults to \"true\"."
@@ -297,27 +303,27 @@ variable "project_id" {
   type        = string
 }
 
-variable "use_default_vpc" {
+variable "remove_default_node_pool" {
   default     = true
-  description = "Whether to use the default VPC and subnet for the cluster. Defaults to \"true\". If set to \"false\", vpc_network and vpc_subnet inputs are required"
+  description = "Removes the default node pool from the cluster. Defaults to \"true\"."
   type        = bool
 }
 
-variable "use_default_subnet" {
-  default     = false
-  description = "Whether to use the default subnet for the cluster. Defaults to \"true\"."
-
+variable "release_channel" {
+  default     = "STABLE"
+  description = "The Kubernetes release channel to use for the cluster. Defaults to \"STABLE\"."
+  type        = string
 }
 
 variable "vpc_network" {
-  default     = ""
-  description = "The VPC network to use for the cluster. Required if use_default_vpc is set to \"false\"."
+  default     = "default"
+  description = "The VPC network to use for the cluster. Defaults to the project \"default\" VPC." 
   type        = string
 }
 
 variable "vpc_subnet" {
-  default     = ""
-  description = "The VPC subnetwork to use for the cluster. Required if use_default_vpc is set to \"false\"."
+  default     = "default"
+  description = "The VPC subnetwork to use for the cluster. Defaults to the project \"default\" subnet." 
   type        = string
 }
 

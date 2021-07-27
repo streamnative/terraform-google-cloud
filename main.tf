@@ -29,10 +29,13 @@ module "sn_cluster" {
   http_load_balancing               = var.cluster_http_load_balancing
   ip_range_pods                     = var.create_cluster_subnet ? google_compute_subnetwork.cluster_subnet[0].secondary_ip_range[0].range_name : null
   ip_range_services                 = var.create_cluster_subnet ? google_compute_subnetwork.cluster_subnet[0].secondary_ip_range[1].range_name : null
-  network                           = var.use_default_vpc ? "default" : var.vpc_network
+  kubernetes_version                = var.kubernetes_version
+  network                           = var.vpc_network
   network_policy                    = var.cluster_network_policy
   node_pools                        = [ local.node_pools ]
   project_id                        = var.project_id
   region                            = var.cluster_location
-  subnetwork                        = var.use_default_vpc ? "default" : var.vpc_subnet
+  remove_default_node_pool          = var.remove_default_node_pool
+  release_channel                   = var.release_channel 
+  subnetwork                        = var.create_cluster_subnet ? google_compute_subnetwork.cluster_subnet[0].name : var.vpc_subnet
 }
