@@ -20,8 +20,6 @@
 data "google_compute_zones" "available" {}
 
 locals {
-
-  cluster_zones = join(",", slice(data.google_compute_zones.available.names, 0, 3))
   cluster_label = "kubernetes.io/cluster/${module.label.id}"
 
   ### Node Pools
@@ -39,11 +37,10 @@ locals {
     min_count          = var.node_pool_autoscaling_min_size
     name               = var.node_pool_name
     node_count         = var.node_pool_autoscaling ? null : var.node_pool_count
-    node_locations     = coalesce(var.node_pool_locations, local.cluster_zones)
-    service_account    = var.create_service_account ? module.sn_cluster.service_account : var.node_pool_service_account
+    node_locations     = var.node_pool_locations != "" ? var.node_pool_locations : ""
+    service_account    = var.create_service_account ? "" : var.node_pool_service_account
     version            = var.node_pool_auto_upgrade ? null : var.node_pool_version
   }
-
   func_pool_config = {
     auto_repair        = var.func_pool_auto_repair
     auto_upgrade       = var.func_pool_auto_repair
@@ -58,10 +55,43 @@ locals {
     min_count          = var.func_pool_autoscaling_min_size
     name               = var.func_pool_name
     node_count         = var.func_pool_autoscaling ? null : var.func_pool_count
-    node_locations     = coalesce(var.func_pool_locations, local.cluster_zones)
-    service_account    = var.create_service_account ? module.sn_cluster.service_account : var.func_pool_service_account
+    node_locations     = var.func_pool_locations != "" ? var.func_pool_locations : var.node_pool_locations
+    service_account    = var.create_service_account ? "" : var.func_pool_service_account
     version            = var.func_pool_auto_upgrade ? null : var.func_pool_version
   }
+  node_pools = var.enable_function_node_pool ? [local.default_node_pool_config, local.func_pool_config] : [local.default_node_pool_config]
+  node_pools_labels = {
+    all = {
+      cluster_name = var.cluster_name
+      managed_by   = "terraform"
+    }
+  }
+  node_pools_metadata = {
+    all = {}
+  }
+  node_pools_oauth_scopes = {
+    all = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ]
+  }
 
-  node_pools = var.func_pool_enabled ? merge(local.default_node_pool_config, local.func_pool_config) : local.default_node_pool_config
+  node_pools_taints = {
+    all = []
+
+    default-node-pool = [
+      {
+        key    = "default-node-pool"
+        value  = true
+        effect = "PREFER_NO_SCHEDULE"
+      },
+    ]
+
+    func-pool = [
+      {
+        key    = "func-pool"
+        value  = true
+        effect = "PREFER_NO_SCHEDULE"
+      },
+    ]
+  }
 }

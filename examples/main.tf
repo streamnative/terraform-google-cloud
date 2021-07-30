@@ -19,13 +19,14 @@ terraform {
 
 provider "google" {
   project = var.project_id
-  region = var.region
+  region  = var.region
 }
 
 provider "helm" {
   kubernetes {
     host                   = format("https://%s", data.google_container_cluster.cluster.endpoint)
     cluster_ca_certificate = base64decode(data.google_container_cluster.cluster.master_auth[0].cluster_ca_certificate)
+    token                  = data.google_client_config.provider.access_token
   }
 }
 
@@ -38,7 +39,8 @@ provider "kubernetes" {
 data "google_client_config" "provider" {}
 
 data "google_container_cluster" "cluster" {
-  name     = module.sn_cluster.gke_cluster_name
+  name     = module.my_cluster.gke_cluster_name
+  location = var.region
 }
 
 resource "random_pet" "cluster_name" {
@@ -46,7 +48,7 @@ resource "random_pet" "cluster_name" {
 }
 
 locals {
-  cluster_name = format("sn-gke-%s-%s", random_pet.cluster_name.id, var.environment)
+  cluster_name = format("sn-%s-%s", random_pet.cluster_name.id, var.environment)
 }
 
 variable "environment" {
@@ -54,16 +56,24 @@ variable "environment" {
 }
 
 variable "project_id" {
+  default = "sncloud-dev-joey"
 }
 
 variable "region" {
   default = "us-central1"
 }
 
-module "sn_cluster" {
-  source = "../terraform-google-cloud_gke_module"
+module "my_cluster" {
+  source = "../terraform-google-cloud"
 
-  cluster_location = var.region
-  cluster_name = local.cluster_name
-  project_id = var.project_id
+  cluster_location          = var.region
+  cluster_name              = local.cluster_name
+  create_cluster_subnet     = false
+  disable_olm               = false
+  enable_function_node_pool = true
+  project_id                = var.project_id
+  pulsar_namespace          = "pulsar-demo"
+
+  olm_sn_image = "598203581484.dkr.ecr.us-east-1.amazonaws.com/streamnative/pulsar-operators/registry/pulsar-operators:production"
+
 }
