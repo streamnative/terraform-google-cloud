@@ -20,12 +20,11 @@
 data "google_compute_zones" "available" {}
 
 locals {
-  cluster_label = "kubernetes.io/cluster/${module.label.id}"
 
   ### Node Pools
   default_node_pool_config = {
     auto_repair        = var.node_pool_auto_repair
-    auto_upgrade       = var.node_pool_auto_repair
+    auto_upgrade       = var.node_pool_auto_upgrade
     autoscaling        = var.node_pool_autoscaling
     disk_size_gb       = var.node_pool_disk_size
     disk_type          = var.node_pool_disk_type
@@ -43,7 +42,7 @@ locals {
   }
   func_pool_config = {
     auto_repair        = var.func_pool_auto_repair
-    auto_upgrade       = var.func_pool_auto_repair
+    auto_upgrade       = var.func_pool_auto_upgrade
     autoscaling        = var.func_pool_autoscaling
     disk_size_gb       = var.func_pool_disk_size
     disk_type          = var.func_pool_disk_type
@@ -59,7 +58,7 @@ locals {
     service_account    = var.create_service_account ? "" : var.func_pool_service_account
     version            = var.func_pool_auto_upgrade ? null : var.func_pool_version
   }
-  node_pools = var.enable_function_node_pool ? [local.default_node_pool_config, local.func_pool_config] : [local.default_node_pool_config]
+  node_pools = var.enable_func_pool ? [local.default_node_pool_config, local.func_pool_config] : [local.default_node_pool_config]
   node_pools_labels = {
     all = {
       cluster_name = var.cluster_name
@@ -72,6 +71,13 @@ locals {
   node_pools_oauth_scopes = {
     all = [
       "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/trace.append",
+      "https://www.googleapis.com/auth/ndev.clouddns.readwrite",
     ]
   }
 

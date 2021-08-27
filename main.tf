@@ -20,7 +20,7 @@
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google"
   name    = var.cluster_name
-  version = "16.0.1"
+  version = "16.1.0"
 
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
@@ -48,28 +48,9 @@ module "gke" {
 }
 
 resource "kubernetes_namespace" "sn_system" {
+  count = var.create_sn_system_namespace ? 1 : 0
   metadata {
     name = "sn-system"
-  }
-  depends_on = [
-    module.gke
-  ]
-}
-
-resource "kubernetes_namespace" "pulsar" {
-  count = var.manage_pulsar_namespace ? 1 : 0
-  metadata {
-    name = var.pulsar_namespace
-  }
-  depends_on = [
-    module.gke
-  ]
-}
-
-resource "kubernetes_namespace" "istio" {
-  count = var.enable_istio_operator ? 1 : 0
-  metadata {
-    name = "istio-system"
   }
   depends_on = [
     module.gke
