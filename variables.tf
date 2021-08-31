@@ -40,24 +40,6 @@ variable "cert_manager_settings" {
   type        = map(any)
 }
 
-variable "create_cluster_subnet" {
-  default     = true
-  description = "Creates a dedicated subnet for the cluster in the default VPC."
-  type        = bool
-}
-
-variable "create_sn_system_namespace" {
-  default     = true
-  description = "Whether or not to create the namespace \"sn-system\" on the cluster. This namespace is commonly used by OLM and StreamNative's Kubernetes Operators"
-  type        = bool
-}
-
-variable "create_service_account" {
-  default     = true
-  description = "Creates a service account for the cluster. Defaults to \"true\"."
-  type        = bool
-}
-
 variable "cluster_autoscaling_config" {
   default = {
     enabled       = true
@@ -78,32 +60,9 @@ variable "cluster_autoscaling_config" {
   })
 }
 
-variable "cloud_dns_zone_name" {
-  default     = null
-  description = "Identifies the DNS zone for the project. Must be unique in the project, and is required if the input \"create_cloud_dns_zone\" is set to true"
-  type        = string
-}
-
-variable "cloud_dns_domain_name" {
-  default     = null
-  description = "The suffix used for the domain of the managed DNS zone in GCP's Cloud DNS, e.g. \"myzone.example.com\". Required if the input \"create_cloud_dns_zone\" is set to true"
-  type        = string
-}
-
-variable "cloud_dns_zone_type" {
-  default     = "public"
-  description = "Type of zone to create, valid values are 'public', 'private', 'forwarding', 'peering'. Defaults to \"public\"."
-  type        = string
-}
-
-variable "cluster_location" {
-  description = "The GCP location (region) where your cluster will be created. This module only supports regional clusters."
-  type        = string
-}
-
 variable "cluster_http_load_balancing" {
   default     = true
-  description = "Enable the HTTP load balancing addon for the cluster. Defaults to \"true\"."
+  description = "Enable the HTTP load balancing addon for the cluster. Defaults to \"true\""
   type        = bool
 }
 
@@ -114,26 +73,20 @@ variable "cluster_name" {
 
 variable "cluster_network_policy" {
   default     = true
-  description = "Enable the network policy addon for the cluster. Defaults to \"true\"."
+  description = "Enable the network policy addon for the cluster. Defaults to \"true\", and uses CALICO as the provider"
   type        = bool
 }
 
-variable "cluster_subnet_cidr" {
-  default     = "10.88.0.0/22"
-  description = "The primary IPv4 CIDR range to use for the GKE cluster network. Used when the input \"create_cluster_subnet\" is set to \"true\". Defaults to \"10.88.0.0/22\"."
-  type        = string
+variable "create_sn_system_namespace" {
+  default     = true
+  description = "Whether or not to create the namespace \"sn-system\" on the cluster. This namespace is commonly used by OLM and StreamNative's Kubernetes Operators and services"
+  type        = bool
 }
 
-variable "cluster_subnet_pods_cidr" {
-  default     = "10.24.0.0/14"
-  description = "The secondary IPv4 CIDR range used for the GKE cluster pod network. Used when the input \"create_cluster_subnet\" is set to \"true\". Defaults to \"10.24.0.0/14\"."
-  type        = string
-}
-
-variable "cluster_subnet_services_cidr" {
-  default     = "10.88.16.0/20"
-  description = "The secondary IPv4 CIDR range used for the GKE cluster service network. Used when the input \"create_cluster_subnet\" is set to \"true\". Defaults to \"10.88.16.0/20\"."
-  type        = string
+variable "create_service_account" {
+  default     = true
+  description = "Creates a service account for the cluster. Defaults to \"true\"."
+  type        = bool
 }
 
 variable "disable_istio_sources" {
@@ -317,6 +270,12 @@ variable "maintenance_window" {
   type        = string
 }
 
+variable "master_authorized_networks" {
+  default = []
+  description = "A list of objects used to define authorized networks. If none are provided, the default is to disallow external access. See the parent module for more details. https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/latest"
+  type = list(object({ cidr_block = string, display_name = string }))
+}
+
 variable "node_pool_autoscaling" {
   default     = true
   description = "Enable autoscaling of the default node pool. Defaults to \"true\"."
@@ -379,7 +338,7 @@ variable "node_pool_image_type" {
 
 variable "node_pool_locations" {
   default     = ""
-  description = "A string of comma seperated values (upstream requirement) of zones for the location of the default node pool, e.g. \"us-central1-b,us-central1-c\" etc. Nodes must be in the region as the cluster. Defaults to three random zones in the region chosen for the cluster."
+  description = "A string of comma seperated values (upstream requirement) of zones for the location of the default node pool, e.g. \"us-central1-b,us-central1-c\" etc. Nodes must be in the region as the cluster. Defaults to three random zones in the region chosen for the cluster"
   type        = string
 }
 
@@ -418,27 +377,35 @@ variable "project_id" {
   type        = string
 }
 
-variable "remove_default_node_pool" {
-  default     = true
-  description = "Removes the default node pool from the cluster. Defaults to \"true\"."
-  type        = bool
-}
-
 variable "release_channel" {
-  default     = null
+  default     = "UNSPECIFIED"
   description = "The Kubernetes release channel to use for the cluster. Accepted values are \"UNSPECIFIED\", \"RAPID\", \"REGULAR\" and \"STABLE\". Defaults to \"UNSPECIFIED\"."
   type        = string
 }
 
-variable "vpc_network" {
-  default     = "default"
-  description = "The name of the VPC network to use for the cluster. Defaults to the project \"default\" VPC."
-  type        = string
+variable "region" {
+  description = "The GCP region where the GKE cluster will be deployed. This module only supports creation of a regional cluster"
+  type = string
+}
+
+variable "secondary_ip_range_pods" {
+  default = null
+  description = "The name of the secondary range to use for the pods in the cluster. If no secondary range for the pod network is provided, GKE will create a /14 CIDR within the subnetwork provided by the \"vpc_subnet\" input"
+  type = string 
+}
+
+variable "secondary_ip_range_services" {
+  default = null
+  description = "The name of the secondary range to use for services in the cluster. If no secondary range for the services network is provided, GKE will create a /20 CIDR within the subnetwork provided by the \"vpc_subnet\" input"
+  type = string
 }
 
 variable "vpc_subnet" {
-  default     = "default"
-  description = "The name of the VPC subnetwork to use for the cluster. Defaults to the project \"default\" subnet."
+  description = "The name of the VPC subnetwork to use by the cluster nodes. Can be set to \"default\" if the default VPC is enabled in the project, and GKE will choose the subnetwork based on the \"region\" input"
   type        = string
 }
 
+variable "vpc_network" {
+  description = "The name of the VPC network to use for the cluster. Can be set to \"default\" if the default VPC is enabled in the project"
+  type        = string
+}

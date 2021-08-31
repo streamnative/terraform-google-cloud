@@ -27,12 +27,13 @@ module "gke" {
   add_shadow_firewall_rules         = var.add_shadow_firewall_rules
   cluster_autoscaling               = var.cluster_autoscaling_config
   http_load_balancing               = var.cluster_http_load_balancing
-  ip_range_pods                     = var.create_cluster_subnet ? google_compute_subnetwork.cluster_subnet[0].secondary_ip_range[0].range_name : null
-  ip_range_services                 = var.create_cluster_subnet ? google_compute_subnetwork.cluster_subnet[0].secondary_ip_range[1].range_name : null
+  ip_range_pods                     = var.secondary_ip_range_pods 
+  ip_range_services                 = var.secondary_ip_range_services 
   kubernetes_version                = var.kubernetes_version
   logging_service                   = var.logging_service
   maintenance_exclusions            = var.maintenance_exclusions
   maintenance_start_time            = var.maintenance_window
+  master_authorized_networks        = var.master_authorized_networks
   network                           = var.vpc_network
   network_policy                    = var.cluster_network_policy
   node_pools                        = local.node_pools
@@ -41,10 +42,10 @@ module "gke" {
   node_pools_oauth_scopes           = local.node_pools_oauth_scopes
   node_pools_taints                 = local.node_pools_taints
   project_id                        = var.project_id
-  region                            = var.cluster_location
-  remove_default_node_pool          = var.remove_default_node_pool
+  region                            = var.region
+  remove_default_node_pool          = true 
   release_channel                   = var.release_channel
-  subnetwork                        = var.create_cluster_subnet ? google_compute_subnetwork.cluster_subnet[0].name : var.vpc_subnet
+  subnetwork                        = var.vpc_subnet 
 }
 
 resource "kubernetes_namespace" "sn_system" {
