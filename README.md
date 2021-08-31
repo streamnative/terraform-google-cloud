@@ -41,6 +41,11 @@ provider "kubernetes" {
   token                  = data.google_client_config.provider.access_token
 }
 
+# Configure variable defaults here, with a .tfvars file, or provide them to terraform when prompted.
+variable "environment" {}
+variable "project_id" {}
+variable "region" {}
+
 data "google_client_config" "provider" {}
 
 data "google_container_cluster" "cluster" {
@@ -56,30 +61,19 @@ locals {
   cluster_name = format("sn-%s-%s", random_pet.cluster_name.id, var.environment)
 }
 
-variable "environment" {
-  default = "test"
-}
-
-variable "project_id" {
-  default = "sncloud-dev-joey"
-}
-
-variable "region" {
-  default = "us-central1"
-}
-
 module "sn_cloud_dns" {
   source  = "terraform-google-modules/cloud-dns/google"
   version = "3.1.0"
 
-  domain     = "g.jdav.dev."
+  domain     = "g.example.dev."
   name       = local.cluster_name
   project_id = var.project_id
   type       = "public"
 }
 
+# Add this repo as a git submodule and refer to its relative path (or clone and point to the location)
 module "sn_cluster" {
-  source = "../terraform-google-cloud"
+  source = "../terraform-google-cloud" 
 
   cluster_location            = var.region
   cluster_name                = local.cluster_name
@@ -89,19 +83,19 @@ module "sn_cluster" {
   project_id                  = var.project_id
 }
 
+# Note: If the func pool is enabled, you must wait for the cluster to be ready before running this module
 module "sn_bootstrap" {
-  source = "../terraform-helm-charts"
+  source = "streamnative/charts/helm"
 
-  enable_olm               = false
-  olm_registry             = "598203581484.dkr.ecr.us-east-1.amazonaws.com/streamnative/pulsar-operators/registry/pulsar-operators:production"
-  istio_operator_namespace = "default"
+  # Note: OLM for GKE is still a WIP as we work on a long term solution for managing our operator images
+  enable_olm               = true
+  olm_registry             = "gcr.io/affable-ray-226821/streamnative/pulsar-operators/registry/pulsar-operators:production"
 
   depends_on = [
     module.sn_cluster
   ]
 }
 ```
-
 
 ## Requirements
 
