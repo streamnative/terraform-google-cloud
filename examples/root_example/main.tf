@@ -91,7 +91,6 @@ module "sn_cluster" {
 
   cluster_location            = var.region
   cluster_name                = local.cluster_name
-  create_cluster_subnet       = false
   enable_func_pool            = false
   external_dns_domain_filters = [module.sn_cloud_dns.domain]
   project_id                  = var.project_id
