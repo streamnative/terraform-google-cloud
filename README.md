@@ -86,6 +86,7 @@ module "sn_cluster" {
 # Note: If the func pool is enabled, you must wait for the cluster to be ready before running this module
 module "sn_bootstrap" {
   source = "streamnative/charts/helm"
+  version = "0.4.0"
 
   # Note: OLM for GKE is still a WIP as we work on a long term solution for managing our operator images
   enable_olm               = true
