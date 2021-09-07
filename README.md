@@ -75,11 +75,13 @@ module "sn_cloud_dns" {
 module "sn_cluster" {
   source = "../terraform-google-cloud" 
 
-  cluster_location            = var.region
   cluster_name                = local.cluster_name
   enable_func_pool            = false
   external_dns_domain_filters = [module.sn_cloud_dns.domain]
   project_id                  = var.project_id
+  region                      = var.region
+  vpc_network                 = "default"
+  vpc_subnet                  = "default"
 }
 
 # Note: If the func pool is enabled, you must wait for the cluster to be ready before running this module
