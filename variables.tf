@@ -95,6 +95,12 @@ variable "disable_istio_sources" {
   type        = bool
 }
 
+variable "enable_external_secrets" {
+  default     = true
+  description = "Enables kubernetes-external-secrets on the cluster, which uses GCP Secret Manager as the secrets backend"
+  type        = bool
+}
+
 variable "enable_func_pool" {
   default     = true
   description = "Enable an additional dedicated pool for Pulsar Functions. Enabled by default."
@@ -141,6 +147,30 @@ variable "external_dns_version" {
   default     = "5.2.2"
   description = "The version of the ExternalDNS helm chart to install. Defaults to \"5.2.2\"."
   type        = string
+}
+
+variable "external_secrets_helm_chart_name" {
+  default     = "kubernetes-external-secrets"
+  description = "The name of the Helm chart in the repository for kubernetes-external-secrets"
+  type        = string
+}
+
+variable "external_secrets_helm_chart_repository" {
+  default     = "https://external-secrets.github.io/kubernetes-external-secrets"
+  description = "The repository containing the kubernetes-external-secrets helm chart"
+  type        = string
+}
+
+variable "external_secrets_helm_chart_version" {
+  default     = "8.3.0"
+  description = "Helm chart version for kubernetes-external-secrets. Defaults to \"8.3.0\". See https://github.com/external-secrets/kubernetes-external-secrets/tree/master/charts/kubernetes-external-secrets for updates"
+  type        = string
+}
+
+variable "external_secrets_settings" {
+  default     = {}
+  description = "Additional settings which will be passed to the Helm chart values, see https://github.com/external-secrets/kubernetes-external-secrets/tree/master/charts/kubernetes-external-secrets for available options"
+  type        = map(any)
 }
 
 variable "func_pool_autoscaling" {
