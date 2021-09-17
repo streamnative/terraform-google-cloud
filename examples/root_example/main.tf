@@ -87,7 +87,7 @@ module "sn_cloud_dns" {
 
 # Add this repo as a git submodule and refer to its relative path (or clone and point to the location)
 module "sn_cluster" {
-  source = "../terraform-google-cloud" 
+  source = "../terraform-google-cloud"
 
   cluster_name                = local.cluster_name
   enable_func_pool            = false
@@ -100,12 +100,12 @@ module "sn_cluster" {
 
 # Note: If the func pool is enabled, you must wait for the cluster to be ready before running this module
 module "sn_bootstrap" {
-  source = "streamnative/charts/helm"
+  source  = "streamnative/charts/helm"
   version = "0.4.0"
 
   # Note: OLM for GKE is still a WIP as we work on a long term solution for managing our operator images
-  enable_olm               = true
-  olm_registry             = "gcr.io/affable-ray-226821/streamnative/pulsar-operators/registry/pulsar-operators:production"
+  enable_olm   = true
+  olm_registry = "gcr.io/affable-ray-226821/streamnative/pulsar-operators/registry/pulsar-operators:production"
 
   depends_on = [
     module.sn_cluster

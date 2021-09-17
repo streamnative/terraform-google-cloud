@@ -18,7 +18,7 @@
 #
 
 module "external_secrets_sa" {
-  count = var.enable_external_secrets ? 1 : 0
+  count   = var.enable_external_secrets ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "16.1.0"
 
@@ -35,7 +35,7 @@ resource "helm_release" "external_secrets" {
   atomic          = true
   chart           = var.external_secrets_helm_chart_name
   cleanup_on_fail = true
-  namespace       = "sn-system"
+  namespace       = join("", kubernetes_namespace.sn_system.*.id)
   name            = "external-secrets"
   repository      = var.external_secrets_helm_chart_repository
   timeout         = 300
@@ -52,10 +52,9 @@ resource "helm_release" "external_secrets" {
   }
 
   set {
-    name = "serviceAccount.name"
+    name  = "serviceAccount.name"
     value = "external-secrets"
   }
-
 
   dynamic "set" {
     for_each = var.external_secrets_settings

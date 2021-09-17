@@ -42,14 +42,14 @@ variable "cert_manager_settings" {
 
 variable "cluster_autoscaling_config" {
   default = {
-    enabled       = true
-    max_cpu_cores = 10
-    min_cpu_cores = 1
-    max_memory_gb = 16
-    min_memory_gb = 1
+    enabled       = false
+    max_cpu_cores = null
+    min_cpu_cores = null
+    max_memory_gb = null
+    min_memory_gb = null
     gpu_resources = []
   }
-  description = "Cluster autoscaling configuration"
+  description = "Cluster autoscaling configuration for node auto-provisioning. This is disabled for our configuration, since we typically want to scale existing node pools rather than add new ones to the cluster"
   type = object({
     enabled       = bool
     min_cpu_cores = number
@@ -181,7 +181,7 @@ variable "func_pool_autoscaling" {
 
 variable "func_pool_autoscaling_initial_count" {
   default     = 1
-  description = "The initial number of nodes in the Pulsar Functions pool when autoscaling is enabled. Defaults to 1."
+  description = "The initial number of nodes in the Pulsar Functions pool, per zone, when autoscaling is enabled. Defaults to 1."
   type        = number
 }
 
@@ -301,9 +301,9 @@ variable "maintenance_window" {
 }
 
 variable "master_authorized_networks" {
-  default = []
+  default     = []
   description = "A list of objects used to define authorized networks. If none are provided, the default is to disallow external access. See the parent module for more details. https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/latest"
-  type = list(object({ cidr_block = string, display_name = string }))
+  type        = list(object({ cidr_block = string, display_name = string }))
 }
 
 variable "node_pool_autoscaling" {
@@ -314,7 +314,7 @@ variable "node_pool_autoscaling" {
 
 variable "node_pool_autoscaling_initial_count" {
   default     = 1
-  description = "The initial number of nodes per zone in the default node pool when autoscaling is enabled. Defaults to 1."
+  description = "The initial number of nodes per zone in the default node pool, PER ZONE, when autoscaling is enabled. Defaults to 1."
   type        = number
 }
 
@@ -415,19 +415,19 @@ variable "release_channel" {
 
 variable "region" {
   description = "The GCP region where the GKE cluster will be deployed. This module only supports creation of a regional cluster"
-  type = string
+  type        = string
 }
 
 variable "secondary_ip_range_pods" {
-  default = null
+  default     = null
   description = "The name of the secondary range to use for the pods in the cluster. If no secondary range for the pod network is provided, GKE will create a /14 CIDR within the subnetwork provided by the \"vpc_subnet\" input"
-  type = string 
+  type        = string
 }
 
 variable "secondary_ip_range_services" {
-  default = null
+  default     = null
   description = "The name of the secondary range to use for services in the cluster. If no secondary range for the services network is provided, GKE will create a /20 CIDR within the subnetwork provided by the \"vpc_subnet\" input"
-  type = string
+  type        = string
 }
 
 variable "vpc_subnet" {

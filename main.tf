@@ -27,8 +27,8 @@ module "gke" {
   add_shadow_firewall_rules         = var.add_shadow_firewall_rules
   cluster_autoscaling               = var.cluster_autoscaling_config
   http_load_balancing               = var.cluster_http_load_balancing
-  ip_range_pods                     = var.secondary_ip_range_pods 
-  ip_range_services                 = var.secondary_ip_range_services 
+  ip_range_pods                     = var.secondary_ip_range_pods
+  ip_range_services                 = var.secondary_ip_range_services
   kubernetes_version                = var.kubernetes_version
   logging_service                   = var.logging_service
   maintenance_exclusions            = var.maintenance_exclusions
@@ -43,9 +43,9 @@ module "gke" {
   node_pools_taints                 = local.node_pools_taints
   project_id                        = var.project_id
   region                            = var.region
-  remove_default_node_pool          = true 
+  remove_default_node_pool          = true
   release_channel                   = var.release_channel
-  subnetwork                        = var.vpc_subnet 
+  subnetwork                        = var.vpc_subnet
 }
 
 resource "kubernetes_namespace" "sn_system" {
