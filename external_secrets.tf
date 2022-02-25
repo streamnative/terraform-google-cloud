@@ -20,7 +20,7 @@
 module "external_secrets_sa" {
   count   = var.enable_external_secrets ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version = "16.1.0"
+  version = "19.0.0"
 
   use_existing_k8s_sa = true
   annotate_k8s_sa     = false
@@ -40,21 +40,17 @@ resource "helm_release" "external_secrets" {
   repository      = var.external_secrets_helm_chart_repository
   timeout         = 300
   version         = var.external_secrets_helm_chart_version
-
-  set {
-    name  = "securityContext.fsGroup"
-    value = "65534"
-  }
-
-  set {
-    name  = "serviceAccount.annotations.iam\\.gke\\.io\\/gcp\\-service\\-account"
-    value = module.external_secrets_sa[0].gcp_service_account_email
-  }
-
-  set {
-    name  = "serviceAccount.name"
-    value = "external-secrets"
-  }
+  values = [yamlencode({
+    securityContext = {
+      fsGroup = 65534
+    }
+    serviceAccount = {
+      annotations = {
+        "serviceAccount.annotations.iam.gke.io/gcp-service-account" = module.external_secrets_sa[0].gcp_service_account_email
+      }
+      name = "external-secrets"
+    }
+  })]
 
   dynamic "set" {
     for_each = var.external_secrets_settings
