@@ -12,5 +12,5 @@ spec:
     server: https://acme-v02.api.letsencrypt.org/directory
     solvers:
       - dns01:
-          route53:
-            region: {{ required "Required: dns01.region" .Values.dns01.region }}
+          cloudDNS:
+            project: {{ required "Required: dns01.cloudDNS.project" .Values.dns01.cloudDNS.project }}

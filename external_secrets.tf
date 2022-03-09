@@ -24,8 +24,8 @@ module "external_secrets_sa" {
 
   use_existing_k8s_sa = true
   annotate_k8s_sa     = false
-  name                = "external-secrets"
-  namespace           = "sn-system"
+  name                = format("external-secrets-%s", var.suffix)
+  namespace           = "kube-system"
   project_id          = var.project_id
   roles               = ["roles/secretmanager.secretAccessor"]
 }
@@ -35,7 +35,7 @@ resource "helm_release" "external_secrets" {
   atomic          = true
   chart           = var.external_secrets_helm_chart_name
   cleanup_on_fail = true
-  namespace       = join("", kubernetes_namespace.sn_system.*.id)
+  namespace       = "kube-system"
   name            = "external-secrets"
   repository      = var.external_secrets_helm_chart_repository
   timeout         = 300

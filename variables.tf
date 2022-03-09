@@ -479,6 +479,16 @@ variable "service_domain" {
   type        = string
 }
 
+variable "suffix" {
+  default     = ""
+  description = "A unique string that is used to distinguish cluster resources, where name legnth constraints are imposed by GKE. Defaults to an empty string."
+  type        = string
+  validation {
+    condition = length(var.suffix) < 12
+    error_message = "Suffix must be less than 12 characters."
+  }
+}
+
 variable "vpc_subnet" {
   description = "The name of the VPC subnetwork to use by the cluster nodes. Can be set to \"default\" if the default VPC is enabled in the project, and GKE will choose the subnetwork based on the \"region\" input"
   type        = string
