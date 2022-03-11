@@ -205,7 +205,7 @@ variable "func_pool_auto_repair" {
 }
 
 variable "func_pool_auto_upgrade" {
-  default     = false
+  default     = true
   description = "Enable auto-upgrade for the Pulsar Functions pool."
   type        = bool
 }
@@ -242,8 +242,8 @@ variable "func_pool_locations" {
 }
 
 variable "func_pool_machine_type" {
-  default     = "n1-standard-1"
-  description = "The machine type to use for worker nodes in the Pulsar Functions pool. Defaults to \"n1-standard-1\"."
+  default     = "n2-standard-2"
+  description = "The machine type to use for worker nodes in the Pulsar Functions pool. Defaults to \"n2-standard-2\"."
   type        = string
 }
 
@@ -380,7 +380,7 @@ variable "node_pool_auto_repair" {
 }
 
 variable "node_pool_auto_upgrade" {
-  default     = false
+  default     = true
   description = "Enable auto-upgrade for the default node pool."
   type        = bool
 }
@@ -416,8 +416,8 @@ variable "node_pool_locations" {
 }
 
 variable "node_pool_machine_type" {
-  default     = "n1-standard-1"
-  description = "The machine type to use for worker nodes in the default node pool. Defaults to \"n1-standard-1\"."
+  default     = "n2-standard-4"
+  description = "The machine type to use for worker nodes in the default node pool. Defaults to \"n2-standard-4\"."
   type        = string
 }
 
@@ -451,7 +451,7 @@ variable "project_id" {
 }
 
 variable "release_channel" {
-  default     = "UNSPECIFIED"
+  default     = "STABLE"
   description = "The Kubernetes release channel to use for the cluster. Accepted values are \"UNSPECIFIED\", \"RAPID\", \"REGULAR\" and \"STABLE\". Defaults to \"UNSPECIFIED\"."
   type        = string
 }
