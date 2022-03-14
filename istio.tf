@@ -38,7 +38,7 @@ module "istio" {
     kind  = "ClusterIssuer"
     name  = "external"
   }
-  istio_settings = var.istio_settings
+  istio_settings = merge({ "controlPlane.spec.components.cni.namespace" : "kube-system", "controlPlane.spec.values.cni.cniBinDir" : "/home/kubernetes/bin" }, var.istio_settings)
 
   kiali_gateway_hosts      = ["kiali.${var.service_domain}"]
   kiali_gateway_tls_secret = "istio-ingressgateway-tls"
@@ -47,4 +47,23 @@ module "istio" {
   depends_on = [
     helm_release.cert_issuer
   ]
+}
+
+resource "kubernetes_resource_quota" "istio_critical_pods" {
+  metadata {
+    name      = "istio-critical-pods"
+    namespace = "istio-system"
+  }
+  spec {
+    hard = {
+      pods = "1G"
+    }
+    scope_selector {
+      match_expression {
+        operator   = "In"
+        scope_name = "PriorityClass"
+        values     = ["system-node-critical", "system-cluster-critical"]
+      }
+    }
+  }
 }

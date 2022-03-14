@@ -127,8 +127,8 @@ variable "external_dns_helm_chart_repository" {
 }
 
 variable "external_dns_helm_chart_version" {
-  default     = "5.5.2"
-  description = "Helm chart version for ExternalDNS. See https://hub.helm.sh/charts/bitnami/external-dns for updates."
+  default     = "6.1.8"
+  description = "Helm chart version for ExternalDNS. See https://github.com/bitnami/charts/tree/master/bitnami/external-dns for updates."
   type        = string
 }
 
@@ -242,8 +242,8 @@ variable "func_pool_locations" {
 }
 
 variable "func_pool_machine_type" {
-  default     = "n2-standard-2"
-  description = "The machine type to use for worker nodes in the Pulsar Functions pool. Defaults to \"n2-standard-2\"."
+  default     = "n2-standard-4"
+  description = "The machine type to use for worker nodes in the Pulsar Functions pool. Defaults to \"n2-standard-4\"."
   type        = string
 }
 
@@ -416,8 +416,8 @@ variable "node_pool_locations" {
 }
 
 variable "node_pool_machine_type" {
-  default     = "n2-standard-4"
-  description = "The machine type to use for worker nodes in the default node pool. Defaults to \"n2-standard-4\"."
+  default     = "n2-standard-8"
+  description = "The machine type to use for worker nodes in the default node pool. Defaults to \"n2-standard-8\"."
   type        = string
 }
 
@@ -484,7 +484,7 @@ variable "suffix" {
   description = "A unique string that is used to distinguish cluster resources, where name legnth constraints are imposed by GKE. Defaults to an empty string."
   type        = string
   validation {
-    condition = length(var.suffix) < 12
+    condition     = length(var.suffix) < 12
     error_message = "Suffix must be less than 12 characters."
   }
 }
