@@ -1,13 +1,41 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+
 module "external_dns_sa" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version = "16.1.0"
+  version = "20.0.0"
 
   use_existing_k8s_sa = true
   annotate_k8s_sa     = false
-  name                = "external-dns"
+  k8s_sa_name         = "external-dns"
+  location            = var.region
+  cluster_name        = module.gke.name
+  name                = format("external-dns-%s", var.suffix)
   namespace           = "kube-system"
   project_id          = var.project_id
   roles               = ["roles/dns.admin"]
+}
+
+locals {
+  default_sources = ["service", "ingress"]
+  istio_sources   = ["istio-gateway", "istio-virtualservice"]
+  sources         = var.enable_istio ? concat(local.istio_sources, local.default_sources) : local.default_sources
 }
 
 resource "helm_release" "external_dns" {
@@ -19,59 +47,29 @@ resource "helm_release" "external_dns" {
   repository      = var.external_dns_helm_chart_repository
   timeout         = 300
   version         = var.external_dns_helm_chart_version
-
-  dynamic "set" {
-    for_each = var.external_dns_domain_filters
-    content {
-      name  = join("", ["domainFilters[", set.key, "]"])
-      value = set.value
+  values = [yamlencode({
+    google = {
+      project = var.project_id
     }
-  }
-
-  set {
-    name  = "google.project"
-    value = var.project_id
-  }
-
-  set {
-    name  = "policy"
-    value = var.external_dns_policy
-  }
-
-  set {
-    name  = "podSecurityContext.fsGroup"
-    value = "65534"
-  }
-
-  set {
-    name  = "podSecurityContext.runAsUser"
-    value = "65534"
-  }
-
-  set {
-    name  = "provider"
-    value = "google"
-  }
-
-  set {
-    name  = "serviceAccount.annotations.iam\\.gke\\.io\\/gcp\\-service\\-account"
-    value = module.external_dns_sa.gcp_service_account_email
-  }
-
-  set {
-    name  = "serviceAccount.name"
-    value = "external-dns"
-  }
-
-  set {
-    name  = "sources"
-    value = var.disable_istio_sources == true ? "{service,ingress}" : "{service,ingress,istio-gateway,istio-virtualservice}"
-  }
-
-  set {
-    name  = "txtOwnerId"
-    value = module.gke.name
-  }
+    policy = var.external_dns_policy
+    podSecurityContext = {
+      fsGroup   = 65534
+      runAsUser = 0
+    }
+    provider = "google"
+    rbac = {
+      create = true
+    }
+    serviceAccount = {
+      create = true
+      name   = "external-dns"
+      annotations = {
+        "iam.gke.io/gcp-service-account" = module.external_dns_sa.gcp_service_account_email
+      }
+    }
+    sources    = local.sources
+    txtOwnerId = module.gke.name
+  })]
 
   dynamic "set" {
     for_each = var.external_dns_settings

@@ -1,19 +1,23 @@
-output "gke_cluster_endpoint" {
+output "ca_certificate" {
+  value = module.gke.ca_certificate
+}
+
+output "endpoint" {
   value = module.gke.endpoint
 }
 
-output "gke_cluster_id" {
+output "id" {
+  value = module.gke.cluster_id
+}
+
+output "name" {
   value = module.gke.name
 }
 
-output "gke_cluster_name" {
-  value = module.gke.name
-}
-
-output "gke_cluster_master_version" {
+output "master_version" {
   value = module.gke.master_version
 }
 
-output "gke_cluster_service_account" {
+output "service_account" {
   value = module.gke.service_account
 }

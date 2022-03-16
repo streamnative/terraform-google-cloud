@@ -29,7 +29,7 @@ variable "cert_manager_helm_chart_name" {
 }
 
 variable "cert_manager_helm_chart_version" {
-  default     = "0.1.10"
+  default     = "0.1.27"
   description = "The version of the Cert Manager helm chart to install. Defaults to \"0.1.10\"."
   type        = string
 }
@@ -39,6 +39,13 @@ variable "cert_manager_settings" {
   description = "Additional settings which will be passed to the Helm chart values. See https://github.com/bitnami/charts/tree/master/bitnami/cert-manager for detailed options."
   type        = map(any)
 }
+
+variable "cert_issuer_support_email" {
+  default     = "certs-support@streamnative.io"
+  description = "The email address to receive notifications from the cert issuer."
+  type        = string
+}
+
 
 variable "cluster_autoscaling_config" {
   default = {
@@ -77,21 +84,15 @@ variable "cluster_network_policy" {
   type        = bool
 }
 
-variable "create_sn_system_namespace" {
-  default     = true
-  description = "Whether or not to create the namespace \"sn-system\" on the cluster. This namespace is commonly used by OLM and StreamNative's Kubernetes Operators and services"
-  type        = bool
-}
-
 variable "create_service_account" {
   default     = true
   description = "Creates a service account for the cluster. Defaults to \"true\"."
   type        = bool
 }
 
-variable "disable_istio_sources" {
-  default     = false
-  description = "Disables Istio sources for the External DNS configuration. Set to \"false\" by default. Set to \"true\" for debugging External DNS or if Istio is disabled."
+variable "enable_cert_manager" {
+  default     = true
+  description = "Enables the Cert-Manager addon service on the cluster. Defaults to \"true\", and in most situations is required by StreamNative Cloud."
   type        = bool
 }
 
@@ -107,10 +108,10 @@ variable "enable_func_pool" {
   type        = bool
 }
 
-variable "external_dns_domain_filters" {
-  default     = []
-  description = "A list of domains that ExternalDNS is allowed to work with"
-  type        = list(string)
+variable "enable_istio" {
+  default     = false
+  description = "Enables Istio on the cluster. Set to \"false\" by default."
+  type        = bool
 }
 
 variable "external_dns_helm_chart_name" {
@@ -126,8 +127,8 @@ variable "external_dns_helm_chart_repository" {
 }
 
 variable "external_dns_helm_chart_version" {
-  default     = "5.4.1"
-  description = "Helm chart version for ExternalDNS. See https://hub.helm.sh/charts/bitnami/external-dns for updates."
+  default     = "6.1.8"
+  description = "Helm chart version for ExternalDNS. See https://github.com/bitnami/charts/tree/master/bitnami/external-dns for updates."
   type        = string
 }
 
@@ -204,7 +205,7 @@ variable "func_pool_auto_repair" {
 }
 
 variable "func_pool_auto_upgrade" {
-  default     = false
+  default     = true
   description = "Enable auto-upgrade for the Pulsar Functions pool."
   type        = bool
 }
@@ -229,7 +230,7 @@ variable "func_pool_disk_type" {
 
 
 variable "func_pool_image_type" {
-  default     = "COS"
+  default     = "COS_CONTAINERD"
   description = "The image type to use for worker nodes in the Pulsar Functions pool. Defaults to \"COS\" (cointainer-optimized OS with docker)."
   type        = string
 }
@@ -241,8 +242,8 @@ variable "func_pool_locations" {
 }
 
 variable "func_pool_machine_type" {
-  default     = "n1-standard-1"
-  description = "The machine type to use for worker nodes in the Pulsar Functions pool. Defaults to \"n1-standard-1\"."
+  default     = "n2-standard-4"
+  description = "The machine type to use for worker nodes in the Pulsar Functions pool. Defaults to \"n2-standard-4\"."
   type        = string
 }
 
@@ -274,6 +275,48 @@ variable "horizontal_pod_autoscaling" {
   default     = true
   description = "Enable horizontal pod autoscaling for the cluster. Defaults to \"true\"."
   type        = bool
+}
+
+variable "istio_mesh_id" {
+  default     = null
+  description = "The ID used by the Istio mesh. This is also the ID of the StreamNative Cloud Pool used for the workload environments. This is required when \"enable_istio_operator\" is set to \"true\"."
+  type        = string
+}
+
+variable "istio_network" {
+  default     = "default"
+  description = "The name of network used for the Istio deployment. This is required when \"enable_istio_operator\" is set to \"true\"."
+  type        = string
+}
+
+variable "istio_profile" {
+  default     = "default"
+  description = "The path or name for an Istio profile to load. Set to the profile \"default\" if not specified."
+  type        = string
+}
+
+variable "istio_revision_tag" {
+  default     = "sn-stable"
+  description = "The revision tag value use for the Istio label \"istio.io/rev\"."
+  type        = string
+}
+
+variable "istio_trust_domain" {
+  default     = "cluster.local"
+  description = "The trust domain used for the Istio deployment, which corresponds to the root of a system. This is required when \"enable_istio_operator\" is set to \"true\"."
+  type        = string
+}
+
+variable "istio_settings" {
+  default     = {}
+  description = "Additional settings which will be passed to the Helm chart values"
+  type        = map(any)
+}
+
+variable "kiali_operator_settings" {
+  default     = {}
+  description = "Additional settings which will be passed to the Helm chart values"
+  type        = map(any)
 }
 
 variable "kubernetes_version" {
@@ -337,7 +380,7 @@ variable "node_pool_auto_repair" {
 }
 
 variable "node_pool_auto_upgrade" {
-  default     = false
+  default     = true
   description = "Enable auto-upgrade for the default node pool."
   type        = bool
 }
@@ -361,7 +404,7 @@ variable "node_pool_disk_type" {
 }
 
 variable "node_pool_image_type" {
-  default     = "COS"
+  default     = "COS_CONTAINERD"
   description = "The image type to use for worker nodes in the default node pool. Defaults to \"COS\" (cointainer-optimized OS with docker)."
   type        = string
 }
@@ -373,8 +416,8 @@ variable "node_pool_locations" {
 }
 
 variable "node_pool_machine_type" {
-  default     = "n1-standard-1"
-  description = "The machine type to use for worker nodes in the default node pool. Defaults to \"n1-standard-1\"."
+  default     = "n2-standard-8"
+  description = "The machine type to use for worker nodes in the default node pool. Defaults to \"n2-standard-8\"."
   type        = string
 }
 
@@ -408,7 +451,7 @@ variable "project_id" {
 }
 
 variable "release_channel" {
-  default     = "UNSPECIFIED"
+  default     = "STABLE"
   description = "The Kubernetes release channel to use for the cluster. Accepted values are \"UNSPECIFIED\", \"RAPID\", \"REGULAR\" and \"STABLE\". Defaults to \"UNSPECIFIED\"."
   type        = string
 }
@@ -428,6 +471,22 @@ variable "secondary_ip_range_services" {
   default     = null
   description = "The name of the secondary range to use for services in the cluster. If no secondary range for the services network is provided, GKE will create a /20 CIDR within the subnetwork provided by the \"vpc_subnet\" input"
   type        = string
+}
+
+variable "service_domain" {
+  default     = null
+  description = "The DNS domain for external service endpoints. This must be set when enabling Istio or else the deployment will fail."
+  type        = string
+}
+
+variable "suffix" {
+  default     = ""
+  description = "A unique string that is used to distinguish cluster resources, where name legnth constraints are imposed by GKE. Defaults to an empty string."
+  type        = string
+  validation {
+    condition     = length(var.suffix) < 12
+    error_message = "Suffix must be less than 12 characters."
+  }
 }
 
 variable "vpc_subnet" {
