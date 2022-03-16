@@ -181,14 +181,14 @@ variable "func_pool_autoscaling" {
 }
 
 variable "func_pool_autoscaling_initial_count" {
-  default     = 1
-  description = "The initial number of nodes in the Pulsar Functions pool, per zone, when autoscaling is enabled. Defaults to 1."
+  default     = 0
+  description = "The initial number of nodes in the Pulsar Functions pool, per zone, when autoscaling is enabled. Defaults to 0."
   type        = number
 }
 
 variable "func_pool_autoscaling_min_size" {
-  default     = 1
-  description = "The minimum size of the Pulsar Functions pool AutoScaling group. Defaults to 1."
+  default     = 0
+  description = "The minimum size of the Pulsar Functions pool AutoScaling group. Defaults to 0."
   type        = number
 }
 
