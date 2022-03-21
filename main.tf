@@ -102,7 +102,6 @@ locals {
   }
 }
 
-
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google"
   name    = var.cluster_name
@@ -139,9 +138,50 @@ resource "kubernetes_namespace" "sn_system" {
     name = "sn-system"
 
     labels = {
-      "istio.io/rev" = "sn-stable"
+      "istio.io/rev"               = "sn-stable"
+      "cloud.streamnative.io/role" = "sn-system"
     }
   }
+  depends_on = [
+    module.gke
+  ]
+}
+
+resource "kubernetes_storage_class" "sn_default" {
+  metadata {
+    name = "sn-default"
+    labels = {
+      "addonmanager.kubernetes.io/mode" = "EnsureExists"
+    }
+  }
+  storage_provisioner = "kubernetes.io/gce-pd"
+  parameters = {
+    type = "pd-standard"
+  }
+  reclaim_policy         = "Delete"
+  allow_volume_expansion = true
+  volume_binding_mode    = "WaitForFirstConsumer"
+
+  depends_on = [
+    module.gke
+  ]
+}
+
+resource "kubernetes_storage_class" "sn_ssd" {
+  metadata {
+    name = "sn-ssd"
+    labels = {
+      "addonmanager.kubernetes.io/mode" = "EnsureExists"
+    }
+  }
+  storage_provisioner = "kubernetes.io/gce-pd"
+  parameters = {
+    type = "pd-ssd"
+  }
+  reclaim_policy         = "Delete"
+  allow_volume_expansion = true
+  volume_binding_mode    = "WaitForFirstConsumer"
+
   depends_on = [
     module.gke
   ]
