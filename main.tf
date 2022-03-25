@@ -131,6 +131,8 @@ module "gke" {
   remove_default_node_pool          = true
   release_channel                   = var.release_channel
   subnetwork                        = var.vpc_subnet
+  ip_range_pods                     = ip_range_pods
+  ip_range_services                 = ip_range_services
 }
 
 resource "kubernetes_namespace" "sn_system" {

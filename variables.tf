@@ -498,3 +498,15 @@ variable "vpc_network" {
   description = "The name of the VPC network to use for the cluster. Can be set to \"default\" if the default VPC is enabled in the project"
   type        = string
 }
+
+variable "ip_range_pods" {
+  default     = ""
+  type        = string
+  description = "The _name_ of the secondary subnet ip range to use for pods"
+}
+
+variable "ip_range_services" {
+  default     = ""
+  type        = string
+  description = "The _name_ of the secondary subnet range to use for services"
+}
