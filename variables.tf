@@ -498,3 +498,9 @@ variable "vpc_network" {
   description = "The name of the VPC network to use for the cluster. Can be set to \"default\" if the default VPC is enabled in the project"
   type        = string
 }
+
+variable "network_project_id" {
+  default     = ""
+  description = "If using a different project, the id of the project"
+  type        = string
+}
