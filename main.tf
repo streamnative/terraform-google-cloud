@@ -120,6 +120,7 @@ module "gke" {
   maintenance_start_time            = var.maintenance_window
   master_authorized_networks        = var.master_authorized_networks
   network                           = var.vpc_network
+  network_project_id                = var.network_project_id
   network_policy                    = var.cluster_network_policy
   node_pools                        = local.node_pools
   node_pools_labels                 = local.node_pools_labels
