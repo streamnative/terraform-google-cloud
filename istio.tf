@@ -38,7 +38,7 @@ module "istio" {
     kind  = "ClusterIssuer"
     name  = "external"
   }
-  istio_settings = merge({ "controlPlane.spec.components.cni.namespace" : "kube-system", "controlPlane.spec.values.cni.cniBinDir" : "/home/kubernetes/bin" }, var.istio_settings)
+  istio_settings = merge({ "controlPlane.spec.components.cni.namespace" : "istio-system", "controlPlane.spec.values.cni.cniBinDir" : "/home/kubernetes/bin" }, var.istio_settings)
 
   kiali_gateway_hosts      = ["kiali.${var.service_domain}"]
   kiali_gateway_tls_secret = "istio-ingressgateway-tls"
