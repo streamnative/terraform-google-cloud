@@ -17,7 +17,7 @@ variable "add_shadow_firewall_rules" {
 }
 
 variable "cert_manager_helm_chart_repository" {
-  default     = "https://charts.bitnami.com/bitnami"
+  default     = "https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami"
   description = "The location of the helm chart to use for Cert Manager."
   type        = string
 }
