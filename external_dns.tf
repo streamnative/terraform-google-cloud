@@ -18,6 +18,7 @@
 #
 
 module "external_dns_sa" {
+  count           = var.enable_external_dns ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
 
@@ -39,6 +40,7 @@ locals {
 }
 
 resource "helm_release" "external_dns" {
+  count           = var.enable_external_dns ? 1 : 0
   atomic          = true
   chart           = var.external_dns_helm_chart_name
   cleanup_on_fail = true

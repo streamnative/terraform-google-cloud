@@ -20,6 +20,7 @@
 module "cert_manager_sa" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
+  count   = var.enable_cert_manager ? 1 : 0
 
   use_existing_k8s_sa = true
   annotate_k8s_sa     = false
@@ -33,6 +34,7 @@ module "cert_manager_sa" {
 }
 
 resource "helm_release" "cert_manager" {
+  count           = var.enable_cert_manager ? 1 : 0
   atomic          = true
   chart           = var.cert_manager_helm_chart_name
   cleanup_on_fail = true
