@@ -18,7 +18,6 @@
 #
 
 module "external_secrets_sa" {
-  count   = var.enable_external_secrets ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
 
@@ -49,7 +48,7 @@ resource "helm_release" "external_secrets" {
     }
     serviceAccount = {
       annotations = {
-        "iam.gke.io/gcp-service-account" = module.external_secrets_sa[0].gcp_service_account_email
+        "iam.gke.io/gcp-service-account" = module.external_secrets_sa.gcp_service_account_email
       }
       name = "external-secrets"
     }

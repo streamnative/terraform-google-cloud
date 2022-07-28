@@ -18,7 +18,6 @@
 #
 
 module "external_dns_sa" {
-  count           = var.enable_external_dns ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
 
