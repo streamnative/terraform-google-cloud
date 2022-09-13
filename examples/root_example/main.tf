@@ -23,7 +23,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "3.76.0"
+      version = "~>4.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 4.3"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -31,9 +35,18 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.2.0"
+      version = "~> 2.11.0"
     }
   }
+}
+
+module "sn_crds" {
+  source  = "streamnative/charts/helm//modules/crds"
+  version = "v0.8.4"
+
+  depends_on = [
+    module.sn_cluster
+  ]
 }
 
 provider "google" {
@@ -56,14 +69,29 @@ provider "kubernetes" {
 }
 
 # Configure variable defaults here, with a .tfvars file, or provide them to terraform when prompted.
-variable "environment" {}
-variable "project_id" {}
-variable "region" {}
+variable "environment" {
+  default     = "example"
+  description = ""
+}
+
+variable "project_id" {
+  description = "GCP project to deploy into"
+}
+
+variable "region" {
+  default     = "northamerica-northeast1"
+  description = "GCP region to deploy in"
+}
+
+variable "domain" {
+  default     = "g.example.dev."
+  description = "Google DNS domain for DNS records"
+}
 
 data "google_client_config" "provider" {}
 
 data "google_container_cluster" "cluster" {
-  name     = module.sn_cluster.gke_cluster_name
+  name     = module.sn_cluster.name
   location = var.region
 }
 
@@ -72,36 +100,35 @@ resource "random_pet" "cluster_name" {
 }
 
 locals {
-  cluster_name = format("sn-%s-%s", random_pet.cluster_name.id, var.environment)
+  organization   = "streamnative"
+  cluster_name   = format("sn-%s-%s", random_pet.cluster_name.id, var.environment)
+  service_domain = format("%s.%s.%s", local.cluster_name, local.organization, var.domain)
 }
 
-module "sn_cloud_dns" {
-  source  = "terraform-google-modules/cloud-dns/google"
-  version = "3.1.0"
-
-  domain     = "g.example.dev."
-  name       = local.cluster_name
-  project_id = var.project_id
-  type       = "public"
+data "google_container_engine_versions" "versions" {
+  location       = var.region
+  version_prefix = "1.21."
 }
 
 # Add this repo as a git submodule and refer to its relative path (or clone and point to the location)
 module "sn_cluster" {
-  source = "../terraform-google-cloud"
+  source = "../../"
 
-  cluster_name                = local.cluster_name
-  enable_func_pool            = false
-  external_dns_domain_filters = [module.sn_cloud_dns.domain]
-  project_id                  = var.project_id
-  region                      = var.region
-  vpc_network                 = "default"
-  vpc_subnet                  = "default"
+  cluster_name       = local.cluster_name
+  enable_func_pool   = false
+  kubernetes_version = data.google_container_engine_versions.versions.latest_master_version
+
+  project_id  = var.project_id
+  region      = var.region
+  suffix      = random_pet.cluster_name.id
+  vpc_network = "default"
+  vpc_subnet  = "default"
 }
 
 # Note: If the func pool is enabled, you must wait for the cluster to be ready before running this module
 module "sn_bootstrap" {
   source  = "streamnative/charts/helm"
-  version = "0.4.0"
+  version = "0.8.4"
 
   # Note: OLM for GKE is still a WIP as we work on a long term solution for managing our operator images
   enable_olm   = true

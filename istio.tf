@@ -50,6 +50,7 @@ module "istio" {
 }
 
 resource "kubernetes_resource_quota" "istio_critical_pods" {
+  count = var.enable_istio ? 1 : 0
   metadata {
     name      = "istio-critical-pods"
     namespace = "istio-system"
