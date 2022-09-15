@@ -33,6 +33,7 @@ module "cert_manager_sa" {
 }
 
 resource "helm_release" "cert_manager" {
+  count           = var.enable_cert_manager ? 1 : 0
   atomic          = true
   chart           = var.cert_manager_helm_chart_name
   cleanup_on_fail = true

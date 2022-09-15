@@ -96,6 +96,12 @@ variable "enable_cert_manager" {
   type        = bool
 }
 
+variable "enable_external_dns" {
+  default     = true
+  description = "Enables the External DNS addon service on the cluster. Defaults to \"true\", and in most situations is required by StreamNative Cloud."
+  type        = bool
+}
+
 variable "enable_external_secrets" {
   default     = true
   description = "Enables kubernetes-external-secrets on the cluster, which uses GCP Secret Manager as the secrets backend"

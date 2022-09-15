@@ -70,6 +70,7 @@ tf apply
 | <a name="input_cluster_network_policy"></a> [cluster\_network\_policy](#input\_cluster\_network\_policy) | Enable the network policy addon for the cluster. Defaults to "true", and uses CALICO as the provider | `bool` | `true` | no |
 | <a name="input_create_service_account"></a> [create\_service\_account](#input\_create\_service\_account) | Creates a service account for the cluster. Defaults to "true". | `bool` | `true` | no |
 | <a name="input_enable_cert_manager"></a> [enable\_cert\_manager](#input\_enable\_cert\_manager) | Enables the Cert-Manager addon service on the cluster. Defaults to "true", and in most situations is required by StreamNative Cloud. | `bool` | `true` | no |
+| <a name="input_enable_external_dns"></a> [enable\_external\_dns](#input\_enable\_external\_dns) | Enables the External DNS addon service on the cluster. Defaults to "true", and in most situations is required by StreamNative Cloud. | `bool` | `true` | no |
 | <a name="input_enable_external_secrets"></a> [enable\_external\_secrets](#input\_enable\_external\_secrets) | Enables kubernetes-external-secrets on the cluster, which uses GCP Secret Manager as the secrets backend | `bool` | `true` | no |
 | <a name="input_enable_func_pool"></a> [enable\_func\_pool](#input\_enable\_func\_pool) | Enable an additional dedicated pool for Pulsar Functions. Enabled by default. | `bool` | `true` | no |
 | <a name="input_enable_istio"></a> [enable\_istio](#input\_enable\_istio) | Enables Istio on the cluster. Set to "false" by default. | `bool` | `false` | no |
