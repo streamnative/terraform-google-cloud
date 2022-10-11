@@ -511,12 +511,12 @@ variable "network_project_id" {
   type        = string
 }
 
-variable "istio_network_loadbancer" {
+variable "istio-network-loadbalancer" {
   type    = string
   default = "internet_facing"
 
   validation {
-    condition     = contains(["internet_facing", "internal_only"], var.istio_network_loadbancer)
+    condition     = contains(["internet_facing", "internal_only"], var.istio_network_loadbalancer)
     error_message = "Allowed values for input_parameter are \"internet_facing\" or \"internal_only\"."
   }
 }

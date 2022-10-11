@@ -49,7 +49,7 @@ module "istio" {
   }
   istio_settings = merge({ "controlPlane.spec.components.cni.namespace" : "istio-system", "controlPlane.spec.values.cni.cniBinDir" : "/home/kubernetes/bin" }, var.istio_settings)
 
-  istio_ingress_gateway_service_annotations = lookup(local.lb_annotations, var.istio_network_loadbancer, local.lb_annotations.internet_facing)
+  istio_ingress_gateway_service_annotations = lookup(local.lb_annotations, var.istio-network-loadbalancer, local.lb_annotations.internet_facing)
   kiali_gateway_hosts      = ["kiali.${var.service_domain}"]
   kiali_gateway_tls_secret = "istio-ingressgateway-tls"
   kiali_operator_settings  = var.kiali_operator_settings
