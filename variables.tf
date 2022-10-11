@@ -511,7 +511,7 @@ variable "network_project_id" {
   type        = string
 }
 
-variable "istio-network-loadbalancer" {
+variable "istio_network_loadbalancer" {
   type    = string
   default = "internet_facing"
 
