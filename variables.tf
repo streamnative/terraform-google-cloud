@@ -520,3 +520,15 @@ variable "istio_network_loadbalancer" {
     error_message = "Allowed values for input_parameter are \"internet_facing\" or \"internal_only\"."
   }
 }
+
+variable "enable_private_nodes" {
+  type        = bool
+  description = "Whether nodes have internal IP addresses only"
+  default     = true
+}
+
+variable "master_ipv4_cidr_block" {
+  type        = string
+  description = "The IP range in CIDR notation to use for the hosted master network"
+  default     = "10.0.0.0/28"
+}

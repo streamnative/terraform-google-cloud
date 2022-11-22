@@ -103,7 +103,7 @@ locals {
 }
 
 module "gke" {
-  source  = "terraform-google-modules/kubernetes-engine/google"
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
   name    = var.cluster_name
   version = "19.0.0"
 
@@ -132,6 +132,8 @@ module "gke" {
   remove_default_node_pool          = true
   release_channel                   = var.release_channel
   subnetwork                        = var.vpc_subnet
+  enable_private_nodes              = var.enable_private_nodes
+  master_ipv4_cidr_block            = var.master_ipv4_cidr_block
 }
 
 resource "kubernetes_namespace" "sn_system" {
