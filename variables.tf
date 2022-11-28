@@ -502,3 +502,8 @@ variable "master_ipv4_cidr_block" {
   description = "The IP range in CIDR notation to use for the hosted master network"
   default     = "10.0.0.0/28"
 }
+
+variable "google_service_account" {
+   type        = string
+   description = "The Google Service Account for provisioning cloud environment(e.g. GKE)"
+}
