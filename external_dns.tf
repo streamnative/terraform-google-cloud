@@ -23,7 +23,7 @@ module "external_dns_workload_identity" {
   version             = "20.0.0"
 
   use_existing_gcp_sa = true
-  gcp_given_name      = var.google_service_account
+  gcp_sa_name         = var.google_service_account
   project_id          = var.project_id
 
   use_existing_k8s_sa = true

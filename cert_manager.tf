@@ -17,13 +17,13 @@
 # under the License.
 #
 
-module "cert_manager_sa" {
+module "cert_manager_workload_identity" {
   count   = var.enable_cert_manager ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
 
   use_existing_gcp_sa = true
-  gcp_given_name      = var.google_service_account
+  gcp_sa_name         = var.google_service_account
   project_id          = var.project_id
 
   use_existing_k8s_sa = true
