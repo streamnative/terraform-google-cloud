@@ -32,10 +32,6 @@ module "external_dns_workload_identity" {
   namespace           = "kube-system"
   location            = var.region
   cluster_name        = module.gke.name
-
-  # wait for the custom GSA to be created to force module data source read during apply
-  # https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1059
-  depends_on = [google_service_account.preexisting]
 }
 
 locals {
