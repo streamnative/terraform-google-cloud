@@ -19,7 +19,7 @@
 
 module "external_dns_sa" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version = "20.0.0"
+  version = "24.0.0"
 
   use_existing_k8s_sa = true
   annotate_k8s_sa     = false
