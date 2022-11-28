@@ -34,7 +34,6 @@ tf apply
 |------|--------|---------|
 | <a name="module_cert_manager_sa"></a> [cert\_manager\_sa](#module\_cert\_manager\_sa) | terraform-google-modules/kubernetes-engine/google//modules/workload-identity | 20.0.0 |
 | <a name="module_external_dns_sa"></a> [external\_dns\_sa](#module\_external\_dns\_sa) | terraform-google-modules/kubernetes-engine/google//modules/workload-identity | 20.0.0 |
-| <a name="module_external_secrets_sa"></a> [external\_secrets\_sa](#module\_external\_secrets\_sa) | terraform-google-modules/kubernetes-engine/google//modules/workload-identity | 20.0.0 |
 | <a name="module_gke"></a> [gke](#module\_gke) | terraform-google-modules/kubernetes-engine/google | 19.0.0 |
 | <a name="module_istio"></a> [istio](#module\_istio) | github.com/streamnative/terraform-helm-charts//modules/istio-operator | master |
 
@@ -45,7 +44,6 @@ tf apply
 | [helm_release.cert_issuer](https://registry.terraform.io/providers/hashicorp/helm/2.2.0/docs/resources/release) | resource |
 | [helm_release.cert_manager](https://registry.terraform.io/providers/hashicorp/helm/2.2.0/docs/resources/release) | resource |
 | [helm_release.external_dns](https://registry.terraform.io/providers/hashicorp/helm/2.2.0/docs/resources/release) | resource |
-| [helm_release.external_secrets](https://registry.terraform.io/providers/hashicorp/helm/2.2.0/docs/resources/release) | resource |
 | [kubernetes_namespace.sn_system](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_resource_quota.istio_critical_pods](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/resource_quota) | resource |
 | [kubernetes_storage_class.sn_default](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class) | resource |
@@ -71,7 +69,6 @@ tf apply
 | <a name="input_create_service_account"></a> [create\_service\_account](#input\_create\_service\_account) | Creates a service account for the cluster. Defaults to "true". | `bool` | `true` | no |
 | <a name="input_enable_cert_manager"></a> [enable\_cert\_manager](#input\_enable\_cert\_manager) | Enables the Cert-Manager addon service on the cluster. Defaults to "true", and in most situations is required by StreamNative Cloud. | `bool` | `true` | no |
 | <a name="input_enable_external_dns"></a> [enable\_external\_dns](#input\_enable\_external\_dns) | Enables the External DNS addon service on the cluster. Defaults to "true", and in most situations is required by StreamNative Cloud. | `bool` | `true` | no |
-| <a name="input_enable_external_secrets"></a> [enable\_external\_secrets](#input\_enable\_external\_secrets) | Enables kubernetes-external-secrets on the cluster, which uses GCP Secret Manager as the secrets backend | `bool` | `true` | no |
 | <a name="input_enable_func_pool"></a> [enable\_func\_pool](#input\_enable\_func\_pool) | Enable an additional dedicated pool for Pulsar Functions. Enabled by default. | `bool` | `true` | no |
 | <a name="input_enable_istio"></a> [enable\_istio](#input\_enable\_istio) | Enables Istio on the cluster. Set to "false" by default. | `bool` | `false` | no |
 | <a name="input_external_dns_helm_chart_name"></a> [external\_dns\_helm\_chart\_name](#input\_external\_dns\_helm\_chart\_name) | The name of the Helm chart in the repository for ExternalDNS. | `string` | `"external-dns"` | no |
@@ -80,10 +77,6 @@ tf apply
 | <a name="input_external_dns_policy"></a> [external\_dns\_policy](#input\_external\_dns\_policy) | Sets how DNS records are managed by ExternalDNS. Options are "sync", which allows ExternalDNS to create and delete records, or "upsert\_only", which only allows for the creation of records | `string` | `"upsert-only"` | no |
 | <a name="input_external_dns_settings"></a> [external\_dns\_settings](#input\_external\_dns\_settings) | Additional settings which will be passed to the Helm chart values, see https://github.com/bitnami/charts/tree/master/bitnami/external-dns for detailed options. | `map(any)` | `{}` | no |
 | <a name="input_external_dns_version"></a> [external\_dns\_version](#input\_external\_dns\_version) | The version of the ExternalDNS helm chart to install. Defaults to "5.2.2". | `string` | `"5.2.2"` | no |
-| <a name="input_external_secrets_helm_chart_name"></a> [external\_secrets\_helm\_chart\_name](#input\_external\_secrets\_helm\_chart\_name) | The name of the Helm chart in the repository for kubernetes-external-secrets | `string` | `"kubernetes-external-secrets"` | no |
-| <a name="input_external_secrets_helm_chart_repository"></a> [external\_secrets\_helm\_chart\_repository](#input\_external\_secrets\_helm\_chart\_repository) | The repository containing the kubernetes-external-secrets helm chart | `string` | `"https://external-secrets.github.io/kubernetes-external-secrets"` | no |
-| <a name="input_external_secrets_helm_chart_version"></a> [external\_secrets\_helm\_chart\_version](#input\_external\_secrets\_helm\_chart\_version) | Helm chart version for kubernetes-external-secrets. Defaults to "8.3.0". See https://github.com/external-secrets/kubernetes-external-secrets/tree/master/charts/kubernetes-external-secrets for updates | `string` | `"8.3.0"` | no |
-| <a name="input_external_secrets_settings"></a> [external\_secrets\_settings](#input\_external\_secrets\_settings) | Additional settings which will be passed to the Helm chart values, see https://github.com/external-secrets/kubernetes-external-secrets/tree/master/charts/kubernetes-external-secrets for available options | `map(any)` | `{}` | no |
 | <a name="input_func_pool_auto_repair"></a> [func\_pool\_auto\_repair](#input\_func\_pool\_auto\_repair) | Enable auto-repair for the Pulsar Functions pool. | `bool` | `true` | no |
 | <a name="input_func_pool_auto_upgrade"></a> [func\_pool\_auto\_upgrade](#input\_func\_pool\_auto\_upgrade) | Enable auto-upgrade for the Pulsar Functions pool. | `bool` | `true` | no |
 | <a name="input_func_pool_autoscaling"></a> [func\_pool\_autoscaling](#input\_func\_pool\_autoscaling) | Enable autoscaling of the Pulsar Functions pool. Defaults to "true". | `bool` | `true` | no |
