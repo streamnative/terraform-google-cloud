@@ -17,19 +17,29 @@
 # under the License.
 #
 
-module "external_dns_sa" {
-  source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version = "20.0.0"
+data "google_service_account" "preexisting" {
+  account_id   = var.google_service_account
+}
+
+module "external_dns_workload_identity" {
+  count           = var.enable_external_dns ? 1 : 0
+  source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
+  version             = "20.0.0"
+
+  use_existing_gcp_sa = true
+  name                = google_service_account.preexisting.account_id
+  project_id          = var.project_id
 
   use_existing_k8s_sa = true
   annotate_k8s_sa     = false
   k8s_sa_name         = "external-dns"
+  namespace           = "kube-system"
   location            = var.region
   cluster_name        = module.gke.name
-  name                = format("external-dns-%s", var.suffix)
-  namespace           = "kube-system"
-  project_id          = var.project_id
-  roles               = ["roles/dns.admin"]
+
+  # wait for the custom GSA to be created to force module data source read during apply
+  # https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/issues/1059
+  depends_on = [google_service_account.preexisting]
 }
 
 locals {
@@ -65,7 +75,7 @@ resource "helm_release" "external_dns" {
       create = true
       name   = "external-dns"
       annotations = {
-        "iam.gke.io/gcp-service-account" = module.external_dns_sa.gcp_service_account_email
+        "iam.gke.io/gcp-service-account" = google_service_account.preexisting.account_id
       }
     }
     sources    = local.sources

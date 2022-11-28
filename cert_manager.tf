@@ -17,19 +17,25 @@
 # under the License.
 #
 
+data "google_service_account" "preexisting" {
+  account_id   = var.google_service_account
+}
+
 module "cert_manager_sa" {
+  count           = var.enable_cert_manager ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
+
+  use_existing_gcp_sa = true
+  name                = google_service_account.preexisting.account_id
+  project_id          = var.project_id
 
   use_existing_k8s_sa = true
   annotate_k8s_sa     = false
   k8s_sa_name         = "cert-manager-controller"
+  namespace           = "kube-system"
   location            = var.region
   cluster_name        = module.gke.name
-  name                = format("cert-manager-%s", var.suffix)
-  namespace           = "kube-system"
-  project_id          = var.project_id
-  roles               = ["roles/dns.admin"]
 }
 
 resource "helm_release" "cert_manager" {
@@ -50,7 +56,7 @@ resource "helm_release" "cert_manager" {
       ]
       serviceAccount = {
         annotations = {
-          "iam.gke.io/gcp-service-account" = module.cert_manager_sa.gcp_service_account_email
+          "iam.gke.io/gcp-service-account" = google_service_account.preexisting.account_id
         }
       }
       podSecurityContext = {
