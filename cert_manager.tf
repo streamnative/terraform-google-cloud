@@ -23,7 +23,7 @@ module "cert_manager_sa" {
   version = "20.0.0"
 
   use_existing_gcp_sa = true
-  name                = google_service_account.preexisting.account_id
+  name                = var.google_service_account
   project_id          = var.project_id
 
   use_existing_k8s_sa = true
@@ -52,7 +52,7 @@ resource "helm_release" "cert_manager" {
       ]
       serviceAccount = {
         annotations = {
-          "iam.gke.io/gcp-service-account" = google_service_account.preexisting.account_id
+          "iam.gke.io/gcp-service-account" = var.google_service_account
         }
       }
       podSecurityContext = {

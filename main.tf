@@ -19,10 +19,6 @@
 
 data "google_compute_zones" "available" {}
 
-data "google_service_account" "preexisting" {
-  account_id   = var.google_service_account
-}
-
 locals {
 
   ### Node Pools
