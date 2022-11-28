@@ -17,12 +17,8 @@
 # under the License.
 #
 
-data "google_service_account" "preexisting" {
-  account_id   = var.google_service_account
-}
-
 module "external_dns_workload_identity" {
-  count           = var.enable_external_dns ? 1 : 0
+  count               = var.enable_external_dns ? 1 : 0
   source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version             = "20.0.0"
 

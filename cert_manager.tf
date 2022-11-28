@@ -17,12 +17,8 @@
 # under the License.
 #
 
-data "google_service_account" "preexisting" {
-  account_id   = var.google_service_account
-}
-
 module "cert_manager_sa" {
-  count           = var.enable_cert_manager ? 1 : 0
+  count   = var.enable_cert_manager ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
 
