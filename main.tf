@@ -107,6 +107,8 @@ module "gke" {
   name    = var.cluster_name
   version = "19.0.0"
 
+  create_service_account            = false
+  service_account                   = var.google_service_account
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
   add_shadow_firewall_rules         = var.add_shadow_firewall_rules
