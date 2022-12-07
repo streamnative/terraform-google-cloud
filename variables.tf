@@ -29,8 +29,8 @@ variable "cert_manager_helm_chart_name" {
 }
 
 variable "cert_manager_helm_chart_version" {
-  default     = "1.10.1"
-  description = "The version of the Cert Manager helm chart to install. Defaults to \"1.10.1\"."
+  default     = "0.8.9"
+  description = "The version of the Cert Manager helm chart to install. Defaults to \"0.8.9\"."
   type        = string
 }
 
