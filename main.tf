@@ -100,6 +100,10 @@ locals {
       },
     ]
   }
+
+  node_pools_tags = {
+    all = ["internet"]
+  }
 }
 
 module "gke" {
@@ -129,6 +133,7 @@ module "gke" {
   node_pools_metadata               = local.node_pools_metadata
   node_pools_oauth_scopes           = local.node_pools_oauth_scopes
   node_pools_taints                 = local.node_pools_taints
+  node_pools_tags                   = local.node_pools_tags
   project_id                        = var.project_id
   region                            = var.region
   remove_default_node_pool          = true

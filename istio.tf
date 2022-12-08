@@ -77,4 +77,7 @@ resource "kubernetes_resource_quota" "istio_critical_pods" {
       }
     }
   }
+  depends_on = [
+    module.istio
+  ]
 }
