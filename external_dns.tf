@@ -17,23 +17,23 @@
 # under the License.
 #
 
-module "external_dns_workload_identity" {
-  count               = var.enable_external_dns ? 1 : 0
-  source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
-  version             = "20.0.0"
+# module "external_dns_workload_identity" {
+#   count               = var.enable_external_dns ? 1 : 0
+#   source              = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
+#   version             = "20.0.0"
 
-  use_existing_gcp_sa = true
-  name                = var.google_service_account
-  gcp_sa_name         = var.google_service_account
-  project_id          = var.project_id
+#   use_existing_gcp_sa = true
+#   name                = var.google_service_account
+#   gcp_sa_name         = var.google_service_account
+#   project_id          = var.project_id
 
-  use_existing_k8s_sa = true
-  annotate_k8s_sa     = false
-  k8s_sa_name         = "external-dns"
-  namespace           = "kube-system"
-  location            = var.region
-  cluster_name        = module.gke.name
-}
+#   use_existing_k8s_sa = true
+#   annotate_k8s_sa     = false
+#   k8s_sa_name         = "external-dns"
+#   namespace           = "kube-system"
+#   location            = var.region
+#   cluster_name        = module.gke.name
+# }
 
 locals {
   default_sources = ["service", "ingress"]
