@@ -46,7 +46,17 @@ resource "helm_release" "cert_manager" {
   timeout         = 300
   version         = var.cert_manager_helm_chart_version
   values = [yamlencode({
+    // Common configuration
+    kubeVersion = var.kubernetes_version
     installCRDs = true
+    // Jetstack/cert-manager configuration
+    serviceAccount = {
+      annotations = {
+        "iam.gke.io/gcp-service-account" = var.google_service_account
+      }
+    }
+    extraArgs: ["--issuer-ambient-credentials=true"]
+    // bitnami/cert-manager configuration
     controller = {
       args = [
         "--issuer-ambient-credentials=true"
@@ -60,8 +70,6 @@ resource "helm_release" "cert_manager" {
         fsGroup = 65534
       }
     }
-    kubeVersion = var.kubernetes_version
-
   })]
   dynamic "set" {
     for_each = var.cert_manager_settings
