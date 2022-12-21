@@ -116,7 +116,6 @@ module "gke" {
   ip_range_services                 = var.secondary_ip_range_services
   kubernetes_version                = var.kubernetes_version
   logging_service                   = var.logging_service
-  logging_enabled_components        = ["APISERVER", "CONTROLLER_MANAGER", "SCHEDULER", "SYSTEM_COMPONENTS"] # exclude "WORKLOADS"
   maintenance_exclusions            = var.maintenance_exclusions
   maintenance_start_time            = var.maintenance_window
   master_authorized_networks        = var.master_authorized_networks
