@@ -319,6 +319,12 @@ variable "maintenance_window" {
   type        = string
 }
 
+variable "max_pods_per_node" {
+  description = "the number of pods per node, defaults to GKE default of 110, but in smaller CIDRs we want to tune this"
+  type        = number
+  default     = 110
+}
+
 variable "master_authorized_networks" {
   default     = []
   description = "A list of objects used to define authorized networks. If none are provided, the default is to disallow external access. See the parent module for more details. https://registry.terraform.io/modules/terraform-google-modules/kubernetes-engine/google/latest"
@@ -421,6 +427,7 @@ variable "node_pool_version" {
   type        = string
 }
 
+
 variable "project_id" {
   description = "The project ID to use for the cluster. Defaults to the current GCP project."
   type        = string
@@ -504,6 +511,6 @@ variable "master_ipv4_cidr_block" {
 }
 
 variable "google_service_account" {
-   type        = string
-   description = "The Google Service Account for provisioning cloud environment(e.g. GKE)"
+  type        = string
+  description = "The Google Service Account for provisioning cloud environment(e.g. GKE)"
 }

@@ -117,6 +117,7 @@ module "gke" {
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
   add_shadow_firewall_rules         = var.add_shadow_firewall_rules
   cluster_autoscaling               = var.cluster_autoscaling_config
+  default_max_pods_per_node         = var.max_pods_per_node
   http_load_balancing               = var.cluster_http_load_balancing
   ip_range_pods                     = var.secondary_ip_range_pods
   ip_range_services                 = var.secondary_ip_range_services

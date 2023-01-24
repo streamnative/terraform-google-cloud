@@ -55,7 +55,7 @@ resource "helm_release" "cert_manager" {
         "iam.gke.io/gcp-service-account" = var.google_service_account
       }
     }
-    extraArgs: ["--issuer-ambient-credentials=true"]
+    extraArgs : ["--issuer-ambient-credentials=true"]
     // bitnami/cert-manager configuration
     controller = {
       args = [
