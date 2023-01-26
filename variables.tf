@@ -90,6 +90,12 @@ variable "create_service_account" {
   type        = bool
 }
 
+variable "default_max_pods_per_node" {
+  description = "the number of pods per node, defaults to GKE default of 110, but in smaller CIDRs we want to tune this"
+  type        = number
+  default     = 110
+}
+
 variable "enable_cert_manager" {
   default     = true
   description = "Enables the Cert-Manager addon service on the cluster. Defaults to \"true\", and in most situations is required by StreamNative Cloud."
@@ -223,6 +229,12 @@ variable "func_pool_machine_type" {
   type        = string
 }
 
+variable "func_pool_max_pods_per_node" {
+  description = "the number of pods per node"
+  type        = number
+  default     = 110
+}
+
 variable "func_pool_name" {
   default     = "func-pool"
   description = "The name of the Pulsar Functions pool. Defaults to \"default-node-pool\"."
@@ -319,11 +331,6 @@ variable "maintenance_window" {
   type        = string
 }
 
-variable "max_pods_per_node" {
-  description = "the number of pods per node, defaults to GKE default of 110, but in smaller CIDRs we want to tune this"
-  type        = number
-  default     = 110
-}
 
 variable "master_authorized_networks" {
   default     = []
@@ -401,6 +408,12 @@ variable "node_pool_machine_type" {
   default     = "n2-standard-8"
   description = "The machine type to use for worker nodes in the default node pool. Defaults to \"n2-standard-8\"."
   type        = string
+}
+
+variable "node_pool_max_pods_per_node" {
+  description = "the number of pods per node"
+  type        = number
+  default     = 110
 }
 
 variable "node_pool_name" {

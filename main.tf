@@ -32,6 +32,7 @@ locals {
     initial_node_count = var.node_pool_autoscaling_initial_count
     local_ssd_count    = var.node_pool_ssd_count
     machine_type       = var.node_pool_machine_type
+    max_pods_per_node  = var.node_pool_max_pods_per_node
     max_count          = var.node_pool_autoscaling_max_size
     min_count          = var.node_pool_autoscaling_min_size
     name               = var.node_pool_name
@@ -50,6 +51,7 @@ locals {
     initial_node_count = var.func_pool_autoscaling_initial_count
     local_ssd_count    = var.func_pool_ssd_count
     machine_type       = var.func_pool_machine_type
+    max_pods_per_node  = var.func_pool_max_pods_per_node
     max_count          = var.func_pool_autoscaling_max_size
     min_count          = var.func_pool_autoscaling_min_size
     name               = var.func_pool_name
@@ -117,7 +119,7 @@ module "gke" {
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
   add_shadow_firewall_rules         = var.add_shadow_firewall_rules
   cluster_autoscaling               = var.cluster_autoscaling_config
-  default_max_pods_per_node         = var.max_pods_per_node
+  default_max_pods_per_node         = var.default_max_pods_per_node
   http_load_balancing               = var.cluster_http_load_balancing
   ip_range_pods                     = var.secondary_ip_range_pods
   ip_range_services                 = var.secondary_ip_range_services
