@@ -34,7 +34,7 @@ module "istio" {
   enable_istio_operator = true
   enable_kiali_operator = true
 
-  istio_cluster_name              = module.gke.name
+  istio_cluster_name              = local.gke_cluster_name
   istio_network                   = var.istio_network
   istio_profile                   = var.istio_profile
   istio_revision_tag              = var.istio_revision_tag

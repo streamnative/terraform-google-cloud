@@ -25,7 +25,7 @@ module "cert_manager_sa" {
   annotate_k8s_sa     = false
   k8s_sa_name         = "cert-manager-controller"
   location            = var.region
-  cluster_name        = module.gke.name
+  cluster_name        = local.gke_cluster_name
   name                = format("cert-manager-%s", var.suffix)
   namespace           = "kube-system"
   project_id          = var.project_id

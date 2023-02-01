@@ -25,7 +25,7 @@ module "external_secrets_sa" {
   annotate_k8s_sa     = false
   k8s_sa_name         = "external-secrets"
   location            = var.region
-  cluster_name        = module.gke.name
+  cluster_name        = local.gke_cluster_name
   name                = format("external-secrets-%s", var.suffix)
   namespace           = "kube-system"
   project_id          = var.project_id

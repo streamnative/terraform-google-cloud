@@ -1,25 +1,25 @@
 output "ca_certificate" {
-  value = module.gke.ca_certificate
+  value = var.autopilot == false ? module.gke[0].ca_certificate : module.gke_autopilot[0].ca_certificate
 }
 
 output "endpoint" {
-  value = module.gke.endpoint
+  value = var.autopilot == false ? module.gke[0].endpoint : module.gke_autopilot[0].endpoint
 }
 
 output "id" {
-  value = module.gke.cluster_id
+  value = var.autopilot == false ? module.gke[0].cluster_id : module.gke_autopilot[0].cluster_id
 }
 
 output "name" {
-  value = module.gke.name
+  value = local.gke_cluster_name
 }
 
 output "master_version" {
-  value = module.gke.master_version
+  value = var.autopilot == false ? module.gke[0].master_version : module.gke_autopilot[0].master_version
 }
 
 output "service_account" {
-  value = module.gke.service_account
+  value = var.autopilot == false ? module.gke[0].service_account : module.gke_autopilot[0].service_account
 }
 
 output "cert_manager_sa_email" {

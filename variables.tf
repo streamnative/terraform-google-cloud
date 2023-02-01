@@ -340,7 +340,13 @@ variable "logging_service" {
 variable "maintenance_exclusions" {
   default     = []
   description = "A list of objects used to define exceptions to the maintenance window, when non-emergency maintenance should not occur. Can have up to three exclusions. Refer to the offical Terraform docs on the \"google_container_cluster\" resource for object schema."
-  type        = list(object({ name = string, start_time = string, end_time = string }))
+  type        = list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string }))
+}
+
+variable "autopilot" {
+  default     = false
+  description = "Enable Autopilot mode for the cluster. Defaults to \"false\"."
+  type        = bool
 }
 
 variable "maintenance_window" {
