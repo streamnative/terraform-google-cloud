@@ -109,7 +109,7 @@ module "gke_autopilot" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-public-cluster"
   version = "24.1.0"
   name    = var.cluster_name
-  #enable_vertical_pod_autoscaling = true
+  enable_vertical_pod_autoscaling = true
 
   create_service_account = false
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
