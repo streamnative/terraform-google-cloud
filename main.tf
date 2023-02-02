@@ -101,6 +101,7 @@ locals {
     ]
   }
 
+  gke_module_in_use = var.autopilot ? module.gke_autopilot[0] : module.gke[0]
   gke_cluster_name = var.autopilot ? module.gke_autopilot[0].name : module.gke[0].name
 }
 
@@ -172,6 +173,15 @@ module "gke" {
   subnetwork                        = var.vpc_subnet
 }
 
+# google_client_config and kubernetes provider must be explicitly specified like the following.
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  host                   = "https://${local.gke_module_in_use.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(local.gke_module_in_use.ca_certificate)
+}
+
 resource "kubernetes_namespace" "sn_system" {
   metadata {
     name = "sn-system"
@@ -182,7 +192,7 @@ resource "kubernetes_namespace" "sn_system" {
     }
   }
   depends_on = [
-    module.gke
+    local.gke_module_in_use
   ]
 }
 
@@ -202,7 +212,7 @@ resource "kubernetes_storage_class" "sn_default" {
   volume_binding_mode    = "WaitForFirstConsumer"
 
   depends_on = [
-    module.gke
+    local.gke_module_in_use
   ]
 }
 
@@ -222,6 +232,6 @@ resource "kubernetes_storage_class" "sn_ssd" {
   volume_binding_mode    = "WaitForFirstConsumer"
 
   depends_on = [
-    module.gke
+    local.gke_module_in_use
   ]
 }
