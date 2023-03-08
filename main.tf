@@ -121,17 +121,22 @@ module "gke" {
   master_authorized_networks        = var.master_authorized_networks
   network                           = var.vpc_network
   network_project_id                = var.network_project_id
-  network_policy                    = var.cluster_network_policy
-  node_pools                        = local.node_pools
-  node_pools_labels                 = local.node_pools_labels
-  node_pools_metadata               = local.node_pools_metadata
-  node_pools_oauth_scopes           = local.node_pools_oauth_scopes
-  node_pools_taints                 = local.node_pools_taints
-  project_id                        = var.project_id
-  region                            = var.region
-  remove_default_node_pool          = true
-  release_channel                   = var.release_channel
-  subnetwork                        = var.vpc_subnet
+
+  # Enabled Dataplane V2 which enables Cilium as the network policy provider
+  network_policy          = var.enable_dataplane_v2 ? false : var.cluster_network_policy
+  network_policy_provider = var.enable_dataplane_v2 ? "PROVIDER_UNSPECIFIED" : "CALICO"
+  datapath_provider       = var.enable_dataplane_v2 ? "ADVANCED_DATAPATH" : "DATAPATH_PROVIDER_UNSPECIFIED"
+
+  node_pools               = local.node_pools
+  node_pools_labels        = local.node_pools_labels
+  node_pools_metadata      = local.node_pools_metadata
+  node_pools_oauth_scopes  = local.node_pools_oauth_scopes
+  node_pools_taints        = local.node_pools_taints
+  project_id               = var.project_id
+  region                   = var.region
+  remove_default_node_pool = true
+  release_channel          = var.release_channel
+  subnetwork               = var.vpc_subnet
 }
 
 resource "kubernetes_namespace" "sn_system" {

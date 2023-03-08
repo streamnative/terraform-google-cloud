@@ -78,9 +78,15 @@ variable "cluster_name" {
   type        = string
 }
 
+variable "enable_dataplane_v2" {
+  default     = false
+  description = "Enable the dataplane v2 feature for the cluster. Defaults to \"false\""
+  type        = bool
+}
+
 variable "cluster_network_policy" {
   default     = true
-  description = "Enable the network policy addon for the cluster. Defaults to \"true\", and uses CALICO as the provider"
+  description = "Enable the network policy addon for the cluster. Defaults to \"true\", and uses CALICO as the provider. Ignored if enable_data_plane_v2 is set to true."
   type        = bool
 }
 
