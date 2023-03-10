@@ -93,7 +93,7 @@ variable "cluster_name" {
 }
 
 variable "cluster_network_policy" {
-  default     = true
+  default     = false
   description = "Enable the network policy addon for the cluster. Defaults to \"true\", and uses CALICO as the provider"
   type        = bool
 }

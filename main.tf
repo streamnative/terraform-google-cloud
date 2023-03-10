@@ -77,7 +77,13 @@ locals {
   }
 
   node_pools_taints = {
-    all = []
+    all = [
+      {
+        key    = "node.cilium.io/agent-not-ready"
+        value  = true
+        effect = "NO_EXECUTE"
+      }
+    ]
 
     default-node-pool = [
       {
@@ -116,7 +122,7 @@ module "gke" {
   master_authorized_networks        = var.master_authorized_networks
   network                           = var.vpc_network
   network_project_id                = var.network_project_id
-  network_policy                    = var.cluster_network_policy
+  network_policy                    = false
   node_pools                        = local.node_pools
   node_pools_labels                 = local.node_pools_labels
   node_pools_metadata               = local.node_pools_metadata
