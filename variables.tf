@@ -133,7 +133,7 @@ variable "external_dns_helm_chart_repository" {
 }
 
 variable "external_dns_helm_chart_version" {
-  default     = "6.1.8"
+  default     = "6.14.2"
   description = "Helm chart version for ExternalDNS. See https://github.com/bitnami/charts/tree/master/bitnami/external-dns for updates."
   type        = string
 }
