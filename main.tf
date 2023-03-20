@@ -167,7 +167,7 @@ resource "kubernetes_storage_class" "sn_default" {
       "addonmanager.kubernetes.io/mode" = "EnsureExists"
     }
   }
-  storage_provisioner = "kubernetes.io/gce-pd"
+  storage_provisioner = "pd.csi.storage.gke.io"
   parameters = {
     type = "pd-ssd"
   }
@@ -187,7 +187,7 @@ resource "kubernetes_storage_class" "sn_ssd" {
       "addonmanager.kubernetes.io/mode" = "EnsureExists"
     }
   }
-  storage_provisioner = "kubernetes.io/gce-pd"
+  storage_provisioner = "pd.csi.storage.gke.io"
   parameters = {
     type = "pd-ssd"
   }
