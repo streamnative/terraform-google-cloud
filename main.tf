@@ -169,7 +169,7 @@ resource "kubernetes_storage_class" "sn_default" {
   }
   storage_provisioner = "kubernetes.io/gce-pd"
   parameters = {
-    type = "pd-standard"
+    type = "pd-ssd"
   }
   reclaim_policy         = "Delete"
   allow_volume_expansion = true
