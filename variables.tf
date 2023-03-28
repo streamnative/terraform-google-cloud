@@ -487,7 +487,7 @@ variable "service_domain" {
 
 variable "suffix" {
   default     = ""
-  description = "A unique string that is used to distinguish cluster resources, where name legnth constraints are imposed by GKE. Defaults to an empty string."
+  description = "A unique string that is used to distinguish cluster resources, where name length constraints are imposed by GKE. Defaults to an empty string."
   type        = string
   validation {
     condition     = length(var.suffix) < 12
