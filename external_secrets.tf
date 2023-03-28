@@ -26,7 +26,7 @@ module "external_secrets_sa" {
   k8s_sa_name         = "external-secrets"
   location            = var.region
   cluster_name        = module.gke.name
-  name                = format("external-secrets-%s", var.suffix)
+  name                = format("external-secrets%s", var.suffix != "" ? "-${var.suffix}" : "")
   namespace           = "kube-system"
   project_id          = var.project_id
   roles               = ["roles/secretmanager.secretAccessor"]
