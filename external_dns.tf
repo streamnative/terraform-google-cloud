@@ -26,7 +26,7 @@ module "external_dns_sa" {
   k8s_sa_name         = "external-dns"
   location            = var.region
   cluster_name        = module.gke.name
-  name                = format("external-dns%s", var.suffix != "" ? "-${var.suffix}" : "")
+  name                = "external-dns%{if var.suffix != ""}-${var.suffix}%{endif}"
   namespace           = "kube-system"
   project_id          = var.project_id
   roles               = ["roles/dns.admin"]
