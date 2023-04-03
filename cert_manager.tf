@@ -26,7 +26,7 @@ module "cert_manager_sa" {
   k8s_sa_name         = "cert-manager-controller"
   location            = var.region
   cluster_name        = module.gke.name
-  name                = format("cert-manager%s", var.suffix != "" ? "-${var.suffix}" : "")
+  name                = "cert-manager%{if var.suffix != ""}-${var.suffix}%{endif}"
   namespace           = "kube-system"
   project_id          = var.project_id
   roles               = ["roles/dns.admin"]
