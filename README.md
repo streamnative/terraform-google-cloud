@@ -15,18 +15,18 @@ tf apply
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.0.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~>4.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 4.0 |
 | <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | ~> 4.3 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 2.2.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >=2.8.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.2 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.8 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~>4.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.2.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >=2.8.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | ~> 4.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | ~> 2.2 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | ~> 2.8 |
 
 ## Modules
 
@@ -42,10 +42,10 @@ tf apply
 
 | Name | Type |
 |------|------|
-| [helm_release.cert_issuer](https://registry.terraform.io/providers/hashicorp/helm/2.2.0/docs/resources/release) | resource |
-| [helm_release.cert_manager](https://registry.terraform.io/providers/hashicorp/helm/2.2.0/docs/resources/release) | resource |
-| [helm_release.external_dns](https://registry.terraform.io/providers/hashicorp/helm/2.2.0/docs/resources/release) | resource |
-| [helm_release.external_secrets](https://registry.terraform.io/providers/hashicorp/helm/2.2.0/docs/resources/release) | resource |
+| [helm_release.cert_issuer](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.cert_manager](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.external_dns](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.external_secrets](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_namespace.sn_system](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_resource_quota.istio_critical_pods](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/resource_quota) | resource |
 | [kubernetes_storage_class.sn_default](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class) | resource |
@@ -61,8 +61,8 @@ tf apply
 | <a name="input_add_shadow_firewall_rules"></a> [add\_shadow\_firewall\_rules](#input\_add\_shadow\_firewall\_rules) | Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled). | `bool` | `false` | no |
 | <a name="input_cert_issuer_support_email"></a> [cert\_issuer\_support\_email](#input\_cert\_issuer\_support\_email) | The email address to receive notifications from the cert issuer. | `string` | `"certs-support@streamnative.io"` | no |
 | <a name="input_cert_manager_helm_chart_name"></a> [cert\_manager\_helm\_chart\_name](#input\_cert\_manager\_helm\_chart\_name) | The name of the Cert Manager Helm chart to be used. | `string` | `"cert-manager"` | no |
-| <a name="input_cert_manager_helm_chart_repository"></a> [cert\_manager\_helm\_chart\_repository](#input\_cert\_manager\_helm\_chart\_repository) | The location of the helm chart to use for Cert Manager. | `string` | `"https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami"` | no |
-| <a name="input_cert_manager_helm_chart_version"></a> [cert\_manager\_helm\_chart\_version](#input\_cert\_manager\_helm\_chart\_version) | The version of the Cert Manager helm chart to install. Defaults to "0.1.10". | `string` | `"0.1.27"` | no |
+| <a name="input_cert_manager_helm_chart_repository"></a> [cert\_manager\_helm\_chart\_repository](#input\_cert\_manager\_helm\_chart\_repository) | The location of the helm chart to use for Cert Manager. | `string` | `"https://charts.bitnami.com/bitnami"` | no |
+| <a name="input_cert_manager_helm_chart_version"></a> [cert\_manager\_helm\_chart\_version](#input\_cert\_manager\_helm\_chart\_version) | The version of the Cert Manager helm chart to install. Defaults to "0.7.8". | `string` | `"0.7.8"` | no |
 | <a name="input_cert_manager_settings"></a> [cert\_manager\_settings](#input\_cert\_manager\_settings) | Additional settings which will be passed to the Helm chart values. See https://github.com/bitnami/charts/tree/master/bitnami/cert-manager for detailed options. | `map(any)` | `{}` | no |
 | <a name="input_cluster_autoscaling_config"></a> [cluster\_autoscaling\_config](#input\_cluster\_autoscaling\_config) | Cluster autoscaling configuration for node auto-provisioning. This is disabled for our configuration, since we typically want to scale existing node pools rather than add new ones to the cluster | <pre>object({<br>    enabled       = bool<br>    min_cpu_cores = number<br>    max_cpu_cores = number<br>    min_memory_gb = number<br>    max_memory_gb = number<br>    gpu_resources = list(object({ resource_type = string, minimum = number, maximum = number }))<br>  })</pre> | <pre>{<br>  "enabled": false,<br>  "gpu_resources": [],<br>  "max_cpu_cores": null,<br>  "max_memory_gb": null,<br>  "min_cpu_cores": null,<br>  "min_memory_gb": null<br>}</pre> | no |
 | <a name="input_cluster_http_load_balancing"></a> [cluster\_http\_load\_balancing](#input\_cluster\_http\_load\_balancing) | Enable the HTTP load balancing addon for the cluster. Defaults to "true" | `bool` | `true` | no |
@@ -76,7 +76,7 @@ tf apply
 | <a name="input_enable_istio"></a> [enable\_istio](#input\_enable\_istio) | Enables Istio on the cluster. Set to "false" by default. | `bool` | `false` | no |
 | <a name="input_external_dns_helm_chart_name"></a> [external\_dns\_helm\_chart\_name](#input\_external\_dns\_helm\_chart\_name) | The name of the Helm chart in the repository for ExternalDNS. | `string` | `"external-dns"` | no |
 | <a name="input_external_dns_helm_chart_repository"></a> [external\_dns\_helm\_chart\_repository](#input\_external\_dns\_helm\_chart\_repository) | The repository containing the ExternalDNS helm chart. | `string` | `"https://charts.bitnami.com/bitnami"` | no |
-| <a name="input_external_dns_helm_chart_version"></a> [external\_dns\_helm\_chart\_version](#input\_external\_dns\_helm\_chart\_version) | Helm chart version for ExternalDNS. See https://github.com/bitnami/charts/tree/master/bitnami/external-dns for updates. | `string` | `"6.1.8"` | no |
+| <a name="input_external_dns_helm_chart_version"></a> [external\_dns\_helm\_chart\_version](#input\_external\_dns\_helm\_chart\_version) | Helm chart version for ExternalDNS. See https://github.com/bitnami/charts/tree/master/bitnami/external-dns for updates. | `string` | `"6.15.0"` | no |
 | <a name="input_external_dns_policy"></a> [external\_dns\_policy](#input\_external\_dns\_policy) | Sets how DNS records are managed by ExternalDNS. Options are "sync", which allows ExternalDNS to create and delete records, or "upsert\_only", which only allows for the creation of records | `string` | `"upsert-only"` | no |
 | <a name="input_external_dns_settings"></a> [external\_dns\_settings](#input\_external\_dns\_settings) | Additional settings which will be passed to the Helm chart values, see https://github.com/bitnami/charts/tree/master/bitnami/external-dns for detailed options. | `map(any)` | `{}` | no |
 | <a name="input_external_dns_version"></a> [external\_dns\_version](#input\_external\_dns\_version) | The version of the ExternalDNS helm chart to install. Defaults to "5.2.2". | `string` | `"5.2.2"` | no |
@@ -103,6 +103,7 @@ tf apply
 | <a name="input_horizontal_pod_autoscaling"></a> [horizontal\_pod\_autoscaling](#input\_horizontal\_pod\_autoscaling) | Enable horizontal pod autoscaling for the cluster. Defaults to "true". | `bool` | `true` | no |
 | <a name="input_istio_mesh_id"></a> [istio\_mesh\_id](#input\_istio\_mesh\_id) | The ID used by the Istio mesh. This is also the ID of the StreamNative Cloud Pool used for the workload environments. This is required when "enable\_istio\_operator" is set to "true". | `string` | `null` | no |
 | <a name="input_istio_network"></a> [istio\_network](#input\_istio\_network) | The name of network used for the Istio deployment. This is required when "enable\_istio\_operator" is set to "true". | `string` | `"default"` | no |
+| <a name="input_istio_network_loadbalancer"></a> [istio\_network\_loadbalancer](#input\_istio\_network\_loadbalancer) | n/a | `string` | `"internet_facing"` | no |
 | <a name="input_istio_profile"></a> [istio\_profile](#input\_istio\_profile) | The path or name for an Istio profile to load. Set to the profile "default" if not specified. | `string` | `"default"` | no |
 | <a name="input_istio_revision_tag"></a> [istio\_revision\_tag](#input\_istio\_revision\_tag) | The revision tag value use for the Istio label "istio.io/rev". | `string` | `"sn-stable"` | no |
 | <a name="input_istio_settings"></a> [istio\_settings](#input\_istio\_settings) | Additional settings which will be passed to the Helm chart values | `map(any)` | `{}` | no |
@@ -136,7 +137,7 @@ tf apply
 | <a name="input_secondary_ip_range_pods"></a> [secondary\_ip\_range\_pods](#input\_secondary\_ip\_range\_pods) | The name of the secondary range to use for the pods in the cluster. If no secondary range for the pod network is provided, GKE will create a /14 CIDR within the subnetwork provided by the "vpc\_subnet" input | `string` | `null` | no |
 | <a name="input_secondary_ip_range_services"></a> [secondary\_ip\_range\_services](#input\_secondary\_ip\_range\_services) | The name of the secondary range to use for services in the cluster. If no secondary range for the services network is provided, GKE will create a /20 CIDR within the subnetwork provided by the "vpc\_subnet" input | `string` | `null` | no |
 | <a name="input_service_domain"></a> [service\_domain](#input\_service\_domain) | The DNS domain for external service endpoints. This must be set when enabling Istio or else the deployment will fail. | `string` | `null` | no |
-| <a name="input_suffix"></a> [suffix](#input\_suffix) | A unique string that is used to distinguish cluster resources, where name legnth constraints are imposed by GKE. Defaults to an empty string. | `string` | `""` | no |
+| <a name="input_suffix"></a> [suffix](#input\_suffix) | A unique string that is used to distinguish cluster resources, where name length constraints are imposed by GKE. Defaults to an empty string. | `string` | `""` | no |
 | <a name="input_vpc_network"></a> [vpc\_network](#input\_vpc\_network) | The name of the VPC network to use for the cluster. Can be set to "default" if the default VPC is enabled in the project | `string` | n/a | yes |
 | <a name="input_vpc_subnet"></a> [vpc\_subnet](#input\_vpc\_subnet) | The name of the VPC subnetwork to use by the cluster nodes. Can be set to "default" if the default VPC is enabled in the project, and GKE will choose the subnetwork based on the "region" input | `string` | n/a | yes |
 
@@ -145,7 +146,10 @@ tf apply
 | Name | Description |
 |------|-------------|
 | <a name="output_ca_certificate"></a> [ca\_certificate](#output\_ca\_certificate) | n/a |
+| <a name="output_cert_manager_sa_email"></a> [cert\_manager\_sa\_email](#output\_cert\_manager\_sa\_email) | n/a |
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | n/a |
+| <a name="output_external_dns_manager_sa_email"></a> [external\_dns\_manager\_sa\_email](#output\_external\_dns\_manager\_sa\_email) | n/a |
+| <a name="output_external_secrets_sa_email"></a> [external\_secrets\_sa\_email](#output\_external\_secrets\_sa\_email) | n/a |
 | <a name="output_id"></a> [id](#output\_id) | n/a |
 | <a name="output_master_version"></a> [master\_version](#output\_master\_version) | n/a |
 | <a name="output_name"></a> [name](#output\_name) | n/a |
