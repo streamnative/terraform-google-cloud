@@ -98,4 +98,11 @@ resource "helm_release" "cilium" {
       }
     }
   })]
+
+  lifecycle {
+    precondition {
+      condition = !var.enable_cilium || var.cluster_network_policy == false
+      error_message = "Cilium is incompatible with GKE built-in network policy"
+    }
+  }
 }
