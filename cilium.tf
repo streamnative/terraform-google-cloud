@@ -31,7 +31,7 @@ variable "cilium_helm_chart_repository" {
 }
 
 variable "cilium_helm_chart_version" {
-  default     = "1.13.1"
+  default     = "1.13.2"
   description = "Helm chart version for Cilium. See https://artifacthub.io/packages/helm/cilium/cilium for updates."
   type        = string
 }
@@ -62,7 +62,7 @@ resource "helm_release" "cilium" {
       nodeEncryption = false
     }
     gke = {
-      disableDefaultSnat = true
+      disableDefaultSnat = false
       enabled = true
     }
     hubble = {
