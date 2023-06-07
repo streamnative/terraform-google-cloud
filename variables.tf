@@ -104,6 +104,12 @@ variable "create_service_account" {
   type        = bool
 }
 
+variable "default_max_pods_per_node" {
+  description = "the number of pods per node, defaults to GKE default of 110, but in smaller CIDRs we want to tune this"
+  type        = number
+  default     = 110
+}
+
 variable "enable_cert_manager" {
   default     = true
   description = "Enables the Cert-Manager addon service on the cluster. Defaults to \"true\", and in most situations is required by StreamNative Cloud."
@@ -131,6 +137,18 @@ variable "enable_func_pool" {
 variable "enable_istio" {
   default     = false
   description = "Enables Istio on the cluster. Set to \"false\" by default."
+  type        = bool
+}
+
+
+variable "enable_private_gke" {
+  default     = false
+  description = "Enables private GKE cluster, where nodes are not publicly accessible. Defaults to \"false\"."
+  type        = bool
+}
+variable "enable_resource_creation" {
+  default     = true
+  description = "When enabled, all dependencies, like service accounts, buckets, etc will be created. When disabled, they will note. Use in combination with `enable_<app>` to manage these outside this module"
   type        = bool
 }
 
@@ -265,6 +283,12 @@ variable "func_pool_machine_type" {
   default     = "n2-standard-4"
   description = "The machine type to use for worker nodes in the Pulsar Functions pool. Defaults to \"n2-standard-4\"."
   type        = string
+}
+
+variable "func_pool_max_pods_per_node" {
+  description = "the number of pods per node"
+  type        = number
+  default     = 110
 }
 
 variable "func_pool_name" {
@@ -441,6 +465,12 @@ variable "node_pool_machine_type" {
   type        = string
 }
 
+variable "node_pool_max_pods_per_node" {
+  description = "the number of pods per node"
+  type        = number
+  default     = 110
+}
+
 variable "node_pool_name" {
   default     = "default-node-pool"
   description = "The name of the default node pool. Defaults to \"sn-node-pool\"."
@@ -509,6 +539,12 @@ variable "suffix" {
   }
 }
 
+variable "storage_class_default_ssd" {
+  default     = false
+  description = "determines if the default storage class should be with ssd"
+  type        = bool
+}
+
 variable "vpc_subnet" {
   description = "The name of the VPC subnetwork to use by the cluster nodes. Can be set to \"default\" if the default VPC is enabled in the project, and GKE will choose the subnetwork based on the \"region\" input"
   type        = string
@@ -533,4 +569,16 @@ variable "istio_network_loadbalancer" {
     condition     = contains(["internet_facing", "internal_only"], var.istio_network_loadbalancer)
     error_message = "Allowed values for input_parameter are \"internet_facing\" or \"internal_only\"."
   }
+}
+
+variable "enable_private_nodes" {
+  type        = bool
+  description = "Whether nodes have internal IP addresses only, only used for private clusters"
+  default     = true
+}
+
+variable "master_ipv4_cidr_block" {
+  type        = string
+  description = "The IP range in CIDR notation to use for the hosted master network. Only used for private clusters"
+  default     = "10.0.0.0/28"
 }

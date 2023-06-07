@@ -13,6 +13,7 @@
 # limitations under the License.
 
 module "cert_manager_sa" {
+  count   = var.enable_resource_creation ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
 
@@ -20,15 +21,20 @@ module "cert_manager_sa" {
   annotate_k8s_sa     = false
   k8s_sa_name         = "cert-manager-controller"
   location            = var.region
-  cluster_name        = module.gke.name
+  cluster_name        = local.cluster_name
   name                = "cert-manager%{if var.suffix != ""}-${var.suffix}%{endif}"
   namespace           = "kube-system"
   project_id          = var.project_id
   roles               = ["roles/dns.admin"]
 }
 
+moved {
+  from = module.cert_manager_sa
+  to   = module.cert_manager_sa[0]
+}
+
 resource "helm_release" "cert_manager" {
-  count           = var.enable_cert_manager ? 1 : 0
+  count           = (var.enable_resource_creation && var.enable_cert_manager) ? 1 : 0
   atomic          = true
   chart           = var.cert_manager_helm_chart_name
   cleanup_on_fail = true
@@ -45,7 +51,7 @@ resource "helm_release" "cert_manager" {
       ]
       serviceAccount = {
         annotations = {
-          "iam.gke.io/gcp-service-account" = module.cert_manager_sa.gcp_service_account_email
+          "iam.gke.io/gcp-service-account" = module.cert_manager_sa[0].gcp_service_account_email
         }
       }
       podSecurityContext = {
@@ -66,12 +72,12 @@ resource "helm_release" "cert_manager" {
 
 
 resource "helm_release" "cert_issuer" {
-  count           = var.enable_cert_manager ? 1 : 0
+  count           = (var.enable_resource_creation && var.enable_cert_manager) ? 1 : 0
   atomic          = true
   chart           = "${path.module}/charts/cert-issuer"
   cleanup_on_fail = true
   name            = "cert-issuer"
-  namespace       = kubernetes_namespace.sn_system.metadata[0].name
+  namespace       = kubernetes_namespace.sn_system[0].metadata[0].name
   timeout         = 300
 
   set {

@@ -27,6 +27,7 @@ locals {
     initial_node_count = var.node_pool_autoscaling_initial_count
     local_ssd_count    = var.node_pool_ssd_count
     machine_type       = var.node_pool_machine_type
+    max_pods_per_node  = var.node_pool_max_pods_per_node
     max_count          = var.node_pool_autoscaling_max_size
     min_count          = var.node_pool_autoscaling_min_size
     name               = var.node_pool_name
@@ -45,6 +46,7 @@ locals {
     initial_node_count = var.func_pool_autoscaling_initial_count
     local_ssd_count    = var.func_pool_ssd_count
     machine_type       = var.func_pool_machine_type
+    max_pods_per_node  = var.func_pool_max_pods_per_node
     max_count          = var.func_pool_autoscaling_max_size
     min_count          = var.func_pool_autoscaling_min_size
     name               = var.func_pool_name
@@ -106,6 +108,7 @@ locals {
 }
 
 module "gke" {
+  count   = var.enable_private_gke ? 0 : 1
   source  = "terraform-google-modules/kubernetes-engine/google"
   name    = var.cluster_name
   version = "19.0.0"
@@ -114,6 +117,7 @@ module "gke" {
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
   add_shadow_firewall_rules         = var.add_shadow_firewall_rules
   cluster_autoscaling               = var.cluster_autoscaling_config
+  default_max_pods_per_node         = var.default_max_pods_per_node
   http_load_balancing               = var.cluster_http_load_balancing
   ip_range_pods                     = var.secondary_ip_range_pods
   ip_range_services                 = var.secondary_ip_range_services
@@ -137,7 +141,54 @@ module "gke" {
   subnetwork                        = var.vpc_subnet
 }
 
+module "gke_private" {
+  count  = var.enable_private_gke ? 1 : 0
+  source = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
+
+  name    = var.cluster_name
+  version = "19.0.0"
+
+  add_cluster_firewall_rules        = var.add_cluster_firewall_rules
+  add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
+  add_shadow_firewall_rules         = var.add_shadow_firewall_rules
+  cluster_autoscaling               = var.cluster_autoscaling_config
+  default_max_pods_per_node         = var.default_max_pods_per_node
+  http_load_balancing               = var.cluster_http_load_balancing
+  ip_range_pods                     = var.secondary_ip_range_pods
+  ip_range_services                 = var.secondary_ip_range_services
+  kubernetes_version                = var.kubernetes_version
+  logging_service                   = var.logging_service
+  maintenance_exclusions            = var.maintenance_exclusions
+  maintenance_start_time            = var.maintenance_window
+  master_authorized_networks        = var.master_authorized_networks
+  network                           = var.vpc_network
+  network_project_id                = var.network_project_id
+  network_policy                    = var.cluster_network_policy
+  node_pools                        = local.node_pools
+  node_pools_labels                 = local.node_pools_labels
+  node_pools_metadata               = local.node_pools_metadata
+  node_pools_oauth_scopes           = local.node_pools_oauth_scopes
+  node_pools_taints                 = local.node_pools_taints
+  project_id                        = var.project_id
+  region                            = var.region
+  remove_default_node_pool          = true
+  release_channel                   = var.release_channel
+  subnetwork                        = var.vpc_subnet
+  enable_private_nodes              = var.enable_private_nodes
+  master_ipv4_cidr_block            = var.master_ipv4_cidr_block
+}
+
+moved {
+  from = module.gke
+  to   = module.gke[0]
+}
+
+locals {
+  cluster_name = try(module.gke[0].name, module.gke_private[0].name)
+}
+
 resource "kubernetes_namespace" "sn_system" {
+  count = var.enable_resource_creation ? 1 : 0
   metadata {
     name = "sn-system"
 
@@ -147,11 +198,17 @@ resource "kubernetes_namespace" "sn_system" {
     }
   }
   depends_on = [
-    module.gke
+    module.gke[0],
+    module.gke_private[0]
   ]
+}
+moved {
+  from = kubernetes_namespace.sn_system
+  to   = kubernetes_namespace.sn_system[0]
 }
 
 resource "kubernetes_storage_class" "sn_default" {
+  count = var.enable_resource_creation ? 1 : 0
   metadata {
     name = "sn-default"
     labels = {
@@ -160,18 +217,25 @@ resource "kubernetes_storage_class" "sn_default" {
   }
   storage_provisioner = "kubernetes.io/gce-pd"
   parameters = {
-    type = "pd-standard"
+    type = var.storage_class_default_ssd ? "pd-ssd" : "pd-standard"
   }
   reclaim_policy         = "Delete"
   allow_volume_expansion = true
   volume_binding_mode    = "WaitForFirstConsumer"
 
   depends_on = [
-    module.gke
+    module.gke[0],
+    module.gke_private[0]
   ]
 }
 
+moved {
+  from = kubernetes_storage_class.sn_default
+  to   = kubernetes_storage_class.sn_default[0]
+}
+
 resource "kubernetes_storage_class" "sn_ssd" {
+  count = var.enable_resource_creation ? 1 : 0
   metadata {
     name = "sn-ssd"
     labels = {
@@ -187,6 +251,12 @@ resource "kubernetes_storage_class" "sn_ssd" {
   volume_binding_mode    = "WaitForFirstConsumer"
 
   depends_on = [
-    module.gke
+    module.gke[0],
+    module.gke_private[0]
   ]
+}
+
+moved {
+  from = kubernetes_storage_class.sn_ssd
+  to   = kubernetes_storage_class.sn_ssd[0]
 }

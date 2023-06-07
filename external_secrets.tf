@@ -13,6 +13,7 @@
 # limitations under the License.
 
 module "external_secrets_sa" {
+  count   = var.enable_resource_creation ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
 
@@ -20,15 +21,20 @@ module "external_secrets_sa" {
   annotate_k8s_sa     = false
   k8s_sa_name         = "external-secrets"
   location            = var.region
-  cluster_name        = module.gke.name
+  cluster_name        = local.cluster_name
   name                = "external-secrets%{if var.suffix != ""}-${var.suffix}%{endif}"
   namespace           = "kube-system"
   project_id          = var.project_id
   roles               = ["roles/secretmanager.secretAccessor"]
 }
 
+moved {
+  from = module.external_secrets_sa
+  to   = module.external_secrets_sa[0]
+}
+
 resource "helm_release" "external_secrets" {
-  count           = var.enable_external_secrets ? 1 : 0
+  count           = (var.enable_resource_creation && var.enable_external_secrets) ? 1 : 0
   atomic          = true
   chart           = var.external_secrets_helm_chart_name
   cleanup_on_fail = true
@@ -43,7 +49,7 @@ resource "helm_release" "external_secrets" {
     }
     serviceAccount = {
       annotations = {
-        "iam.gke.io/gcp-service-account" = module.external_secrets_sa.gcp_service_account_email
+        "iam.gke.io/gcp-service-account" = module.external_secrets_sa[0].gcp_service_account_email
       }
       name = "external-secrets"
     }

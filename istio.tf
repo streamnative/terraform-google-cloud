@@ -17,20 +17,20 @@ locals {
     internet_facing = null,
     internal_only = {
       "networking.gke.io/load-balancer-type" = "Internal"
-      "networking.gke.io/internal-load-balancer-allow-global-access": "true"
+      "networking.gke.io/internal-load-balancer-allow-global-access" : "true"
     }
   }
 }
 
 module "istio" {
-  count = var.enable_istio ? 1 : 0
+  count = (var.enable_resource_creation && var.enable_istio) ? 1 : 0
 
   source = "github.com/streamnative/terraform-helm-charts//modules/istio-operator?ref=master"
 
   enable_istio_operator = true
   enable_kiali_operator = true
 
-  istio_cluster_name              = module.gke.name
+  istio_cluster_name              = local.cluster_name
   istio_network                   = var.istio_network
   istio_profile                   = var.istio_profile
   istio_revision_tag              = var.istio_revision_tag
@@ -46,9 +46,9 @@ module "istio" {
   istio_settings = merge({ "controlPlane.spec.components.cni.namespace" : "istio-system", "controlPlane.spec.values.cni.cniBinDir" : "/home/kubernetes/bin" }, var.istio_settings)
 
   istio_ingress_gateway_service_annotations = lookup(local.lb_annotations, var.istio_network_loadbalancer, local.lb_annotations.internet_facing)
-  kiali_gateway_hosts      = ["kiali.${var.service_domain}"]
-  kiali_gateway_tls_secret = "istio-ingressgateway-tls"
-  kiali_operator_settings  = var.kiali_operator_settings
+  kiali_gateway_hosts                       = ["kiali.${var.service_domain}"]
+  kiali_gateway_tls_secret                  = "istio-ingressgateway-tls"
+  kiali_operator_settings                   = var.kiali_operator_settings
 
   depends_on = [
     helm_release.cert_issuer
@@ -56,7 +56,7 @@ module "istio" {
 }
 
 resource "kubernetes_resource_quota" "istio_critical_pods" {
-  count = var.enable_istio ? 1 : 0
+  count = (var.enable_resource_creation && var.enable_istio) ? 1 : 0
   metadata {
     name      = "istio-critical-pods"
     namespace = "istio-system"
