@@ -47,7 +47,7 @@ resource "helm_release" "cert_manager" {
   version         = var.cert_manager_helm_chart_version
   values = [yamlencode({
     // Common configuration
-    kubeVersion = var.kubernetes_version
+    kubeVersion = var.raw_kubernetes_version
     installCRDs = true
     // Jetstack/cert-manager configuration
     serviceAccount = {

@@ -40,7 +40,9 @@ locals {
     node_locations     = var.node_pool_locations != "" ? var.node_pool_locations : ""
     service_account    = var.create_service_account ? "" : var.node_pool_service_account
     version            = var.node_pool_auto_upgrade ? null : var.node_pool_version
+    location_policy    = "BALANCED"
   }
+  extra_node_pool_with_defaults = [for np in var.extra_node_pools : merge(local.default_node_pool_config, np)]
   func_pool_config = {
     auto_repair        = var.func_pool_auto_repair
     auto_upgrade       = var.func_pool_auto_upgrade
@@ -60,7 +62,7 @@ locals {
     service_account    = var.create_service_account ? "" : var.func_pool_service_account
     version            = var.func_pool_auto_upgrade ? null : var.func_pool_version
   }
-  node_pools = var.enable_func_pool ? [local.default_node_pool_config, local.func_pool_config] : [local.default_node_pool_config]
+  node_pools = var.enable_func_pool ? concat([local.default_node_pool_config, local.func_pool_config], local.extra_node_pool_with_defaults) : concat([local.default_node_pool_config], local.extra_node_pool_with_defaults)
   node_pools_labels = {
     all = {
       cluster_name = var.cluster_name

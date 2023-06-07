@@ -120,6 +120,12 @@ variable "enable_istio" {
   type        = bool
 }
 
+variable "extra_node_pools" {
+  type        = list(any)
+  default     = []
+  description = "add an extra node pool"
+}
+
 variable "external_dns_helm_chart_name" {
   default     = "external-dns"
   description = "The name of the Helm chart in the repository for ExternalDNS."
@@ -310,6 +316,12 @@ variable "kiali_operator_settings" {
 variable "kubernetes_version" {
   default     = "latest"
   description = "The version of Kubernetes to use for the cluster. Defaults to \"latest\", which uses the latest available version for GKE in the region specified."
+  type        = string
+}
+
+variable "raw_kubernetes_version" {
+  default     = "latest"
+  description = "The generic kubernetes version to use, i.e. not the vendor version like `gke`. This is used by tools like cert_manager"
   type        = string
 }
 
