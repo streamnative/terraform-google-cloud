@@ -23,6 +23,7 @@ locals {
     autoscaling        = var.node_pool_autoscaling
     disk_size_gb       = var.node_pool_disk_size
     disk_type          = var.node_pool_disk_type
+    enable_secure_boot = var.node_pool_secure_boot
     image_type         = var.node_pool_image_type
     initial_node_count = var.node_pool_autoscaling_initial_count
     local_ssd_count    = var.node_pool_ssd_count
@@ -42,6 +43,7 @@ locals {
     autoscaling        = var.func_pool_autoscaling
     disk_size_gb       = var.func_pool_disk_size
     disk_type          = var.func_pool_disk_type
+    enable_secure_boot = var.node_pool_secure_boot
     image_type         = var.func_pool_image_type
     initial_node_count = var.func_pool_autoscaling_initial_count
     local_ssd_count    = var.func_pool_ssd_count
@@ -116,8 +118,10 @@ module "gke" {
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
   add_shadow_firewall_rules         = var.add_shadow_firewall_rules
+  authenticator_security_group      = var.authenticator_security_group
   cluster_autoscaling               = var.cluster_autoscaling_config
   default_max_pods_per_node         = var.default_max_pods_per_node
+  datapath_provider                 = var.datapath_provider
   http_load_balancing               = var.cluster_http_load_balancing
   ip_range_pods                     = var.secondary_ip_range_pods
   ip_range_services                 = var.secondary_ip_range_services
@@ -151,8 +155,10 @@ module "gke_private" {
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
   add_shadow_firewall_rules         = var.add_shadow_firewall_rules
+  authenticator_security_group      = var.authenticator_security_group
   cluster_autoscaling               = var.cluster_autoscaling_config
   default_max_pods_per_node         = var.default_max_pods_per_node
+  datapath_provider                 = var.datapath_provider
   http_load_balancing               = var.cluster_http_load_balancing
   ip_range_pods                     = var.secondary_ip_range_pods
   ip_range_services                 = var.secondary_ip_range_services
@@ -202,6 +208,7 @@ resource "kubernetes_namespace" "sn_system" {
     module.gke_private[0]
   ]
 }
+
 moved {
   from = kubernetes_namespace.sn_system
   to   = kubernetes_namespace.sn_system[0]

@@ -30,6 +30,12 @@ variable "add_shadow_firewall_rules" {
   type        = bool
 }
 
+variable "authenticator_security_group" {
+  default     = null
+  description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
+  type        = string
+}
+
 variable "cert_manager_helm_chart_repository" {
   default     = "https://charts.bitnami.com/bitnami"
   description = "The location of the helm chart to use for Cert Manager."
@@ -104,6 +110,12 @@ variable "create_service_account" {
   type        = bool
 }
 
+variable "datapath_provider" {
+  default     = "DATAPATH_PROVIDER_UNSPECIFIED"
+  description = "the datapath provider to use, in the future, the default of this should be ADVANCED_DATAPATH"
+  type        = string
+
+}
 variable "default_max_pods_per_node" {
   description = "the number of pods per node, defaults to GKE default of 110, but in smaller CIDRs we want to tune this"
   type        = number
@@ -475,6 +487,12 @@ variable "node_pool_name" {
   default     = "default-node-pool"
   description = "The name of the default node pool. Defaults to \"sn-node-pool\"."
   type        = string
+}
+
+variable "node_pool_secure_boot" {
+  default     = false
+  description = "enable the node pool secure boot setting"
+  type        = bool
 }
 
 variable "node_pool_service_account" {
