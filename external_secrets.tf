@@ -13,7 +13,7 @@
 # limitations under the License.
 
 module "external_secrets_sa" {
-  count   = var.enable_resource_creation ? 1 : 0
+  count   = var.enable_resource_creation && var.google_service_account == "" ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
 
@@ -49,7 +49,7 @@ resource "helm_release" "external_secrets" {
     }
     serviceAccount = {
       annotations = {
-        "iam.gke.io/gcp-service-account" = module.external_secrets_sa[0].gcp_service_account_email
+        "iam.gke.io/gcp-service-account" = var.google_service_account != "" ? var.google_service_account : module.external_secrets_sa[0].gcp_service_account_email
       }
       name = "external-secrets"
     }

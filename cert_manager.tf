@@ -13,7 +13,7 @@
 # limitations under the License.
 
 module "cert_manager_sa" {
-  count   = var.enable_resource_creation ? 1 : 0
+  count   = var.enable_resource_creation && var.google_service_account == "" ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
 
@@ -51,7 +51,7 @@ resource "helm_release" "cert_manager" {
       ]
       serviceAccount = {
         annotations = {
-          "iam.gke.io/gcp-service-account" = module.cert_manager_sa[0].gcp_service_account_email
+          "iam.gke.io/gcp-service-account" = var.google_service_account != "" ? var.google_service_account : module.cert_manager_sa[0].gcp_service_account_email
         }
       }
       podSecurityContext = {

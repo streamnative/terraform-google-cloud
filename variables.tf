@@ -228,7 +228,7 @@ variable "firewall_inbound_ports" {
   type        = list(string)
   description = "List of TCP ports for admission/webhook controllers. Either flag `add_master_webhook_firewall_rules` or `add_cluster_firewall_rules` (also adds egress rules) must be set to `true` for inbound-ports firewall rules to be applied."
   // we add 5443 for OLM
-  default     = ["5443", "8443", "9443", "15017"]
+  default = ["5443", "8443", "9443", "15017"]
 }
 
 variable "func_pool_autoscaling" {
@@ -331,6 +331,12 @@ variable "func_pool_ssd_count" {
 variable "func_pool_version" {
   default     = ""
   description = "The version of Kubernetes to use for the Pulsar Functions pool. If the input \"release_channel\" is not defined, defaults to \"kubernetes_version\" used for the cluster. Should only be defined while \"func_pool_auto_upgrade\" is also set to \"false\"."
+  type        = string
+}
+
+variable "google_service_account" {
+  default     = ""
+  description = "when set, don't create GSAs and instead use the this service account for all apps"
   type        = string
 }
 
