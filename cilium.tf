@@ -71,7 +71,7 @@ resource "helm_release" "cilium" {
     ipam = {
       mode = "kubernetes"
     }
-    ipv4NativeRoutingCIDR = var.secondary_ip_range_pods
+    ipv4NativeRoutingCIDR = var.secondary_ip_range_pods_cidr
     kubeProxyReplacement  = "disabled"
     logOptions = {
       format = "json"

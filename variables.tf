@@ -224,6 +224,13 @@ variable "external_secrets_settings" {
   type        = map(any)
 }
 
+variable "firewall_inbound_ports" {
+  type        = list(string)
+  description = "List of TCP ports for admission/webhook controllers. Either flag `add_master_webhook_firewall_rules` or `add_cluster_firewall_rules` (also adds egress rules) must be set to `true` for inbound-ports firewall rules to be applied."
+  // we add 5443 for OLM
+  default     = ["5443", "8443", "9443", "15017"]
+}
+
 variable "func_pool_autoscaling" {
   default     = true
   description = "Enable autoscaling of the Pulsar Functions pool. Defaults to \"true\"."
@@ -367,6 +374,12 @@ variable "istio_settings" {
   default     = {}
   description = "Additional settings which will be passed to the Helm chart values"
   type        = map(any)
+}
+
+variable "istio_chart_version" {
+  default     = "2.11"
+  description = "The version of the istio chart to use"
+  type        = string
 }
 
 variable "kiali_operator_settings" {
@@ -532,6 +545,12 @@ variable "region" {
 variable "secondary_ip_range_pods" {
   default     = null
   description = "The name of the secondary range to use for the pods in the cluster. If no secondary range for the pod network is provided, GKE will create a /14 CIDR within the subnetwork provided by the \"vpc_subnet\" input"
+  type        = string
+}
+
+variable "secondary_ip_range_pods_cidr" {
+  default     = null
+  description = "The cidr of the secondary range, required when using cillium"
   type        = string
 }
 

@@ -36,6 +36,7 @@ module "istio" {
   istio_revision_tag              = var.istio_revision_tag
   istio_mesh_id                   = var.istio_mesh_id
   istio_trust_domain              = var.istio_trust_domain
+  istio_chart_version             = var.istio_chart_version
   istio_gateway_certificate_name  = "istio-ingressgateway-tls"
   istio_gateway_certificate_hosts = ["*.${var.service_domain}"]
   istio_gateway_certificate_issuer = {
