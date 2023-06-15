@@ -28,6 +28,10 @@ output "name" {
   value = local.cluster_name
 }
 
+output "min_master_version" {
+  value = try(module.gke[0].min_master_version, module.gke_private[0].min_master_version)
+}
+
 output "master_version" {
   value = try(module.gke[0].master_version, module.gke_private[0].master_version)
 }
