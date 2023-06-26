@@ -86,6 +86,8 @@ variable "cluster_autoscaling_config" {
     min_memory_gb = number
     max_memory_gb = number
     gpu_resources = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair   = bool
+    auto_upgrade  = bool
   })
 }
 
