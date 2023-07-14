@@ -56,6 +56,17 @@ module "istio" {
   ]
 }
 
+resource "kubernetes_namespace" "istio_system" {
+  count = var.enable_resource_creation ? 1 : 0
+  metadata {
+    name = "istio-system"
+  }
+  depends_on = [
+    module.gke[0],
+    module.gke_private[0]
+  ]
+}
+
 resource "kubernetes_resource_quota" "istio_critical_pods" {
   count = (var.enable_resource_creation && var.enable_istio) ? 1 : 0
   metadata {
@@ -74,4 +85,7 @@ resource "kubernetes_resource_quota" "istio_critical_pods" {
       }
     }
   }
+  depends_on = [
+    kubernetes_namespace.istio_system
+  ]
 }
