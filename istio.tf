@@ -22,40 +22,6 @@ locals {
   }
 }
 
-module "istio" {
-  count = (var.enable_resource_creation && var.enable_istio) ? 1 : 0
-
-  source = "github.com/streamnative/terraform-helm-charts//modules/istio-operator?ref=master"
-
-  enable_istio_operator = true
-  enable_kiali_operator = true
-
-  istio_cluster_name              = local.cluster_name
-  istio_network                   = var.istio_network
-  istio_profile                   = var.istio_profile
-  istio_revision_tag              = var.istio_revision_tag
-  istio_mesh_id                   = var.istio_mesh_id
-  istio_trust_domain              = var.istio_trust_domain
-  istio_chart_version             = var.istio_chart_version
-  istio_gateway_certificate_name  = "istio-ingressgateway-tls"
-  istio_gateway_certificate_hosts = ["*.${var.service_domain}"]
-  istio_gateway_certificate_issuer = {
-    group = "cert-manager.io"
-    kind  = "ClusterIssuer"
-    name  = "external"
-  }
-  istio_settings = merge({ "controlPlane.spec.components.cni.namespace" : "istio-system", "controlPlane.spec.values.cni.cniBinDir" : "/home/kubernetes/bin" }, var.istio_settings)
-
-  istio_ingress_gateway_service_annotations = lookup(local.lb_annotations, var.istio_network_loadbalancer, local.lb_annotations.internet_facing)
-  kiali_gateway_hosts                       = ["kiali.${var.service_domain}"]
-  kiali_gateway_tls_secret                  = "istio-ingressgateway-tls"
-  kiali_operator_settings                   = var.kiali_operator_settings
-
-  depends_on = [
-    helm_release.cert_issuer
-  ]
-}
-
 resource "kubernetes_namespace" "istio_system" {
   count = var.enable_resource_creation ? 1 : 0
   metadata {
@@ -89,3 +55,40 @@ resource "kubernetes_resource_quota" "istio_critical_pods" {
     kubernetes_namespace.istio_system
   ]
 }
+
+module "istio" {
+  count = (var.enable_resource_creation && var.enable_istio) ? 1 : 0
+
+  source = "github.com/streamnative/terraform-helm-charts//modules/istio-operator?ref=master"
+
+  enable_istio_operator = true
+  enable_kiali_operator = true
+
+  istio_cluster_name              = local.cluster_name
+  istio_network                   = var.istio_network
+  istio_profile                   = var.istio_profile
+  istio_revision_tag              = var.istio_revision_tag
+  istio_mesh_id                   = var.istio_mesh_id
+  istio_trust_domain              = var.istio_trust_domain
+  istio_chart_version             = var.istio_chart_version
+  istio_gateway_certificate_name  = "istio-ingressgateway-tls"
+  istio_gateway_certificate_hosts = ["*.${var.service_domain}"]
+  istio_gateway_certificate_issuer = {
+    group = "cert-manager.io"
+    kind  = "ClusterIssuer"
+    name  = "external"
+  }
+  istio_settings = merge({ "controlPlane.spec.components.cni.namespace" : "istio-system", "controlPlane.spec.values.cni.cniBinDir" : "/home/kubernetes/bin" }, var.istio_settings)
+
+  istio_ingress_gateway_service_annotations = lookup(local.lb_annotations, var.istio_network_loadbalancer, local.lb_annotations.internet_facing)
+  kiali_gateway_hosts                       = ["kiali.${var.service_domain}"]
+  kiali_gateway_tls_secret                  = "istio-ingressgateway-tls"
+  kiali_operator_settings                   = var.kiali_operator_settings
+
+  depends_on = [
+    helm_release.cert_issuer,
+    kubernetes_resource_quota.istio_critical_pods
+  ]
+}
+
+
