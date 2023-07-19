@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "google_compute_zones" "available" {}
+data "google_compute_zones" "available" {
+  project = var.project_id
+}
 
 locals {
 
