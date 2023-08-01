@@ -22,6 +22,7 @@ locals {
     internet_facing = null,
     internal_only = {
       "networking.gke.io/load-balancer-type" = "Internal"
+      "networking.gke.io/internal-load-balancer-allow-global-access" = "true"
     }
   }
 }
