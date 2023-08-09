@@ -412,7 +412,7 @@ variable "logging_service" {
 
 variable "logging_enabled_components" {
   type        = list(string)
-  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER. Empty list is default GKE configuration."
+  description = "List of services to monitor: SYSTEM_COMPONENTS, WORKLOADS, APISERVER, SCHEDULER, CONTROLLER_MANAGER. Empty list is default GKE configuration."
   default     = []
 }
 
