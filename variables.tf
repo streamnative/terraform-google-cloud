@@ -410,6 +410,18 @@ variable "logging_service" {
   type        = string
 }
 
+variable "logging_enabled_components" {
+  type        = list(string)
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, WORKLOADS. Empty list is default GKE configuration."
+  default     = []
+}
+
+variable "monitoring_enabled_components" {
+  type        = list(string)
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER. Empty list is default GKE configuration."
+  default     = []
+}
+
 variable "maintenance_exclusions" {
   default     = []
   description = "A list of objects used to define exceptions to the maintenance window, when non-emergency maintenance should not occur. Can have up to three exclusions. Refer to the offical Terraform docs on the \"google_container_cluster\" resource for object schema."

@@ -130,6 +130,8 @@ module "gke" {
   firewall_inbound_ports            = var.firewall_inbound_ports
   kubernetes_version                = var.kubernetes_version
   logging_service                   = var.logging_service
+  logging_enabled_components        = var.logging_enabled_components
+  monitoring_enabled_components     = var.monitoring_enabled_components
   maintenance_exclusions            = var.maintenance_exclusions
   maintenance_start_time            = var.maintenance_window
   master_authorized_networks        = var.master_authorized_networks
@@ -168,6 +170,8 @@ module "gke_private" {
   firewall_inbound_ports            = var.firewall_inbound_ports
   kubernetes_version                = var.kubernetes_version
   logging_service                   = var.logging_service
+  logging_enabled_components        = var.logging_enabled_components
+  monitoring_enabled_components     = var.monitoring_enabled_components
   maintenance_exclusions            = var.maintenance_exclusions
   maintenance_start_time            = var.maintenance_window
   master_authorized_networks        = var.master_authorized_networks
