@@ -55,6 +55,8 @@ variable "cluster_autoscaling_config" {
     max_memory_gb = null
     min_memory_gb = null
     gpu_resources = []
+    auto_repair   = true
+    auto_upgrade  = false
   }
   description = "Cluster autoscaling configuration for node auto-provisioning. This is disabled for our configuration, since we typically want to scale existing node pools rather than add new ones to the cluster"
   type = object({
@@ -64,6 +66,8 @@ variable "cluster_autoscaling_config" {
     min_memory_gb = number
     max_memory_gb = number
     gpu_resources = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair   = bool
+    auto_upgrade  = bool
   })
 }
 
@@ -334,7 +338,7 @@ variable "logging_service" {
 variable "maintenance_exclusions" {
   default     = []
   description = "A list of objects used to define exceptions to the maintenance window, when non-emergency maintenance should not occur. Can have up to three exclusions. Refer to the offical Terraform docs on the \"google_container_cluster\" resource for object schema."
-  type        = list(object({ name = string, start_time = string, end_time = string }))
+  type        = list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string }))
 }
 
 variable "maintenance_window" {

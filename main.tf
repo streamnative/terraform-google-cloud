@@ -113,7 +113,7 @@ locals {
 module "gke" {
   source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
   name    = var.cluster_name
-  version = "19.0.0"
+  version = "26.1.1"
 
   create_service_account            = false
   service_account                   = var.google_service_account
