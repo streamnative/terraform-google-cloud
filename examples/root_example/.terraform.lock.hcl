@@ -63,7 +63,7 @@ provider "registry.terraform.io/hashicorp/google-beta" {
 
 provider "registry.terraform.io/hashicorp/helm" {
   version     = "2.2.0"
-  constraints = ">= 2.2.0, 2.2.0"
+  constraints = ">= 2.2.0, 2.2.0, ~> 2.2"
   hashes = [
     "h1:XgyX0QyHPW3rZ3xJZPsXPfRPsTnhTz1/QnJ8W6Wr/RM=",
     "zh:01341dd1e9cc7e7f6999e11e7473bcdca2dd72dd27f91beed1f4fb599a15dfba",
@@ -82,7 +82,7 @@ provider "registry.terraform.io/hashicorp/helm" {
 
 provider "registry.terraform.io/hashicorp/kubernetes" {
   version     = "2.11.0"
-  constraints = "~> 2.0, >= 2.6.1, >= 2.8.0, ~> 2.11.0"
+  constraints = "~> 2.0, >= 2.6.1, ~> 2.8, ~> 2.10, ~> 2.11.0"
   hashes = [
     "h1:lSh/Q5vX73hHL80TtGn2Vrv1UYLzlIRjC+xaCijY4ew=",
     "zh:143a19dd0ea3b07fc5e3d9231f3c2d01f92894385c98a67327de74c76c715843",
