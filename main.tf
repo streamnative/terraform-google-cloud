@@ -83,15 +83,7 @@ locals {
   }
 
   node_pools_taints = {
-    all = [
-      for each in [
-        {
-          key    = "node.cilium.io/agent-not-ready"
-          value  = true
-          effect = "NO_EXECUTE"
-        }
-      ] : each if var.enable_cilium
-    ]
+    all = []
 
     default-node-pool = [
       {
@@ -115,7 +107,7 @@ module "gke" {
   count   = var.enable_private_gke ? 0 : 1
   source  = "terraform-google-modules/kubernetes-engine/google"
   name    = var.cluster_name
-  version = "26.1.1"
+  version = "29.0.0"
 
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
@@ -155,7 +147,7 @@ module "gke_private" {
   source = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
 
   name    = var.cluster_name
-  version = "26.1.1"
+  version = "29.0.0"
 
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
@@ -199,79 +191,4 @@ moved {
 
 locals {
   cluster_name = try(module.gke[0].name, module.gke_private[0].name)
-}
-
-resource "kubernetes_namespace" "sn_system" {
-  count = var.enable_resource_creation ? 1 : 0
-  metadata {
-    name = "sn-system"
-
-    labels = {
-      "istio.io/rev"               = "sn-stable"
-      "cloud.streamnative.io/role" = "sn-system"
-    }
-  }
-  depends_on = [
-    module.gke[0],
-    module.gke_private[0]
-  ]
-}
-
-moved {
-  from = kubernetes_namespace.sn_system
-  to   = kubernetes_namespace.sn_system[0]
-}
-
-resource "kubernetes_storage_class" "sn_default" {
-  count = var.enable_resource_creation ? 1 : 0
-  metadata {
-    name = "sn-default"
-    labels = {
-      "addonmanager.kubernetes.io/mode" = "EnsureExists"
-    }
-  }
-  storage_provisioner = "pd.csi.storage.gke.io"
-  parameters = {
-    type = var.storage_class_default_ssd ? "pd-ssd" : "pd-standard"
-  }
-  reclaim_policy         = "Delete"
-  allow_volume_expansion = true
-  volume_binding_mode    = "WaitForFirstConsumer"
-
-  depends_on = [
-    module.gke[0],
-    module.gke_private[0]
-  ]
-}
-
-moved {
-  from = kubernetes_storage_class.sn_default
-  to   = kubernetes_storage_class.sn_default[0]
-}
-
-resource "kubernetes_storage_class" "sn_ssd" {
-  count = var.enable_resource_creation ? 1 : 0
-  metadata {
-    name = "sn-ssd"
-    labels = {
-      "addonmanager.kubernetes.io/mode" = "EnsureExists"
-    }
-  }
-  storage_provisioner = "pd.csi.storage.gke.io"
-  parameters = {
-    type = "pd-ssd"
-  }
-  reclaim_policy         = "Delete"
-  allow_volume_expansion = true
-  volume_binding_mode    = "WaitForFirstConsumer"
-
-  depends_on = [
-    module.gke[0],
-    module.gke_private[0]
-  ]
-}
-
-moved {
-  from = kubernetes_storage_class.sn_ssd
-  to   = kubernetes_storage_class.sn_ssd[0]
 }
