@@ -36,36 +36,6 @@ variable "authenticator_security_group" {
   type        = string
 }
 
-variable "cert_manager_helm_chart_repository" {
-  default     = "https://charts.bitnami.com/bitnami"
-  description = "The location of the helm chart to use for Cert Manager."
-  type        = string
-}
-
-variable "cert_manager_helm_chart_name" {
-  default     = "cert-manager"
-  description = "The name of the Cert Manager Helm chart to be used."
-  type        = string
-}
-
-variable "cert_manager_helm_chart_version" {
-  default     = "0.7.8"
-  description = "The version of the Cert Manager helm chart to install. Defaults to \"0.7.8\"."
-  type        = string
-}
-
-variable "cert_manager_settings" {
-  default     = {}
-  description = "Additional settings which will be passed to the Helm chart values. See https://github.com/bitnami/charts/tree/master/bitnami/cert-manager for detailed options."
-  type        = map(any)
-}
-
-variable "cert_issuer_support_email" {
-  default     = "certs-support@streamnative.io"
-  description = "The email address to receive notifications from the cert issuer."
-  type        = string
-}
-
 
 variable "cluster_autoscaling_config" {
   default = {
@@ -350,54 +320,6 @@ variable "horizontal_pod_autoscaling" {
   type        = bool
 }
 
-variable "istio_mesh_id" {
-  default     = null
-  description = "The ID used by the Istio mesh. This is also the ID of the StreamNative Cloud Pool used for the workload environments. This is required when \"enable_istio_operator\" is set to \"true\"."
-  type        = string
-}
-
-variable "istio_network" {
-  default     = "default"
-  description = "The name of network used for the Istio deployment. This is required when \"enable_istio_operator\" is set to \"true\"."
-  type        = string
-}
-
-variable "istio_profile" {
-  default     = "default"
-  description = "The path or name for an Istio profile to load. Set to the profile \"default\" if not specified."
-  type        = string
-}
-
-variable "istio_revision_tag" {
-  default     = "sn-stable"
-  description = "The revision tag value use for the Istio label \"istio.io/rev\"."
-  type        = string
-}
-
-variable "istio_trust_domain" {
-  default     = "cluster.local"
-  description = "The trust domain used for the Istio deployment, which corresponds to the root of a system. This is required when \"enable_istio_operator\" is set to \"true\"."
-  type        = string
-}
-
-variable "istio_settings" {
-  default     = {}
-  description = "Additional settings which will be passed to the Helm chart values"
-  type        = map(any)
-}
-
-variable "istio_chart_version" {
-  default     = "2.11"
-  description = "The version of the istio chart to use"
-  type        = string
-}
-
-variable "kiali_operator_settings" {
-  default     = {}
-  description = "Additional settings which will be passed to the Helm chart values"
-  type        = map(any)
-}
-
 variable "kubernetes_version" {
   default     = "latest"
   description = "The version of Kubernetes to use for the cluster. Defaults to \"latest\", which uses the latest available version for GKE in the region specified."
@@ -618,16 +540,6 @@ variable "network_project_id" {
   default     = ""
   description = "If using a different project, the id of the project"
   type        = string
-}
-
-variable "istio_network_loadbalancer" {
-  type    = string
-  default = "internet_facing"
-
-  validation {
-    condition     = contains(["internet_facing", "internal_only"], var.istio_network_loadbalancer)
-    error_message = "Allowed values for input_parameter are \"internet_facing\" or \"internal_only\"."
-  }
 }
 
 variable "enable_private_nodes" {

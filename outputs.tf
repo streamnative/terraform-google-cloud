@@ -35,15 +35,3 @@ output "master_version" {
 output "service_account" {
   value = try(module.gke[0].service_account, module.gke_private[0].service_account)
 }
-
-output "cert_manager_sa_email" {
-  value = try(module.cert_manager_sa[0].gcp_service_account_email, "")
-}
-
-output "external_dns_manager_sa_email" {
-  value = try(module.external_dns_sa[0].gcp_service_account_email, "")
-}
-
-output "external_secrets_sa_email" {
-  value = try(module.external_secrets_sa[0].gcp_service_account_email, "")
-}
