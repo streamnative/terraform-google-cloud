@@ -37,7 +37,7 @@ variable "cilium_helm_chart_version" {
 }
 
 resource "helm_release" "cilium" {
-  count           = var.enable_cilium ? 1 : 0
+  count           = (var.enable_resource_creation && var.enable_cilium) ? 1 : 0
   name            = "cilium"
   namespace       = "kube-system"
   repository      = var.cilium_helm_chart_repository
@@ -71,7 +71,7 @@ resource "helm_release" "cilium" {
     ipam = {
       mode = "kubernetes"
     }
-    ipv4NativeRoutingCIDR = var.secondary_ip_range_pods
+    ipv4NativeRoutingCIDR = var.secondary_ip_range_pods_cidr
     kubeProxyReplacement  = "disabled"
     logOptions = {
       format = "json"

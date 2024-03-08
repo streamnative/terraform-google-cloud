@@ -30,6 +30,12 @@ variable "add_shadow_firewall_rules" {
   type        = bool
 }
 
+variable "authenticator_security_group" {
+  default     = null
+  description = "The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com"
+  type        = string
+}
+
 variable "cert_manager_helm_chart_repository" {
   default     = "https://charts.bitnami.com/bitnami"
   description = "The location of the helm chart to use for Cert Manager."
@@ -69,6 +75,8 @@ variable "cluster_autoscaling_config" {
     max_memory_gb = null
     min_memory_gb = null
     gpu_resources = []
+    auto_repair   = true
+    auto_upgrade  = false
   }
   description = "Cluster autoscaling configuration for node auto-provisioning. This is disabled for our configuration, since we typically want to scale existing node pools rather than add new ones to the cluster"
   type = object({
@@ -78,6 +86,8 @@ variable "cluster_autoscaling_config" {
     min_memory_gb = number
     max_memory_gb = number
     gpu_resources = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair   = bool
+    auto_upgrade  = bool
   })
 }
 
@@ -102,6 +112,18 @@ variable "create_service_account" {
   default     = true
   description = "Creates a service account for the cluster. Defaults to \"true\"."
   type        = bool
+}
+
+variable "datapath_provider" {
+  default     = "DATAPATH_PROVIDER_UNSPECIFIED"
+  description = "the datapath provider to use, in the future, the default of this should be ADVANCED_DATAPATH"
+  type        = string
+
+}
+variable "default_max_pods_per_node" {
+  description = "the number of pods per node, defaults to GKE default of 110, but in smaller CIDRs we want to tune this"
+  type        = number
+  default     = 110
 }
 
 variable "enable_cert_manager" {
@@ -131,6 +153,18 @@ variable "enable_func_pool" {
 variable "enable_istio" {
   default     = false
   description = "Enables Istio on the cluster. Set to \"false\" by default."
+  type        = bool
+}
+
+
+variable "enable_private_gke" {
+  default     = false
+  description = "Enables private GKE cluster, where nodes are not publicly accessible. Defaults to \"false\"."
+  type        = bool
+}
+variable "enable_resource_creation" {
+  default     = true
+  description = "When enabled, all dependencies, like service accounts, buckets, etc will be created. When disabled, they will note. Use in combination with `enable_<app>` to manage these outside this module"
   type        = bool
 }
 
@@ -192,6 +226,13 @@ variable "external_secrets_settings" {
   default     = {}
   description = "Additional settings which will be passed to the Helm chart values, see https://github.com/external-secrets/kubernetes-external-secrets/tree/master/charts/kubernetes-external-secrets for available options"
   type        = map(any)
+}
+
+variable "firewall_inbound_ports" {
+  type        = list(string)
+  description = "List of TCP ports for admission/webhook controllers. Either flag `add_master_webhook_firewall_rules` or `add_cluster_firewall_rules` (also adds egress rules) must be set to `true` for inbound-ports firewall rules to be applied."
+  // we add 5443 for OLM
+  default = ["5443", "8443", "9443", "15017"]
 }
 
 variable "func_pool_autoscaling" {
@@ -267,6 +308,12 @@ variable "func_pool_machine_type" {
   type        = string
 }
 
+variable "func_pool_max_pods_per_node" {
+  description = "the number of pods per node"
+  type        = number
+  default     = 110
+}
+
 variable "func_pool_name" {
   default     = "func-pool"
   description = "The name of the Pulsar Functions pool. Defaults to \"default-node-pool\"."
@@ -288,6 +335,12 @@ variable "func_pool_ssd_count" {
 variable "func_pool_version" {
   default     = ""
   description = "The version of Kubernetes to use for the Pulsar Functions pool. If the input \"release_channel\" is not defined, defaults to \"kubernetes_version\" used for the cluster. Should only be defined while \"func_pool_auto_upgrade\" is also set to \"false\"."
+  type        = string
+}
+
+variable "google_service_account" {
+  default     = ""
+  description = "when set, don't create GSAs and instead use the this service account for all apps"
   type        = string
 }
 
@@ -333,6 +386,12 @@ variable "istio_settings" {
   type        = map(any)
 }
 
+variable "istio_chart_version" {
+  default     = "2.11"
+  description = "The version of the istio chart to use"
+  type        = string
+}
+
 variable "kiali_operator_settings" {
   default     = {}
   description = "Additional settings which will be passed to the Helm chart values"
@@ -351,10 +410,22 @@ variable "logging_service" {
   type        = string
 }
 
+variable "logging_enabled_components" {
+  type        = list(string)
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, WORKLOADS. Empty list is default GKE configuration."
+  default     = []
+}
+
+variable "monitoring_enabled_components" {
+  type        = list(string)
+  description = "List of services to monitor: SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER. Empty list is default GKE configuration."
+  default     = []
+}
+
 variable "maintenance_exclusions" {
   default     = []
   description = "A list of objects used to define exceptions to the maintenance window, when non-emergency maintenance should not occur. Can have up to three exclusions. Refer to the offical Terraform docs on the \"google_container_cluster\" resource for object schema."
-  type        = list(object({ name = string, start_time = string, end_time = string }))
+  type        = list(object({ name = string, start_time = string, end_time = string, exclusion_scope = string }))
 }
 
 variable "maintenance_window" {
@@ -441,10 +512,22 @@ variable "node_pool_machine_type" {
   type        = string
 }
 
+variable "node_pool_max_pods_per_node" {
+  description = "the number of pods per node"
+  type        = number
+  default     = 110
+}
+
 variable "node_pool_name" {
   default     = "default-node-pool"
   description = "The name of the default node pool. Defaults to \"sn-node-pool\"."
   type        = string
+}
+
+variable "node_pool_secure_boot" {
+  default     = false
+  description = "enable the node pool secure boot setting"
+  type        = bool
 }
 
 variable "node_pool_service_account" {
@@ -487,6 +570,12 @@ variable "secondary_ip_range_pods" {
   type        = string
 }
 
+variable "secondary_ip_range_pods_cidr" {
+  default     = null
+  description = "The cidr of the secondary range, required when using cillium"
+  type        = string
+}
+
 variable "secondary_ip_range_services" {
   default     = null
   description = "The name of the secondary range to use for services in the cluster. If no secondary range for the services network is provided, GKE will create a /20 CIDR within the subnetwork provided by the \"vpc_subnet\" input"
@@ -507,6 +596,12 @@ variable "suffix" {
     condition     = length(var.suffix) < 12
     error_message = "Suffix must be less than 12 characters."
   }
+}
+
+variable "storage_class_default_ssd" {
+  default     = false
+  description = "determines if the default storage class should be with ssd"
+  type        = bool
 }
 
 variable "vpc_subnet" {
@@ -533,4 +628,16 @@ variable "istio_network_loadbalancer" {
     condition     = contains(["internet_facing", "internal_only"], var.istio_network_loadbalancer)
     error_message = "Allowed values for input_parameter are \"internet_facing\" or \"internal_only\"."
   }
+}
+
+variable "enable_private_nodes" {
+  type        = bool
+  description = "Whether nodes have internal IP addresses only, only used for private clusters"
+  default     = true
+}
+
+variable "master_ipv4_cidr_block" {
+  type        = string
+  description = "The IP range in CIDR notation to use for the hosted master network. Only used for private clusters"
+  default     = "10.0.0.0/28"
 }

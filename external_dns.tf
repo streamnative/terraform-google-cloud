@@ -13,6 +13,7 @@
 # limitations under the License.
 
 module "external_dns_sa" {
+  count   = var.enable_resource_creation && var.google_service_account == "" ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
   version = "20.0.0"
 
@@ -20,11 +21,16 @@ module "external_dns_sa" {
   annotate_k8s_sa     = false
   k8s_sa_name         = "external-dns"
   location            = var.region
-  cluster_name        = module.gke.name
+  cluster_name        = local.cluster_name
   name                = "external-dns%{if var.suffix != ""}-${var.suffix}%{endif}"
   namespace           = "kube-system"
   project_id          = var.project_id
   roles               = ["roles/dns.admin"]
+}
+
+moved {
+  from = module.external_dns_sa
+  to   = module.external_dns_sa[0]
 }
 
 locals {
@@ -34,7 +40,7 @@ locals {
 }
 
 resource "helm_release" "external_dns" {
-  count           = var.enable_external_dns ? 1 : 0
+  count           = (var.enable_resource_creation && var.enable_external_dns) ? 1 : 0
   atomic          = true
   chart           = var.external_dns_helm_chart_name
   cleanup_on_fail = true
@@ -60,11 +66,11 @@ resource "helm_release" "external_dns" {
       create = true
       name   = "external-dns"
       annotations = {
-        "iam.gke.io/gcp-service-account" = module.external_dns_sa.gcp_service_account_email
+        "iam.gke.io/gcp-service-account" = var.google_service_account != "" ? var.google_service_account : module.external_dns_sa[0].gcp_service_account_email
       }
     }
     sources    = local.sources
-    txtOwnerId = module.gke.name
+    txtOwnerId = local.cluster_name
   })]
 
   dynamic "set" {

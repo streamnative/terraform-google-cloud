@@ -13,37 +13,37 @@
 # limitations under the License.
 
 output "ca_certificate" {
-  value = module.gke.ca_certificate
+  value = try(module.gke[0].ca_certificate, module.gke_private[0].ca_certificate)
 }
 
 output "endpoint" {
-  value = module.gke.endpoint
+  value = try(module.gke[0].endpoint, module.gke_private[0].endpoint)
 }
 
 output "id" {
-  value = module.gke.cluster_id
+  value = try(module.gke[0].cluster_id, module.gke_private[0].cluster_id)
 }
 
 output "name" {
-  value = module.gke.name
+  value = local.cluster_name
 }
 
 output "master_version" {
-  value = module.gke.master_version
+  value = try(module.gke[0].master_version, module.gke_private[0].master_version)
 }
 
 output "service_account" {
-  value = module.gke.service_account
+  value = try(module.gke[0].service_account, module.gke_private[0].service_account)
 }
 
 output "cert_manager_sa_email" {
-  value = module.cert_manager_sa.gcp_service_account_email
+  value = try(module.cert_manager_sa[0].gcp_service_account_email, "")
 }
 
 output "external_dns_manager_sa_email" {
-  value = module.external_dns_sa.gcp_service_account_email
+  value = try(module.external_dns_sa[0].gcp_service_account_email, "")
 }
 
 output "external_secrets_sa_email" {
-  value = module.external_secrets_sa.gcp_service_account_email
+  value = try(module.external_secrets_sa[0].gcp_service_account_email, "")
 }
