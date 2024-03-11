@@ -62,7 +62,7 @@ variable "cluster_autoscaling_config" {
 }
 
 variable "cluster_http_load_balancing" {
-  default     = true
+  default     = false
   description = "Enable the HTTP load balancing addon for the cluster. Defaults to \"true\""
   type        = bool
 }
@@ -96,106 +96,16 @@ variable "default_max_pods_per_node" {
   default     = 110
 }
 
-variable "enable_cert_manager" {
-  default     = true
-  description = "Enables the Cert-Manager addon service on the cluster. Defaults to \"true\", and in most situations is required by StreamNative Cloud."
-  type        = bool
-}
-
-variable "enable_external_dns" {
-  default     = true
-  description = "Enables the External DNS addon service on the cluster. Defaults to \"true\", and in most situations is required by StreamNative Cloud."
-  type        = bool
-}
-
-variable "enable_external_secrets" {
-  default     = true
-  description = "Enables kubernetes-external-secrets on the cluster, which uses GCP Secret Manager as the secrets backend"
-  type        = bool
-}
-
 variable "enable_func_pool" {
   default     = true
   description = "Enable an additional dedicated pool for Pulsar Functions. Enabled by default."
   type        = bool
 }
 
-variable "enable_istio" {
-  default     = false
-  description = "Enables Istio on the cluster. Set to \"false\" by default."
-  type        = bool
-}
-
-
 variable "enable_private_gke" {
   default     = false
   description = "Enables private GKE cluster, where nodes are not publicly accessible. Defaults to \"false\"."
   type        = bool
-}
-variable "enable_resource_creation" {
-  default     = true
-  description = "When enabled, all dependencies, like service accounts, buckets, etc will be created. When disabled, they will note. Use in combination with `enable_<app>` to manage these outside this module"
-  type        = bool
-}
-
-variable "external_dns_helm_chart_name" {
-  default     = "external-dns"
-  description = "The name of the Helm chart in the repository for ExternalDNS."
-  type        = string
-}
-
-variable "external_dns_helm_chart_repository" {
-  default     = "https://charts.bitnami.com/bitnami"
-  description = "The repository containing the ExternalDNS helm chart."
-  type        = string
-}
-
-variable "external_dns_helm_chart_version" {
-  default     = "6.15.0"
-  description = "Helm chart version for ExternalDNS. See https://github.com/bitnami/charts/tree/master/bitnami/external-dns for updates."
-  type        = string
-}
-
-variable "external_dns_policy" {
-  default     = "upsert-only"
-  description = "Sets how DNS records are managed by ExternalDNS. Options are \"sync\", which allows ExternalDNS to create and delete records, or \"upsert_only\", which only allows for the creation of records"
-  type        = string
-}
-
-variable "external_dns_settings" {
-  default     = {}
-  description = "Additional settings which will be passed to the Helm chart values, see https://github.com/bitnami/charts/tree/master/bitnami/external-dns for detailed options."
-  type        = map(any)
-}
-
-variable "external_dns_version" {
-  default     = "5.2.2"
-  description = "The version of the ExternalDNS helm chart to install. Defaults to \"5.2.2\"."
-  type        = string
-}
-
-variable "external_secrets_helm_chart_name" {
-  default     = "kubernetes-external-secrets"
-  description = "The name of the Helm chart in the repository for kubernetes-external-secrets"
-  type        = string
-}
-
-variable "external_secrets_helm_chart_repository" {
-  default     = "https://external-secrets.github.io/kubernetes-external-secrets"
-  description = "The repository containing the kubernetes-external-secrets helm chart"
-  type        = string
-}
-
-variable "external_secrets_helm_chart_version" {
-  default     = "8.3.0"
-  description = "Helm chart version for kubernetes-external-secrets. Defaults to \"8.3.0\". See https://github.com/external-secrets/kubernetes-external-secrets/tree/master/charts/kubernetes-external-secrets for updates"
-  type        = string
-}
-
-variable "external_secrets_settings" {
-  default     = {}
-  description = "Additional settings which will be passed to the Helm chart values, see https://github.com/external-secrets/kubernetes-external-secrets/tree/master/charts/kubernetes-external-secrets for available options"
-  type        = map(any)
 }
 
 variable "firewall_inbound_ports" {
@@ -305,12 +215,6 @@ variable "func_pool_ssd_count" {
 variable "func_pool_version" {
   default     = ""
   description = "The version of Kubernetes to use for the Pulsar Functions pool. If the input \"release_channel\" is not defined, defaults to \"kubernetes_version\" used for the cluster. Should only be defined while \"func_pool_auto_upgrade\" is also set to \"false\"."
-  type        = string
-}
-
-variable "google_service_account" {
-  default     = ""
-  description = "when set, don't create GSAs and instead use the this service account for all apps"
   type        = string
 }
 
@@ -504,12 +408,6 @@ variable "secondary_ip_range_services" {
   type        = string
 }
 
-variable "service_domain" {
-  default     = null
-  description = "The DNS domain for external service endpoints. This must be set when enabling Istio or else the deployment will fail."
-  type        = string
-}
-
 variable "suffix" {
   default     = ""
   description = "A unique string that is used to distinguish cluster resources, where name length constraints are imposed by GKE. Defaults to an empty string."
@@ -518,12 +416,6 @@ variable "suffix" {
     condition     = length(var.suffix) < 12
     error_message = "Suffix must be less than 12 characters."
   }
-}
-
-variable "storage_class_default_ssd" {
-  default     = false
-  description = "determines if the default storage class should be with ssd"
-  type        = bool
 }
 
 variable "vpc_subnet" {
