@@ -140,6 +140,7 @@ module "gke" {
   remove_default_node_pool          = true
   release_channel                   = var.release_channel
   subnetwork                        = var.vpc_subnet
+  deletion_protection               = var.deletion_protection
 }
 
 module "gke_private" {
@@ -182,11 +183,7 @@ module "gke_private" {
   subnetwork                        = var.vpc_subnet
   enable_private_nodes              = var.enable_private_nodes
   master_ipv4_cidr_block            = var.master_ipv4_cidr_block
-}
-
-moved {
-  from = module.gke
-  to   = module.gke[0]
+  deletion_protection               = var.deletion_protection
 }
 
 locals {
