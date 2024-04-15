@@ -148,7 +148,6 @@ module "gke" {
   remove_default_node_pool          = true
   release_channel                   = var.release_channel
   subnetwork                        = var.vpc_subnet
-  enable_vertical_pod_autoscaling   = true
 }
 
 module "gke_private" {
