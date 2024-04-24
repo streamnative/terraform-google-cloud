@@ -25,7 +25,7 @@ resource "google_kms_key_ring" "keyring" {
 resource "google_kms_crypto_key" "gke-encryption-key" {
   count = var.enable_database_encryption && var.database_encryption_key_name == "" ? 1 : 0 # Only create if the feature is enabled and the customer didn't provide a key
   name            = "streamnative-gke-encryption-key"
-  key_ring        = google_kms_key_ring.keyring.id
+  key_ring        = google_kms_key_ring.keyring[0].id
   rotation_period = "12960000s" #150 days
 }
 
@@ -123,7 +123,7 @@ locals {
     ]
   }
 
-  database_encryption = var.enable_database_encryption ? (var.database_encryption_key_name ? [{"key_name": var.database_encryption_key_name, "state": "ENCRYPTED"}] : [{"key_name": google_kms_crypto_key.gke-encryption-key.self_link, "state": "ENCRYPTED"}]) : [{"key_name": "", "state": "DECRYPTED"}]
+  database_encryption = var.enable_database_encryption ? (var.database_encryption_key_name ? [{"key_name": var.database_encryption_key_name, "state": "ENCRYPTED"}] : [{"key_name": google_kms_crypto_key.gke-encryption-key[0].name, "state": "ENCRYPTED"}]) : [{"key_name": "", "state": "DECRYPTED"}]
 }
 
 module "gke" {
