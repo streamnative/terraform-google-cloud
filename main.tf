@@ -27,10 +27,6 @@ resource "google_kms_crypto_key" "gke-encryption-key" {
   name            = "streamnative-gke-encryption-key"
   key_ring        = google_kms_key_ring.keyring[0].id
   rotation_period = "12960000s" #150 days
-
-  lifecycle {
-    prevent_destroy = false
-  }
 }
 
 locals {
