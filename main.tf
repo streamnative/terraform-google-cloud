@@ -123,7 +123,7 @@ locals {
     ]
   }
 
-  database_encryption = var.enable_database_encryption ? (var.database_encryption_key_name ? [{"key_name": var.database_encryption_key_name, "state": "ENCRYPTED"}] : [{"key_name": google_kms_crypto_key.gke-encryption-key[0].name, "state": "ENCRYPTED"}]) : [{"key_name": "", "state": "DECRYPTED"}]
+  database_encryption = var.enable_database_encryption ? (var.database_encryption_key_name != "" ? [{"key_name": var.database_encryption_key_name, "state": "ENCRYPTED"}] : [{"key_name": google_kms_crypto_key.gke-encryption-key[0].name, "state": "ENCRYPTED"}]) : [{"key_name": "", "state": "DECRYPTED"}]
 }
 
 module "gke" {
