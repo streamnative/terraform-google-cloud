@@ -114,6 +114,12 @@ variable "create_service_account" {
   type        = bool
 }
 
+variable "database_encryption_key_name" {
+  default     = ""
+  description = "Name of the KMS key to encrypt Kubernetes secrets at rest in etcd"
+  type        = string
+}
+
 variable "datapath_provider" {
   default     = "DATAPATH_PROVIDER_UNSPECIFIED"
   description = "the datapath provider to use, in the future, the default of this should be ADVANCED_DATAPATH"
@@ -129,6 +135,12 @@ variable "default_max_pods_per_node" {
 variable "enable_cert_manager" {
   default     = true
   description = "Enables the Cert-Manager addon service on the cluster. Defaults to \"true\", and in most situations is required by StreamNative Cloud."
+  type        = bool
+}
+
+variable "enable_database_encryption" {
+  default     = false
+  description = "Enables etcd encryption via Google KMS."
   type        = bool
 }
 
