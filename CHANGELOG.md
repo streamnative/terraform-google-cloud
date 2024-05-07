@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.2.1...v0.3.0) (2024-05-03)
+
+
+### Features
+
+* Add KMS key creation functionality for GKE encryption ([#42](https://github.com/streamnative/terraform-google-cloud/issues/42)) ([f761562](https://github.com/streamnative/terraform-google-cloud/commit/f761562549f9e1b72fc02684f7feba7ff9d0b84c))
+* Upgrade terraform-google-kubernetes-engine module to 29.0.0 ([#34](https://github.com/streamnative/terraform-google-cloud/issues/34)) ([411d32d](https://github.com/streamnative/terraform-google-cloud/commit/411d32d2a36e7720354714d2113caf2d78ba6090))
+
 ## [0.2.1](https://github.com/streamnative/terraform-google-cloud/compare/v0.2.0...v0.2.1) (2024-04-15)
 
 
