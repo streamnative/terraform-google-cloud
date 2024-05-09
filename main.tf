@@ -22,7 +22,7 @@ resource "google_kms_key_ring" "keyring" {
   location = var.region
 }
 
-resource "google_kms_crypto_key" "gke-encryption-key" {
+resource "google_kms_crypto_key" "gke_encryption_key" {
   count = var.enable_database_encryption && var.database_encryption_key_name == "" ? 1 : 0 # Only create if the feature is enabled and the customer didn't provide a key
   name            = "streamnative-gke-encryption-key"
   key_ring        = google_kms_key_ring.keyring[0].id
@@ -124,7 +124,7 @@ locals {
   }
 
   #Ensure database_encryption_key_name is of the format <KEYRING_NAME>/cryptoKeys/<KEY_NAME>
-  database_encryption = var.enable_database_encryption ? (var.database_encryption_key_name != "" ? [{"key_name": "projects/${var.project_id}/locations/${var.region}/keyRings/${var.database_encryption_key_name}", "state": "ENCRYPTED"}] : [{"key_name": google_kms_crypto_key.gke-encryption-key[0].id, "state": "ENCRYPTED"}]) : [{"key_name": "", "state": "DECRYPTED"}]
+  database_encryption = var.enable_database_encryption ? (var.database_encryption_key_name != "" ? [{"key_name": "projects/${var.project_id}/locations/${var.region}/keyRings/${var.database_encryption_key_name}", "state": "ENCRYPTED"}] : [{"key_name": google_kms_crypto_key.gke_encryption_key[0].id, "state": "ENCRYPTED"}]) : [{"key_name": "", "state": "DECRYPTED"}]
 }
 
 module "gke" {
