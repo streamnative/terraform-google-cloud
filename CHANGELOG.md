@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.0...v0.3.1) (2024-05-09)
+
+
+### Bug Fixes
+
+* Updated resource name to use underscores. ([#43](https://github.com/streamnative/terraform-google-cloud/issues/43)) ([a02bba3](https://github.com/streamnative/terraform-google-cloud/commit/a02bba3b9522d554f7f611169980df124bdb41dc))
+
 ## [0.3.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.2.1...v0.3.0) (2024-05-03)
 
 
