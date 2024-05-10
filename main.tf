@@ -18,7 +18,7 @@ data "google_compute_zones" "available" {
 
 # Declared to infer the project number
 data "google_project" "project" {
-  project = var.project_id
+  project_id = var.project_id
 }
 
 resource "google_kms_key_ring" "keyring" {
