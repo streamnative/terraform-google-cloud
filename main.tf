@@ -16,6 +16,11 @@ data "google_compute_zones" "available" {
   project = var.project_id
 }
 
+# Declared to infer the project number
+data "google_project" "project" {
+  project = var.project_id
+}
+
 resource "google_kms_key_ring" "keyring" {
   count = var.enable_database_encryption && var.database_encryption_key_name == "" ? 1 : 0 # Only create if the feature is enabled and the customer didn't provide a key
   name     = "streamnative-keyring"
@@ -27,6 +32,14 @@ resource "google_kms_crypto_key" "gke_encryption_key" {
   name            = "streamnative-gke-encryption-key"
   key_ring        = google_kms_key_ring.keyring[0].id
   rotation_period = "12960000s" #150 days
+}
+
+# Required for GKE to use the encryption key
+resource "google_project_iam_member" "kms_iam_binding" {
+  count = var.enable_database_encryption ? 1 : 0 # Only create if the feature is enabled
+  project = var.project_id
+  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member  = "serviceAccount:service-${data.google_project.project.number}@container-engine-robot.iam.gserviceaccount.com"
 }
 
 locals {
