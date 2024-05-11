@@ -17,13 +17,13 @@ data "google_compute_zones" "available" {
 }
 
 resource "google_kms_key_ring" "keyring" {
-  count = var.enable_database_encryption && var.database_encryption_key_name == "" ? 1 : 0 # Only create if the feature is enabled and the customer didn't provide a key
+  count    = var.enable_database_encryption && var.database_encryption_key_name == "" ? 1 : 0 # Only create if the feature is enabled and the customer didn't provide a key
   name     = "streamnative-keyring"
   location = var.region
 }
 
 resource "google_kms_crypto_key" "gke_encryption_key" {
-  count = var.enable_database_encryption && var.database_encryption_key_name == "" ? 1 : 0 # Only create if the feature is enabled and the customer didn't provide a key
+  count           = var.enable_database_encryption && var.database_encryption_key_name == "" ? 1 : 0 # Only create if the feature is enabled and the customer didn't provide a key
   name            = "streamnative-gke-encryption-key"
   key_ring        = google_kms_key_ring.keyring[0].id
   rotation_period = "12960000s" #150 days
@@ -124,7 +124,7 @@ locals {
   }
 
   #Ensure database_encryption_key_name is of the format <KEYRING_NAME>/cryptoKeys/<KEY_NAME>
-  database_encryption = var.enable_database_encryption ? (var.database_encryption_key_name != "" ? [{"key_name": "projects/${var.project_id}/locations/${var.region}/keyRings/${var.database_encryption_key_name}", "state": "ENCRYPTED"}] : [{"key_name": google_kms_crypto_key.gke_encryption_key[0].id, "state": "ENCRYPTED"}]) : [{"key_name": "", "state": "DECRYPTED"}]
+  database_encryption = var.enable_database_encryption ? (var.database_encryption_key_name != "" ? [{ "key_name" : "projects/${var.project_id}/locations/${var.region}/keyRings/${var.database_encryption_key_name}", "state" : "ENCRYPTED" }] : [{ "key_name" : google_kms_crypto_key.gke_encryption_key[0].id, "state" : "ENCRYPTED" }]) : [{ "key_name" : "", "state" : "DECRYPTED" }]
 }
 
 module "gke" {
@@ -165,6 +165,7 @@ module "gke" {
   release_channel                   = var.release_channel
   subnetwork                        = var.vpc_subnet
   database_encryption               = local.database_encryption
+  deletion_protection               = var.deletion_protection
 }
 
 module "gke_private" {
@@ -208,6 +209,7 @@ module "gke_private" {
   enable_private_nodes              = var.enable_private_nodes
   master_ipv4_cidr_block            = var.master_ipv4_cidr_block
   database_encryption               = local.database_encryption
+  deletion_protection               = var.deletion_protection
 }
 
 moved {
