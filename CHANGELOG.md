@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.2...v0.3.3) (2024-05-13)
+
+
+### Bug Fixes
+
+* Add KMS IAM binding ([#45](https://github.com/streamnative/terraform-google-cloud/issues/45)) ([ce695f1](https://github.com/streamnative/terraform-google-cloud/commit/ce695f17e04190504f2a3b9c08834173e73e720c))
+
 ## [0.3.2](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.1...v0.3.2) (2024-05-13)
 
 
