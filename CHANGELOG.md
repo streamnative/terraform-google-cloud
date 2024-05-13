@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.1...v0.3.2) (2024-05-13)
+
+
+### Bug Fixes
+
+* Expose deletion_protection ([#46](https://github.com/streamnative/terraform-google-cloud/issues/46)) ([5052bdb](https://github.com/streamnative/terraform-google-cloud/commit/5052bdb9ca9a91af6cdb2e16c9e0a9ef60be38c0))
+
 ## [0.3.1](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.0...v0.3.1) (2024-05-09)
 
 
