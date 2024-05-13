@@ -653,3 +653,9 @@ variable "master_ipv4_cidr_block" {
   description = "The IP range in CIDR notation to use for the hosted master network. Only used for private clusters"
   default     = "10.0.0.0/28"
 }
+
+variable "deletion_protection" {
+  type        = bool
+  description = "Whether or not to allow Terraform to destroy the cluster."
+  default     = true
+}
