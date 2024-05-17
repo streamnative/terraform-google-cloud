@@ -49,5 +49,5 @@ output "external_secrets_sa_email" {
 }
 
 output "node_pool_azs" {
-  value = len(var.node_pool_locations) != "" ? split(",", var.node_pool_locations) : try(module.gke[0].zones, module.gke_private[0].zones)
+  value = var.node_pool_locations != "" ? split(",", var.node_pool_locations) : try(module.gke[0].zones, module.gke_private[0].zones)
 }
