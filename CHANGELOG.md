@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.4](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.3...v0.3.4) (2024-05-21)
+
+
+### Bug Fixes
+
+* Expose nodepool zones ([#49](https://github.com/streamnative/terraform-google-cloud/issues/49)) ([54891a8](https://github.com/streamnative/terraform-google-cloud/commit/54891a8c09a51b35017f639ac1a230411a43eae0))
+
 ## [0.3.3](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.2...v0.3.3) (2024-05-13)
 
 
