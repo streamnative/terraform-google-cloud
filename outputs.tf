@@ -47,3 +47,7 @@ output "external_dns_manager_sa_email" {
 output "external_secrets_sa_email" {
   value = try(module.external_secrets_sa[0].gcp_service_account_email, "")
 }
+
+output "node_pool_azs" {
+  value = var.node_pool_locations != "" ? split(",", var.node_pool_locations) : try(module.gke[0].zones, module.gke_private[0].zones)
+}
