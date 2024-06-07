@@ -23,7 +23,7 @@ data "google_project" "project" {
 
 resource "google_kms_key_ring" "keyring" {
   count    = var.enable_database_encryption && var.database_encryption_key_name == "" ? 1 : 0 # Only create if the feature is enabled and the customer didn't provide a key
-  name     = "streamnative-keyring"
+  name     = "sn-keyring-${var.cluster_name}"
   location = var.region
 }
 
