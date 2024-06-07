@@ -6,6 +6,7 @@
 ### Bug Fixes
 
 * Add KMS Uniqueness ([#51](https://github.com/streamnative/terraform-google-cloud/issues/51)) ([39e9bc3](https://github.com/streamnative/terraform-google-cloud/commit/39e9bc34bbdb4409be5a8ee1fb30443f3b44ef3a))
+* * Add KMS Keyring Uniqueness ([#53](https://github.com/streamnative/terraform-google-cloud/issues/51)) ([39e9bc3](https://github.com/streamnative/terraform-google-cloud/commit/398a40e27e4cceea522a96ed817ea4ac8a259e8c))
 
 ## [0.3.4](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.3...v0.3.4) (2024-05-21)
 
