@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.5](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.4...v0.3.5) (2024-06-07)
+
+
+### Bug Fixes
+
+* Add KMS Uniqueness ([#51](https://github.com/streamnative/terraform-google-cloud/issues/51)) ([39e9bc3](https://github.com/streamnative/terraform-google-cloud/commit/39e9bc34bbdb4409be5a8ee1fb30443f3b44ef3a))
+
 ## [0.3.4](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.3...v0.3.4) (2024-05-21)
 
 
