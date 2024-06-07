@@ -29,7 +29,7 @@ resource "google_kms_key_ring" "keyring" {
 
 resource "google_kms_crypto_key" "gke_encryption_key" {
   count           = var.enable_database_encryption && var.database_encryption_key_name == "" ? 1 : 0 # Only create if the feature is enabled and the customer didn't provide a key
-  name            = "streamnative-gke-encryption-key"
+  name            = "sn-gke-key-${var.cluster_name}"
   key_ring        = google_kms_key_ring.keyring[0].id
   rotation_period = "12960000s" #150 days
 }
