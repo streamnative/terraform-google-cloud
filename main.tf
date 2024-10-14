@@ -66,7 +66,7 @@ locals {
     version            = var.node_pool_auto_upgrade ? null : var.node_pool_version
 
     autoscaling_profile = "BALANCED"
-    pod_pids_limit      = 4194304
+    pod_pids_limit      = 2097152
     cpu_cfs_quota       = false
   }
   func_pool_config = {
