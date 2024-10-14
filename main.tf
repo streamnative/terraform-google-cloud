@@ -36,7 +36,7 @@ resource "google_kms_crypto_key" "gke_encryption_key" {
 
 # Required for GKE to use the encryption key
 resource "google_project_iam_member" "kms_iam_binding" {
-  count = var.enable_database_encryption ? 1 : 0 # Only create if the feature is enabled
+  count   = var.enable_database_encryption ? 1 : 0 # Only create if the feature is enabled
   project = var.project_id
   role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member  = "serviceAccount:service-${data.google_project.project.number}@container-engine-robot.iam.gserviceaccount.com"
@@ -64,6 +64,9 @@ locals {
     node_locations     = var.node_pool_locations != "" ? var.node_pool_locations : ""
     service_account    = var.create_service_account ? "" : var.node_pool_service_account
     version            = var.node_pool_auto_upgrade ? null : var.node_pool_version
+
+    pod_pids_limit = 4194304
+    cpu_cfs_quota  = false
   }
   func_pool_config = {
     auto_repair        = var.func_pool_auto_repair
@@ -144,7 +147,7 @@ module "gke" {
   count   = var.enable_private_gke ? 0 : 1
   source  = "terraform-google-modules/kubernetes-engine/google"
   name    = var.cluster_name
-  version = "29.0.0"
+  version = "32.0.4"
 
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
