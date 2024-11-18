@@ -146,6 +146,12 @@ variable "enable_cilium_clusterwide_network_policy" {
   type        = bool
 }
 
+variable "enable_multi_networking" {
+  default     = false
+  description = "Whether multi-networking is enabled for this cluster."
+  type        = bool
+}
+
 variable "enable_database_encryption" {
   default     = false
   description = "Enables etcd encryption via Google KMS."
