@@ -223,6 +223,8 @@ module "gke_private" {
   master_ipv4_cidr_block            = var.master_ipv4_cidr_block
   database_encryption               = local.database_encryption
   deletion_protection               = var.deletion_protection
+
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
 }
 
 moved {

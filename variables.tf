@@ -140,6 +140,12 @@ variable "enable_cert_manager" {
   type        = bool
 }
 
+variable "enable_cilium_clusterwide_network_policy" {
+  default     = false
+  description = "Whether CiliumClusterWideNetworkPolicy is enabled on this cluster."
+  type        = bool
+}
+
 variable "enable_database_encryption" {
   default     = false
   description = "Enables etcd encryption via Google KMS."
