@@ -179,6 +179,9 @@ module "gke" {
   subnetwork                        = var.vpc_subnet
   database_encryption               = local.database_encryption
   deletion_protection               = var.deletion_protection
+
+  enable_cilium_clusterwide_network_policy = var.enable_cilium_clusterwide_network_policy
+  enable_multi_networking                  = var.enable_multi_networking
 }
 
 module "gke_private" {
