@@ -70,7 +70,7 @@ variable "cert_issuer_support_email" {
 variable "cluster_autoscaling_config" {
   default = {
     enabled             = false
-    autoscaling_profile = ""
+    autoscaling_profile = "BALANCED"
     max_cpu_cores       = null
     min_cpu_cores       = null
     max_memory_gb       = null
