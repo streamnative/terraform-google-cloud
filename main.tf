@@ -36,7 +36,7 @@ resource "google_kms_crypto_key" "gke_encryption_key" {
 
 # Required for GKE to use the encryption key
 resource "google_project_iam_member" "kms_iam_binding" {
-  count = var.enable_database_encryption ? 1 : 0 # Only create if the feature is enabled
+  count   = var.enable_database_encryption ? 1 : 0 # Only create if the feature is enabled
   project = var.project_id
   role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member  = "serviceAccount:service-${data.google_project.project.number}@container-engine-robot.iam.gserviceaccount.com"
@@ -85,7 +85,21 @@ locals {
     service_account    = var.create_service_account ? "" : var.func_pool_service_account
     version            = var.func_pool_auto_upgrade ? null : var.func_pool_version
   }
-  node_pools = var.enable_func_pool ? [local.default_node_pool_config, local.func_pool_config] : [local.default_node_pool_config]
+  default_node_pool = merge(
+    local.default_node_pool_config,
+    var.enable_private_gke ?
+    {
+      enable_private_nodes = var.enable_private_nodes
+    } : {}
+  )
+  func_pool = merge(
+    local.func_pool_config,
+    var.enable_private_gke ?
+    {
+      enable_private_nodes = var.enable_private_nodes
+    } : {}
+  )
+  node_pools = var.enable_func_pool ? [local.default_node_pool, local.func_pool] : [local.default_node_pool]
   node_pools_labels = {
     all = {
       cluster_name = var.cluster_name

@@ -645,7 +645,7 @@ variable "istio_network_loadbalancer" {
 variable "enable_private_nodes" {
   type        = bool
   description = "Whether nodes have internal IP addresses only, only used for private clusters"
-  default     = true
+  default     = false
 }
 
 variable "master_ipv4_cidr_block" {
