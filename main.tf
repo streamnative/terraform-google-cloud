@@ -87,14 +87,14 @@ locals {
   }
   default_node_pool = merge(
     local.default_node_pool_config,
-    var.enable_private_gke ?
+    !var.enable_private_gke ?
     {
       enable_private_nodes = var.enable_private_nodes
     } : {}
   )
   func_pool = merge(
     local.func_pool_config,
-    var.enable_private_gke ?
+    !var.enable_private_gke ?
     {
       enable_private_nodes = var.enable_private_nodes
     } : {}
@@ -158,7 +158,7 @@ module "gke" {
   count   = var.enable_private_gke ? 0 : 1
   source  = "terraform-google-modules/kubernetes-engine/google"
   name    = var.cluster_name
-  version = "32.0.4"
+  version = "29.0.0"
 
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
