@@ -69,25 +69,27 @@ variable "cert_issuer_support_email" {
 
 variable "cluster_autoscaling_config" {
   default = {
-    enabled       = false
-    max_cpu_cores = null
-    min_cpu_cores = null
-    max_memory_gb = null
-    min_memory_gb = null
-    gpu_resources = []
-    auto_repair   = true
-    auto_upgrade  = false
+    enabled             = false
+    max_cpu_cores       = null
+    min_cpu_cores       = null
+    max_memory_gb       = null
+    min_memory_gb       = null
+    gpu_resources       = []
+    auto_repair         = true
+    auto_upgrade        = false
+    autoscaling_profile = "BALANCED"
   }
   description = "Cluster autoscaling configuration for node auto-provisioning. This is disabled for our configuration, since we typically want to scale existing node pools rather than add new ones to the cluster"
   type = object({
-    enabled       = bool
-    min_cpu_cores = number
-    max_cpu_cores = number
-    min_memory_gb = number
-    max_memory_gb = number
-    gpu_resources = list(object({ resource_type = string, minimum = number, maximum = number }))
-    auto_repair   = bool
-    auto_upgrade  = bool
+    enabled             = bool
+    min_cpu_cores       = number
+    max_cpu_cores       = number
+    min_memory_gb       = number
+    max_memory_gb       = number
+    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))
+    auto_repair         = bool
+    auto_upgrade        = bool
+    autoscaling_profile = string
   })
 }
 

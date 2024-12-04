@@ -46,44 +46,48 @@ locals {
 
   ### Node Pools
   default_node_pool_config = {
-    auto_repair        = var.node_pool_auto_repair
-    auto_upgrade       = var.node_pool_auto_upgrade
-    autoscaling        = var.node_pool_autoscaling
-    disk_size_gb       = var.node_pool_disk_size
-    disk_type          = var.node_pool_disk_type
-    enable_secure_boot = var.node_pool_secure_boot
-    image_type         = var.node_pool_image_type
-    initial_node_count = var.node_pool_autoscaling_initial_count
-    local_ssd_count    = var.node_pool_ssd_count
-    machine_type       = var.node_pool_machine_type
-    max_pods_per_node  = var.node_pool_max_pods_per_node
-    max_count          = var.node_pool_autoscaling_max_size
-    min_count          = var.node_pool_autoscaling_min_size
-    name               = var.node_pool_name
-    node_count         = var.node_pool_autoscaling ? null : var.node_pool_count
-    node_locations     = var.node_pool_locations != "" ? var.node_pool_locations : ""
-    service_account    = var.create_service_account ? "" : var.node_pool_service_account
-    version            = var.node_pool_auto_upgrade ? null : var.node_pool_version
+    auto_repair          = var.node_pool_auto_repair
+    auto_upgrade         = var.node_pool_auto_upgrade
+    autoscaling          = var.node_pool_autoscaling
+    disk_size_gb         = var.node_pool_disk_size
+    disk_type            = var.node_pool_disk_type
+    enable_secure_boot   = var.node_pool_secure_boot
+    image_type           = var.node_pool_image_type
+    initial_node_count   = var.node_pool_autoscaling_initial_count
+    local_ssd_count      = var.node_pool_ssd_count
+    machine_type         = var.node_pool_machine_type
+    pod_range            = var.secondary_ip_range_pods
+    enable_private_nodes = var.enable_private_nodes
+    max_pods_per_node    = var.node_pool_max_pods_per_node
+    max_count            = var.node_pool_autoscaling_max_size
+    min_count            = var.node_pool_autoscaling_min_size
+    name                 = var.node_pool_name
+    node_count           = var.node_pool_autoscaling ? null : var.node_pool_count
+    node_locations       = var.node_pool_locations != "" ? var.node_pool_locations : ""
+    service_account      = var.create_service_account ? "" : var.node_pool_service_account
+    version              = var.node_pool_auto_upgrade ? null : var.node_pool_version
   }
   func_pool_config = {
-    auto_repair        = var.func_pool_auto_repair
-    auto_upgrade       = var.func_pool_auto_upgrade
-    autoscaling        = var.func_pool_autoscaling
-    disk_size_gb       = var.func_pool_disk_size
-    disk_type          = var.func_pool_disk_type
-    enable_secure_boot = var.node_pool_secure_boot
-    image_type         = var.func_pool_image_type
-    initial_node_count = var.func_pool_autoscaling_initial_count
-    local_ssd_count    = var.func_pool_ssd_count
-    machine_type       = var.func_pool_machine_type
-    max_pods_per_node  = var.func_pool_max_pods_per_node
-    max_count          = var.func_pool_autoscaling_max_size
-    min_count          = var.func_pool_autoscaling_min_size
-    name               = var.func_pool_name
-    node_count         = var.func_pool_autoscaling ? null : var.func_pool_count
-    node_locations     = var.func_pool_locations != "" ? var.func_pool_locations : var.node_pool_locations
-    service_account    = var.create_service_account ? "" : var.func_pool_service_account
-    version            = var.func_pool_auto_upgrade ? null : var.func_pool_version
+    auto_repair          = var.func_pool_auto_repair
+    auto_upgrade         = var.func_pool_auto_upgrade
+    autoscaling          = var.func_pool_autoscaling
+    disk_size_gb         = var.func_pool_disk_size
+    disk_type            = var.func_pool_disk_type
+    enable_secure_boot   = var.node_pool_secure_boot
+    image_type           = var.func_pool_image_type
+    initial_node_count   = var.func_pool_autoscaling_initial_count
+    local_ssd_count      = var.func_pool_ssd_count
+    machine_type         = var.func_pool_machine_type
+    pod_range            = var.secondary_ip_range_pods
+    enable_private_nodes = var.enable_private_nodes
+    max_pods_per_node    = var.func_pool_max_pods_per_node
+    max_count            = var.func_pool_autoscaling_max_size
+    min_count            = var.func_pool_autoscaling_min_size
+    name                 = var.func_pool_name
+    node_count           = var.func_pool_autoscaling ? null : var.func_pool_count
+    node_locations       = var.func_pool_locations != "" ? var.func_pool_locations : var.node_pool_locations
+    service_account      = var.create_service_account ? "" : var.func_pool_service_account
+    version              = var.func_pool_auto_upgrade ? null : var.func_pool_version
   }
   default_node_pool = merge(
     local.default_node_pool_config,
@@ -158,7 +162,7 @@ module "gke" {
   count   = var.enable_private_gke ? 0 : 1
   source  = "terraform-google-modules/kubernetes-engine/google"
   name    = var.cluster_name
-  version = "29.0.0"
+  version = "30.3.0"
 
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
@@ -200,7 +204,7 @@ module "gke_private" {
   source = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
 
   name    = var.cluster_name
-  version = "29.0.0"
+  version = "30.3.0"
 
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
