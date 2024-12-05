@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.5...v0.4.0) (2024-12-05)
+
+
+### Features
+
+* Support private nodes on public GKE ([#57](https://github.com/streamnative/terraform-google-cloud/issues/57)) ([beff464](https://github.com/streamnative/terraform-google-cloud/commit/beff464bad392bc444642a5ba76d7d9c0c355f2b))
+
 ## [0.3.5](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.4...v0.3.5) (2024-06-07)
 
 
