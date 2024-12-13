@@ -161,9 +161,9 @@ locals {
 module "gke" {
   count   = var.enable_private_gke ? 0 : 1
   source  = "terraform-google-modules/kubernetes-engine/google"
-  name    = var.cluster_name
   version = "30.3.0"
 
+  name                              = var.cluster_name
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
   add_shadow_firewall_rules         = var.add_shadow_firewall_rules
@@ -200,12 +200,11 @@ module "gke" {
 }
 
 module "gke_private" {
-  count  = var.enable_private_gke ? 1 : 0
-  source = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-
-  name    = var.cluster_name
+  count   = var.enable_private_gke ? 1 : 0
+  source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
   version = "30.3.0"
 
+  name                              = var.cluster_name
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
   add_master_webhook_firewall_rules = var.add_master_webhook_firewall_rules
   add_shadow_firewall_rules         = var.add_shadow_firewall_rules
