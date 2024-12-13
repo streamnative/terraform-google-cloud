@@ -53,7 +53,7 @@ No modules.
 | <a name="input_bucket_encryption_kms_key_id"></a> [bucket\_encryption\_kms\_key\_id](#input\_bucket\_encryption\_kms\_key\_id) | KMS key id to use for bucket encryption. If not set, the gcp default key will be used | `string` | `null` | no |
 | <a name="input_bucket_location"></a> [bucket\_location](#input\_bucket\_location) | The location of the bucket | `string` | n/a | yes |
 | <a name="input_bucket_tiered_storage_soft_delete"></a> [bucket\_tiered\_storage\_soft\_delete](#input\_bucket\_tiered\_storage\_soft\_delete) | Set the soft deletion policy, if false soft deletes will be disabled. | `bool` | `true` | no |
-| <a name="input_bucket_uniform_bucket_level_access"></a> [bucket\_uniform\_bucket\_level\_access](#input\_bucket\_uniform\_bucket\_level\_access) | Enables Uniform bucket-level access access to a bucket. | `bool` | `false` | no |
+| <a name="input_bucket_uniform_bucket_level_access"></a> [bucket\_uniform\_bucket\_level\_access](#input\_bucket\_uniform\_bucket\_level\_access) | Enables Uniform bucket-level access access to a bucket. | `bool` | `true` | no |
 | <a name="input_custom_dns_zone_id"></a> [custom\_dns\_zone\_id](#input\_custom\_dns\_zone\_id) | if specified, then a streamnative zone will not be created, and this zone will be used instead. Otherwise, we will provision a new zone and delegate access | `string` | `""` | no |
 | <a name="input_custom_dns_zone_name"></a> [custom\_dns\_zone\_name](#input\_custom\_dns\_zone\_name) | must be passed if custom\_dns\_zone\_id is passed, this is the zone name to use | `string` | `""` | no |
 | <a name="input_parent_zone_name"></a> [parent\_zone\_name](#input\_parent\_zone\_name) | The parent zone in which we create the delegation records | `string` | n/a | yes |

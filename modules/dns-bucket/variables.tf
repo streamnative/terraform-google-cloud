@@ -13,8 +13,8 @@
 # limitations under the License.
 
 variable "pm_name" {
-  description = "The name of the poolmember, for new clusters, this should be like `pm-<xxxxx>`"
   type        = string
+  description = "The name of the poolmember, for new clusters, this should be like `pm-<xxxxx>`"
 }
 
 variable "parent_zone_name" {
@@ -40,25 +40,25 @@ variable "bucket_location" {
 }
 
 variable "bucket_encryption_kms_key_id" {
+  type        = string
   default     = null
   description = "KMS key id to use for bucket encryption. If not set, the gcp default key will be used"
-  type        = string
 }
 
 variable "bucket_uniform_bucket_level_access" {
-  default     = false
-  description = "Enables Uniform bucket-level access access to a bucket."
   type        = bool
+  default     = true
+  description = "Enables Uniform bucket-level access access to a bucket."
 }
 
 variable "bucket_tiered_storage_soft_delete" {
+  type        = bool
   default     = true
   description = "Set the soft deletion policy, if false soft deletes will be disabled."
-  type        = bool
 }
 
 variable "bucket_cluster_backup_soft_delete" {
+  type        = bool
   default     = true
   description = "Set the soft deletion policy, if false soft deletes will be disabled."
-  type        = bool
 }
