@@ -74,3 +74,9 @@ variable "secondary_ip_range_services_name" {
   default     = "ip-range-svc"
   description = "The name of the secondary IP range for services"
 }
+
+variable "nat_gateway_name" {
+  type        = string
+  default     = "sn-nat-gateway"
+  description = "The name of Cloud NAT Gateway"
+}

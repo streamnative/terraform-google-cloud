@@ -67,6 +67,6 @@ module "cloud_router" {
   region  = var.region
 
   nats = [{
-    name = "sn-nat-gateway"
+    name = var.nat_gateway_name
   }]
 }
