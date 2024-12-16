@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.4.0...v0.5.0) (2024-12-13)
+
+
+### Features
+
+* add dns bucket submodule ([#59](https://github.com/streamnative/terraform-google-cloud/issues/59)) ([5437cf5](https://github.com/streamnative/terraform-google-cloud/commit/5437cf555c61c44b29787ec988a90f292ac721f2))
+* add vpc submodule ([#58](https://github.com/streamnative/terraform-google-cloud/issues/58)) ([4934c8c](https://github.com/streamnative/terraform-google-cloud/commit/4934c8ce040bc811fce8fe25e9f60d0ef05ca172))
+
 ## [0.4.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.3.5...v0.4.0) (2024-12-05)
 
 
