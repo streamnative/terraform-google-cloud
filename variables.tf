@@ -454,6 +454,11 @@ variable "master_authorized_networks" {
   type        = list(object({ cidr_block = string, display_name = string }))
 }
 
+variable "gcp_public_cidrs_access_enabled" {
+  default = false
+  description = "Enable access from GCP public CIDRs. Defaults to false."
+}
+
 variable "node_pool_autoscaling" {
   default     = true
   description = "Enable autoscaling of the default node pool. Defaults to \"true\"."
