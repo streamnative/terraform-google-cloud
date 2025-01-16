@@ -182,7 +182,7 @@ module "gke" {
   maintenance_exclusions            = var.maintenance_exclusions
   maintenance_start_time            = var.maintenance_window
   master_authorized_networks        = var.master_authorized_networks
-  gcp_public_cidrs_access_enabled   = var.gcp_public_cidrs_access_enabled
+  gcp_public_cidrs_access_enabled   = length(var.master_authorized_networks) > 0 ? var.gcp_public_cidrs_access_enabled : null
   network                           = var.vpc_network
   network_project_id                = var.network_project_id
   network_policy                    = var.cluster_network_policy
