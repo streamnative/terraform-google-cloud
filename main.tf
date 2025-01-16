@@ -161,7 +161,7 @@ locals {
 module "gke" {
   count   = var.enable_private_gke ? 0 : 1
   source  = "terraform-google-modules/kubernetes-engine/google"
-  version = "30.3.0"
+  version = "33.1.0"
 
   name                              = var.cluster_name
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
@@ -182,6 +182,7 @@ module "gke" {
   maintenance_exclusions            = var.maintenance_exclusions
   maintenance_start_time            = var.maintenance_window
   master_authorized_networks        = var.master_authorized_networks
+  gcp_public_cidrs_access_enabled   = var.gcp_public_cidrs_access_enabled
   network                           = var.vpc_network
   network_project_id                = var.network_project_id
   network_policy                    = var.cluster_network_policy
@@ -202,7 +203,7 @@ module "gke" {
 module "gke_private" {
   count   = var.enable_private_gke ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-  version = "30.3.0"
+  version = "33.1.0"
 
   name                              = var.cluster_name
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules

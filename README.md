@@ -40,9 +40,9 @@ tf apply
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 5.19 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | ~> 2.2 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | ~> 2.8 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.45.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.17.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.35.1 |
 
 ## Modules
 
@@ -51,8 +51,8 @@ tf apply
 | <a name="module_cert_manager_sa"></a> [cert\_manager\_sa](#module\_cert\_manager\_sa) | terraform-google-modules/kubernetes-engine/google//modules/workload-identity | 30.1.0 |
 | <a name="module_external_dns_sa"></a> [external\_dns\_sa](#module\_external\_dns\_sa) | terraform-google-modules/kubernetes-engine/google//modules/workload-identity | 30.1.0 |
 | <a name="module_external_secrets_sa"></a> [external\_secrets\_sa](#module\_external\_secrets\_sa) | terraform-google-modules/kubernetes-engine/google//modules/workload-identity | 30.1.0 |
-| <a name="module_gke"></a> [gke](#module\_gke) | terraform-google-modules/kubernetes-engine/google | 29.0.0 |
-| <a name="module_gke_private"></a> [gke\_private](#module\_gke\_private) | terraform-google-modules/kubernetes-engine/google//modules/private-cluster | 29.0.0 |
+| <a name="module_gke"></a> [gke](#module\_gke) | terraform-google-modules/kubernetes-engine/google | 33.1.0 |
+| <a name="module_gke_private"></a> [gke\_private](#module\_gke\_private) | terraform-google-modules/kubernetes-engine/google//modules/private-cluster | 33.1.0 |
 | <a name="module_istio"></a> [istio](#module\_istio) | github.com/streamnative/terraform-helm-charts//modules/istio-operator | master |
 
 ## Resources
@@ -91,7 +91,7 @@ tf apply
 | <a name="input_cilium_helm_chart_name"></a> [cilium\_helm\_chart\_name](#input\_cilium\_helm\_chart\_name) | The name of the Helm chart in the repository for Cilium. | `string` | `"cilium"` | no |
 | <a name="input_cilium_helm_chart_repository"></a> [cilium\_helm\_chart\_repository](#input\_cilium\_helm\_chart\_repository) | The repository containing the Cilium helm chart. | `string` | `"https://helm.cilium.io"` | no |
 | <a name="input_cilium_helm_chart_version"></a> [cilium\_helm\_chart\_version](#input\_cilium\_helm\_chart\_version) | Helm chart version for Cilium. See https://artifacthub.io/packages/helm/cilium/cilium for updates. | `string` | `"1.13.2"` | no |
-| <a name="input_cluster_autoscaling_config"></a> [cluster\_autoscaling\_config](#input\_cluster\_autoscaling\_config) | Cluster autoscaling configuration for node auto-provisioning. This is disabled for our configuration, since we typically want to scale existing node pools rather than add new ones to the cluster | <pre>object({<br>    enabled       = bool<br>    min_cpu_cores = number<br>    max_cpu_cores = number<br>    min_memory_gb = number<br>    max_memory_gb = number<br>    gpu_resources = list(object({ resource_type = string, minimum = number, maximum = number }))<br>    auto_repair   = bool<br>    auto_upgrade  = bool<br>  })</pre> | <pre>{<br>  "auto_repair": true,<br>  "auto_upgrade": false,<br>  "enabled": false,<br>  "gpu_resources": [],<br>  "max_cpu_cores": null,<br>  "max_memory_gb": null,<br>  "min_cpu_cores": null,<br>  "min_memory_gb": null<br>}</pre> | no |
+| <a name="input_cluster_autoscaling_config"></a> [cluster\_autoscaling\_config](#input\_cluster\_autoscaling\_config) | Cluster autoscaling configuration for node auto-provisioning. This is disabled for our configuration, since we typically want to scale existing node pools rather than add new ones to the cluster | <pre>object({<br>    enabled             = bool<br>    min_cpu_cores       = number<br>    max_cpu_cores       = number<br>    min_memory_gb       = number<br>    max_memory_gb       = number<br>    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))<br>    auto_repair         = bool<br>    auto_upgrade        = bool<br>    autoscaling_profile = string<br>  })</pre> | <pre>{<br>  "auto_repair": true,<br>  "auto_upgrade": false,<br>  "autoscaling_profile": "BALANCED",<br>  "enabled": false,<br>  "gpu_resources": [],<br>  "max_cpu_cores": null,<br>  "max_memory_gb": null,<br>  "min_cpu_cores": null,<br>  "min_memory_gb": null<br>}</pre> | no |
 | <a name="input_cluster_http_load_balancing"></a> [cluster\_http\_load\_balancing](#input\_cluster\_http\_load\_balancing) | Enable the HTTP load balancing addon for the cluster. Defaults to "true" | `bool` | `true` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name of your GKE cluster. | `string` | n/a | yes |
 | <a name="input_cluster_network_policy"></a> [cluster\_network\_policy](#input\_cluster\_network\_policy) | Enable the network policy addon for the cluster. Defaults to "true", and uses CALICO as the provider | `bool` | `true` | no |
@@ -108,7 +108,7 @@ tf apply
 | <a name="input_enable_func_pool"></a> [enable\_func\_pool](#input\_enable\_func\_pool) | Enable an additional dedicated pool for Pulsar Functions. Enabled by default. | `bool` | `true` | no |
 | <a name="input_enable_istio"></a> [enable\_istio](#input\_enable\_istio) | Enables Istio on the cluster. Set to "false" by default. | `bool` | `false` | no |
 | <a name="input_enable_private_gke"></a> [enable\_private\_gke](#input\_enable\_private\_gke) | Enables private GKE cluster, where nodes are not publicly accessible. Defaults to "false". | `bool` | `false` | no |
-| <a name="input_enable_private_nodes"></a> [enable\_private\_nodes](#input\_enable\_private\_nodes) | Whether nodes have internal IP addresses only, only used for private clusters | `bool` | `true` | no |
+| <a name="input_enable_private_nodes"></a> [enable\_private\_nodes](#input\_enable\_private\_nodes) | Whether nodes have internal IP addresses only. | `bool` | `false` | no |
 | <a name="input_enable_resource_creation"></a> [enable\_resource\_creation](#input\_enable\_resource\_creation) | When enabled, all dependencies, like service accounts, buckets, etc will be created. When disabled, they will note. Use in combination with `enable_<app>` to manage these outside this module | `bool` | `true` | no |
 | <a name="input_external_dns_helm_chart_name"></a> [external\_dns\_helm\_chart\_name](#input\_external\_dns\_helm\_chart\_name) | The name of the Helm chart in the repository for ExternalDNS. | `string` | `"external-dns"` | no |
 | <a name="input_external_dns_helm_chart_repository"></a> [external\_dns\_helm\_chart\_repository](#input\_external\_dns\_helm\_chart\_repository) | The repository containing the ExternalDNS helm chart. | `string` | `"https://charts.bitnami.com/bitnami"` | no |
@@ -138,6 +138,7 @@ tf apply
 | <a name="input_func_pool_service_account"></a> [func\_pool\_service\_account](#input\_func\_pool\_service\_account) | The service account email address to use for the Pulsar Functions pool. If create\_service\_account is set to true, it will use the the output from the module. | `string` | `""` | no |
 | <a name="input_func_pool_ssd_count"></a> [func\_pool\_ssd\_count](#input\_func\_pool\_ssd\_count) | The number of SSDs to attach to each node in the Pulsar Functions pool. Defaults to 0. | `number` | `0` | no |
 | <a name="input_func_pool_version"></a> [func\_pool\_version](#input\_func\_pool\_version) | The version of Kubernetes to use for the Pulsar Functions pool. If the input "release\_channel" is not defined, defaults to "kubernetes\_version" used for the cluster. Should only be defined while "func\_pool\_auto\_upgrade" is also set to "false". | `string` | `""` | no |
+| <a name="input_gcp_public_cidrs_access_enabled"></a> [gcp\_public\_cidrs\_access\_enabled](#input\_gcp\_public\_cidrs\_access\_enabled) | Enable access from GCP public CIDRs. Defaults to false. | `bool` | `false` | no |
 | <a name="input_google_service_account"></a> [google\_service\_account](#input\_google\_service\_account) | when set, don't create GSAs and instead use the this service account for all apps | `string` | `""` | no |
 | <a name="input_horizontal_pod_autoscaling"></a> [horizontal\_pod\_autoscaling](#input\_horizontal\_pod\_autoscaling) | Enable horizontal pod autoscaling for the cluster. Defaults to "true". | `bool` | `true` | no |
 | <a name="input_istio_chart_version"></a> [istio\_chart\_version](#input\_istio\_chart\_version) | The version of the istio chart to use | `string` | `"2.11"` | no |
