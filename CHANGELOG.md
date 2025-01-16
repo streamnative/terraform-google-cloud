@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/streamnative/terraform-google-cloud/compare/v0.5.1...v0.5.2) (2025-01-16)
+
+
+### Bug Fixes
+
+* Unset gcp_public_cidrs_access_enabled in default case ([#64](https://github.com/streamnative/terraform-google-cloud/issues/64)) ([6f287b8](https://github.com/streamnative/terraform-google-cloud/commit/6f287b86299f52e83e226499622fd890de19955e))
+
 ## [0.5.1](https://github.com/streamnative/terraform-google-cloud/compare/v0.5.0...v0.5.1) (2025-01-16)
 
 
