@@ -455,8 +455,9 @@ variable "master_authorized_networks" {
 }
 
 variable "gcp_public_cidrs_access_enabled" {
-  default = false
+  default     = false
   description = "Enable access from GCP public CIDRs. Defaults to false."
+  type        = bool
 }
 
 variable "node_pool_autoscaling" {
