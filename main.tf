@@ -66,6 +66,7 @@ locals {
     node_locations       = var.node_pool_locations != "" ? var.node_pool_locations : ""
     service_account      = var.create_service_account ? "" : var.node_pool_service_account
     version              = var.node_pool_auto_upgrade ? null : var.node_pool_version
+    spot                 = var.enable_spot
   }
   func_pool_config = {
     auto_repair          = var.func_pool_auto_repair

@@ -667,3 +667,9 @@ variable "deletion_protection" {
   description = "Whether or not to allow Terraform to destroy the cluster."
   default     = true
 }
+
+variable "enable_spot" {
+  type        = bool
+  default     = true
+  description = "Enale Spot instance or not"
+}
