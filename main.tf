@@ -198,6 +198,7 @@ module "gke" {
   subnetwork                        = var.vpc_subnet
   database_encryption               = local.database_encryption
   deletion_protection               = var.deletion_protection
+  enable_l4_ilb_subsetting          = var.enable_l4_ilb_subsetting
 }
 
 module "gke_private" {

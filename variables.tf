@@ -667,3 +667,9 @@ variable "deletion_protection" {
   description = "Whether or not to allow Terraform to destroy the cluster."
   default     = true
 }
+
+variable "enable_l4_ilb_subsetting" {
+  type        = bool
+  description = "Enable L4 ILB Subsetting on the cluster, this cannot be disabled once it has been enabled."
+  default     = false
+}
