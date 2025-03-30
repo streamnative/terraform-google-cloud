@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.5.2...v0.6.0) (2025-03-30)
+
+
+### Features
+
+* Expose GKE l4 subsetting option ([#66](https://github.com/streamnative/terraform-google-cloud/issues/66)) ([b1d88fd](https://github.com/streamnative/terraform-google-cloud/commit/b1d88fdb0bfe3dda6ab8a6ce0a5f5bee190cbebd))
+
 ## [0.5.2](https://github.com/streamnative/terraform-google-cloud/compare/v0.5.1...v0.5.2) (2025-01-16)
 
 
