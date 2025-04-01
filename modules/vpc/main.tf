@@ -19,7 +19,18 @@ locals {
 
 module "network" {
   source  = "terraform-google-modules/network/google"
-  version = ">= 4.1.0, < 7.2.0"
+  version = "8.1.0"
+  # required_providers {
+  #   google = {
+  #     source  = "hashicorp/google"
+  #     version = ">= 4.64, < 6"
+  #   }
+  #   google-beta = {
+  #     source  = "hashicorp/google-beta"
+  #     version = ">= 4.64, < 6"
+  #   }
+  # }
+
   # TODO: wait for fix release https://github.com/terraform-google-modules/terraform-google-network/pull/479
   # this bug will make properties on subnet won't take effect, like purpose
 
@@ -59,7 +70,13 @@ module "network" {
 
 module "cloud_router" {
   source  = "terraform-google-modules/cloud-router/google"
-  version = "~> 5.0"
+  version = "6.0.2"
+  # required_providers {
+  #   google = {
+  #     source  = "hashicorp/google"
+  #     version = ">= 4.51, < 6"
+  #   }
+  # }
 
   project = var.project
   name    = "${var.network_name}-sn-router"
