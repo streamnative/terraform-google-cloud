@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.6.0...v0.7.0) (2025-04-02)
+
+
+### Features
+
+* Upgrade submodules to use google provider 6.x ([#68](https://github.com/streamnative/terraform-google-cloud/issues/68)) ([1eae90d](https://github.com/streamnative/terraform-google-cloud/commit/1eae90d55120c99256aa0cceba486eec33d36399))
+
 ## [0.6.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.5.2...v0.6.0) (2025-03-30)
 
 
