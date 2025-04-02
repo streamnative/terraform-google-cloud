@@ -19,15 +19,15 @@ locals {
 
 module "network" {
   source  = "terraform-google-modules/network/google"
-  version = "8.1.0"
+  version = "10.0.0"
   # required_providers {
   #   google = {
   #     source  = "hashicorp/google"
-  #     version = ">= 4.64, < 6"
+  #     version = ">= 4.64, < 7"
   #   }
   #   google-beta = {
   #     source  = "hashicorp/google-beta"
-  #     version = ">= 4.64, < 6"
+  #     version = ">= 4.64, < 7"
   #   }
   # }
 
@@ -70,7 +70,7 @@ module "network" {
 
 module "cloud_router" {
   source  = "terraform-google-modules/cloud-router/google"
-  version = "6.0.2"
+  version = "6.3.0"
   # required_providers {
   #   google = {
   #     source  = "hashicorp/google"
