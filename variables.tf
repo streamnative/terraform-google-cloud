@@ -134,27 +134,9 @@ variable "default_max_pods_per_node" {
   default     = 110
 }
 
-variable "enable_cert_manager" {
-  default     = true
-  description = "Enables the Cert-Manager addon service on the cluster. Defaults to \"true\", and in most situations is required by StreamNative Cloud."
-  type        = bool
-}
-
 variable "enable_database_encryption" {
   default     = false
   description = "Enables etcd encryption via Google KMS."
-  type        = bool
-}
-
-variable "enable_external_dns" {
-  default     = true
-  description = "Enables the External DNS addon service on the cluster. Defaults to \"true\", and in most situations is required by StreamNative Cloud."
-  type        = bool
-}
-
-variable "enable_external_secrets" {
-  default     = true
-  description = "Enables kubernetes-external-secrets on the cluster, which uses GCP Secret Manager as the secrets backend"
   type        = bool
 }
 
@@ -163,13 +145,6 @@ variable "enable_func_pool" {
   description = "Enable an additional dedicated pool for Pulsar Functions. Enabled by default."
   type        = bool
 }
-
-variable "enable_istio" {
-  default     = false
-  description = "Enables Istio on the cluster. Set to \"false\" by default."
-  type        = bool
-}
-
 
 variable "enable_private_gke" {
   default     = false
@@ -602,12 +577,6 @@ variable "secondary_ip_range_services" {
   type        = string
 }
 
-variable "service_domain" {
-  default     = null
-  description = "The DNS domain for external service endpoints. This must be set when enabling Istio or else the deployment will fail."
-  type        = string
-}
-
 variable "suffix" {
   default     = ""
   description = "A unique string that is used to distinguish cluster resources, where name length constraints are imposed by GKE. Defaults to an empty string."
@@ -638,16 +607,6 @@ variable "network_project_id" {
   default     = ""
   description = "If using a different project, the id of the project"
   type        = string
-}
-
-variable "istio_network_loadbalancer" {
-  type    = string
-  default = "internet_facing"
-
-  validation {
-    condition     = contains(["internet_facing", "internal_only"], var.istio_network_loadbalancer)
-    error_message = "Allowed values for input_parameter are \"internet_facing\" or \"internal_only\"."
-  }
 }
 
 variable "enable_private_nodes" {

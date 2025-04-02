@@ -127,15 +127,7 @@ locals {
   }
 
   node_pools_taints = {
-    all = [
-      for each in [
-        {
-          key    = "node.cilium.io/agent-not-ready"
-          value  = true
-          effect = "NO_EXECUTE"
-        }
-      ] : each if var.enable_cilium
-    ]
+    all = []
 
     default-node-pool = [
       {
