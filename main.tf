@@ -197,6 +197,20 @@ module "gke_private" {
   count   = var.enable_private_gke ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
   version = "33.1.0"
+  # required_providers {
+  #   google = {
+  #     source  = "hashicorp/google"
+  #     version = ">= 5.40.0, < 7"
+  #   }
+  #   kubernetes = {
+  #     source  = "hashicorp/kubernetes"
+  #     version = "~> 2.10"
+  #   }
+  #   random = {
+  #     source  = "hashicorp/random"
+  #     version = ">= 2.1"
+  #   }
+  # }
 
   name                              = var.cluster_name
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules

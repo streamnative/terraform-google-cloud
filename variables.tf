@@ -36,37 +36,6 @@ variable "authenticator_security_group" {
   type        = string
 }
 
-variable "cert_manager_helm_chart_repository" {
-  default     = "https://charts.bitnami.com/bitnami"
-  description = "The location of the helm chart to use for Cert Manager."
-  type        = string
-}
-
-variable "cert_manager_helm_chart_name" {
-  default     = "cert-manager"
-  description = "The name of the Cert Manager Helm chart to be used."
-  type        = string
-}
-
-variable "cert_manager_helm_chart_version" {
-  default     = "0.7.8"
-  description = "The version of the Cert Manager helm chart to install. Defaults to \"0.7.8\"."
-  type        = string
-}
-
-variable "cert_manager_settings" {
-  default     = {}
-  description = "Additional settings which will be passed to the Helm chart values. See https://github.com/bitnami/charts/tree/master/bitnami/cert-manager for detailed options."
-  type        = map(any)
-}
-
-variable "cert_issuer_support_email" {
-  default     = "certs-support@streamnative.io"
-  description = "The email address to receive notifications from the cert issuer."
-  type        = string
-}
-
-
 variable "cluster_autoscaling_config" {
   default = {
     enabled             = false
@@ -151,70 +120,13 @@ variable "enable_private_gke" {
   description = "Enables private GKE cluster, where nodes are not publicly accessible. Defaults to \"false\"."
   type        = bool
 }
+
+
+// TODO: deprecate this variable
 variable "enable_resource_creation" {
   default     = true
   description = "When enabled, all dependencies, like service accounts, buckets, etc will be created. When disabled, they will note. Use in combination with `enable_<app>` to manage these outside this module"
   type        = bool
-}
-
-variable "external_dns_helm_chart_name" {
-  default     = "external-dns"
-  description = "The name of the Helm chart in the repository for ExternalDNS."
-  type        = string
-}
-
-variable "external_dns_helm_chart_repository" {
-  default     = "https://charts.bitnami.com/bitnami"
-  description = "The repository containing the ExternalDNS helm chart."
-  type        = string
-}
-
-variable "external_dns_helm_chart_version" {
-  default     = "6.15.0"
-  description = "Helm chart version for ExternalDNS. See https://github.com/bitnami/charts/tree/master/bitnami/external-dns for updates."
-  type        = string
-}
-
-variable "external_dns_policy" {
-  default     = "upsert-only"
-  description = "Sets how DNS records are managed by ExternalDNS. Options are \"sync\", which allows ExternalDNS to create and delete records, or \"upsert_only\", which only allows for the creation of records"
-  type        = string
-}
-
-variable "external_dns_settings" {
-  default     = {}
-  description = "Additional settings which will be passed to the Helm chart values, see https://github.com/bitnami/charts/tree/master/bitnami/external-dns for detailed options."
-  type        = map(any)
-}
-
-variable "external_dns_version" {
-  default     = "5.2.2"
-  description = "The version of the ExternalDNS helm chart to install. Defaults to \"5.2.2\"."
-  type        = string
-}
-
-variable "external_secrets_helm_chart_name" {
-  default     = "kubernetes-external-secrets"
-  description = "The name of the Helm chart in the repository for kubernetes-external-secrets"
-  type        = string
-}
-
-variable "external_secrets_helm_chart_repository" {
-  default     = "https://external-secrets.github.io/kubernetes-external-secrets"
-  description = "The repository containing the kubernetes-external-secrets helm chart"
-  type        = string
-}
-
-variable "external_secrets_helm_chart_version" {
-  default     = "8.3.0"
-  description = "Helm chart version for kubernetes-external-secrets. Defaults to \"8.3.0\". See https://github.com/external-secrets/kubernetes-external-secrets/tree/master/charts/kubernetes-external-secrets for updates"
-  type        = string
-}
-
-variable "external_secrets_settings" {
-  default     = {}
-  description = "Additional settings which will be passed to the Helm chart values, see https://github.com/external-secrets/kubernetes-external-secrets/tree/master/charts/kubernetes-external-secrets for available options"
-  type        = map(any)
 }
 
 variable "firewall_inbound_ports" {
@@ -331,60 +243,6 @@ variable "google_service_account" {
   default     = ""
   description = "when set, don't create GSAs and instead use the this service account for all apps"
   type        = string
-}
-
-variable "horizontal_pod_autoscaling" {
-  default     = true
-  description = "Enable horizontal pod autoscaling for the cluster. Defaults to \"true\"."
-  type        = bool
-}
-
-variable "istio_mesh_id" {
-  default     = null
-  description = "The ID used by the Istio mesh. This is also the ID of the StreamNative Cloud Pool used for the workload environments. This is required when \"enable_istio_operator\" is set to \"true\"."
-  type        = string
-}
-
-variable "istio_network" {
-  default     = "default"
-  description = "The name of network used for the Istio deployment. This is required when \"enable_istio_operator\" is set to \"true\"."
-  type        = string
-}
-
-variable "istio_profile" {
-  default     = "default"
-  description = "The path or name for an Istio profile to load. Set to the profile \"default\" if not specified."
-  type        = string
-}
-
-variable "istio_revision_tag" {
-  default     = "sn-stable"
-  description = "The revision tag value use for the Istio label \"istio.io/rev\"."
-  type        = string
-}
-
-variable "istio_trust_domain" {
-  default     = "cluster.local"
-  description = "The trust domain used for the Istio deployment, which corresponds to the root of a system. This is required when \"enable_istio_operator\" is set to \"true\"."
-  type        = string
-}
-
-variable "istio_settings" {
-  default     = {}
-  description = "Additional settings which will be passed to the Helm chart values"
-  type        = map(any)
-}
-
-variable "istio_chart_version" {
-  default     = "2.11"
-  description = "The version of the istio chart to use"
-  type        = string
-}
-
-variable "kiali_operator_settings" {
-  default     = {}
-  description = "Additional settings which will be passed to the Helm chart values"
-  type        = map(any)
 }
 
 variable "kubernetes_version" {
