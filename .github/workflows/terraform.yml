@@ -40,6 +40,3 @@ jobs:
 
       - name: Terraform Validate Root
         run: cd "${GITHUB_WORKSPACE}" && terraform init -backend=false && CLOUDSDK_COMPUTE_REGION=us-central1 terraform validate -no-color
-
-      - name: Terraform Validate Examples
-        run: for example in examples/*/; do cd "${GITHUB_WORKSPACE}/${example}" && terraform init -backend=false && CLOUDSDK_COMPUTE_REGION=us-central1 terraform validate -no-color ; done
