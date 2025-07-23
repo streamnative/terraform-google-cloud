@@ -30,6 +30,6 @@ output "backup_bucket" {
 }
 
 output "loki_bucket" {
-  value = var.enable_loki ? google_storage_bucket.loki.name : ""
+  value = var.enable_loki ? google_storage_bucket.loki[0].name : ""
 }
 
