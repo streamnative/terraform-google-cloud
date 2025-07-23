@@ -20,6 +20,16 @@ output "zone_name" {
   value = local.zone_name
 }
 
+
+output "tiered_storage_bucket" {
+  value = google_storage_bucket.tiered_storage.name
+}
+
 output "backup_bucket" {
   value = google_storage_bucket.velero.name
 }
+
+output "loki_bucket" {
+  value = var.enable_loki ? google_storage_bucket.loki.name : ""
+}
+

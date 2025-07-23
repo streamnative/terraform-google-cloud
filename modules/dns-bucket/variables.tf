@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+variable "pm_namespace" {
+  type        = string
+  description = "The namespace of the poolmember"
+}
+
 variable "pm_name" {
   type        = string
   description = "The name of the poolmember, for new clusters, this should be like `pm-<xxxxx>`"
@@ -61,4 +66,10 @@ variable "bucket_cluster_backup_soft_delete" {
   type        = bool
   default     = true
   description = "Set the soft deletion policy, if false soft deletes will be disabled."
+}
+
+variable "enable_loki" {
+  type        = bool
+  default     = false
+  description = "Enable loki storage bucket creation"
 }
