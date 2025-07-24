@@ -49,3 +49,22 @@ resource "google_storage_bucket" "tiered_storage" {
     }
   }
 }
+
+resource "google_storage_bucket" "loki" {
+  count  = var.enable_loki ? 1 : 0
+
+  name     = format("loki-%s-%s", var.pm_namespace, var.pm_name)
+  provider = google.source
+
+  location                    = var.bucket_location
+  uniform_bucket_level_access = var.bucket_uniform_bucket_level_access
+  force_destroy               = true
+
+  dynamic "soft_delete_policy" {
+    for_each = !var.bucket_cluster_backup_soft_delete ? ["apply"] : []
+    content {
+      retention_duration_seconds = 0
+    }
+  }
+}
+

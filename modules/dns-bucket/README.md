@@ -28,8 +28,8 @@ A basic module used to create Cloud DNS Zone and Storage Buckets.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google.source"></a> [google.source](#provider\_google.source) | n/a |
-| <a name="provider_google.target"></a> [google.target](#provider\_google.target) | n/a |
+| <a name="provider_google.source"></a> [google.source](#provider\_google.source) | 6.28.0 |
+| <a name="provider_google.target"></a> [google.target](#provider\_google.target) | 6.28.0 |
 
 ## Modules
 
@@ -41,6 +41,7 @@ No modules.
 |------|------|
 | [google_dns_managed_zone.zone](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/dns_managed_zone) | resource |
 | [google_dns_record_set.delegate](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/dns_record_set) | resource |
+| [google_storage_bucket.loki](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket) | resource |
 | [google_storage_bucket.tiered_storage](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket) | resource |
 | [google_storage_bucket.velero](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket) | resource |
 | [google_dns_managed_zone.sn](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/dns_managed_zone) | data source |
@@ -56,14 +57,18 @@ No modules.
 | <a name="input_bucket_uniform_bucket_level_access"></a> [bucket\_uniform\_bucket\_level\_access](#input\_bucket\_uniform\_bucket\_level\_access) | Enables Uniform bucket-level access access to a bucket. | `bool` | `true` | no |
 | <a name="input_custom_dns_zone_id"></a> [custom\_dns\_zone\_id](#input\_custom\_dns\_zone\_id) | if specified, then a streamnative zone will not be created, and this zone will be used instead. Otherwise, we will provision a new zone and delegate access | `string` | `""` | no |
 | <a name="input_custom_dns_zone_name"></a> [custom\_dns\_zone\_name](#input\_custom\_dns\_zone\_name) | must be passed if custom\_dns\_zone\_id is passed, this is the zone name to use | `string` | `""` | no |
+| <a name="input_enable_loki"></a> [enable\_loki](#input\_enable\_loki) | Enable loki storage bucket creation | `bool` | `false` | no |
 | <a name="input_parent_zone_name"></a> [parent\_zone\_name](#input\_parent\_zone\_name) | The parent zone in which we create the delegation records | `string` | n/a | yes |
 | <a name="input_pm_name"></a> [pm\_name](#input\_pm\_name) | The name of the poolmember, for new clusters, this should be like `pm-<xxxxx>` | `string` | n/a | yes |
+| <a name="input_pm_namespace"></a> [pm\_namespace](#input\_pm\_namespace) | The namespace of the poolmember | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_backup_bucket"></a> [backup\_bucket](#output\_backup\_bucket) | n/a |
+| <a name="output_loki_bucket"></a> [loki\_bucket](#output\_loki\_bucket) | n/a |
+| <a name="output_tiered_storage_bucket"></a> [tiered\_storage\_bucket](#output\_tiered\_storage\_bucket) | n/a |
 | <a name="output_zone_id"></a> [zone\_id](#output\_zone\_id) | n/a |
 | <a name="output_zone_name"></a> [zone\_name](#output\_zone\_name) | n/a |
 <!-- END_TF_DOCS -->
