@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.7.0...v0.8.0) (2025-07-24)
+
+
+### Features
+
+* Support loki bucket creation ([#70](https://github.com/streamnative/terraform-google-cloud/issues/70)) ([e3de376](https://github.com/streamnative/terraform-google-cloud/commit/e3de3763a801a77d68bf3ef54a18b90744cbfb61))
+
 ## [0.7.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.6.0...v0.7.0) (2025-04-02)
 
 
