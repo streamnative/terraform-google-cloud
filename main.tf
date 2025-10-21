@@ -248,8 +248,11 @@ module "gke_private" {
   remove_default_node_pool          = true
   release_channel                   = var.release_channel
   subnetwork                        = var.vpc_subnet
+  enable_private_endpoint           = var.enable_private_endpoint
   enable_private_nodes              = var.enable_private_nodes
+  private_endpoint_subnetwork       = var.private_endpoint_subnetwork
   master_ipv4_cidr_block            = var.master_ipv4_cidr_block
+  master_global_access_enabled      = var.master_global_access_enabled
   database_encryption               = local.database_encryption
   deletion_protection               = var.deletion_protection
 }
