@@ -191,6 +191,9 @@ module "gke" {
   database_encryption               = local.database_encryption
   deletion_protection               = var.deletion_protection
   enable_l4_ilb_subsetting          = var.enable_l4_ilb_subsetting
+  cluster_dns_provider              = var.cluster_dns_provider
+  cluster_dns_scope                 = var.cluster_dns_scope
+  cluster_dns_domain                = var.cluster_dns_domain
 }
 
 module "gke_private" {
