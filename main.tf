@@ -153,7 +153,7 @@ locals {
 module "gke" {
   count   = var.enable_private_gke ? 0 : 1
   source  = "terraform-google-modules/kubernetes-engine/google"
-  version = "33.1.0"
+  version = "35.0.1"
 
   name                              = var.cluster_name
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
@@ -194,6 +194,7 @@ module "gke" {
   cluster_dns_provider              = var.cluster_dns_provider
   cluster_dns_scope                 = var.cluster_dns_scope
   cluster_dns_domain                = var.cluster_dns_domain
+  additive_vpc_scope_dns_domain     = var.additive_vpc_scope_dns_domain
 }
 
 module "gke_private" {
