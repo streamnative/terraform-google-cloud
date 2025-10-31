@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.8.0...v0.9.0) (2025-10-27)
+
+
+### Features
+
+* Add vars to be able to configure cloud DNS ([#72](https://github.com/streamnative/terraform-google-cloud/issues/72)) ([f9e2e9a](https://github.com/streamnative/terraform-google-cloud/commit/f9e2e9a3bdbd64b1e0ebb34a3759df0f144cadc3))
+
 ## [0.8.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.7.0...v0.8.0) (2025-07-24)
 
 
