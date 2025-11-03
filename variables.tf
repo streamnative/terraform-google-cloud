@@ -80,6 +80,12 @@ variable "cluster_dns_domain" {
   default     = ""
 }
 
+variable "additive_vpc_scope_dns_domain" {
+  type        = string
+  description = "This will enable Cloud DNS additive VPC scope. Must provide a domain name that is unique within the VPC. For this to work cluster_dns = `CLOUD_DNS` and cluster_dns_scope = `CLUSTER_SCOPE` must both be set as well."
+  default     = ""
+}
+
 variable "cluster_http_load_balancing" {
   default     = true
   description = "Enable the HTTP load balancing addon for the cluster. Defaults to \"true\""
