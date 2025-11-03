@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.9.0...v0.10.0) (2025-11-03)
+
+
+### Features
+
+* Expose additive_vpc_scope_dns_domain ([#74](https://github.com/streamnative/terraform-google-cloud/issues/74)) ([e93170d](https://github.com/streamnative/terraform-google-cloud/commit/e93170dc129294e62a7ea51f9e5573544aceb158))
+
 ## [0.9.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.8.0...v0.9.0) (2025-10-27)
 
 
