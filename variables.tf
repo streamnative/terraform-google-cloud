@@ -436,9 +436,21 @@ variable "release_channel" {
   type        = string
 }
 
+variable "regional" {
+  type        = bool
+  description = "Whether is a regional cluster (zonal cluster if set false. WARNING: changing this after cluster creation is destructive!)"
+  default     = true
+}
+
 variable "region" {
   description = "The GCP region where the GKE cluster will be deployed. This module only supports creation of a regional cluster"
   type        = string
+}
+
+variable "zones" {
+  type        = list(string)
+  description = "The zones to host the cluster in (optional if regional cluster / required if zonal)"
+  default     = []
 }
 
 variable "secondary_ip_range_pods" {

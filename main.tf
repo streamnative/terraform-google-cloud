@@ -184,7 +184,9 @@ module "gke" {
   node_pools_oauth_scopes           = local.node_pools_oauth_scopes
   node_pools_taints                 = local.node_pools_taints
   project_id                        = var.project_id
+  regional                          = var.node_pool_locations == "" ? var.regional : (length(var.node_pool_locations) > 1 ? true : false)
   region                            = var.region
+  zones                             = var.node_pool_locations != "" ? split(",", var.node_pool_locations) : []
   remove_default_node_pool          = true
   release_channel                   = var.release_channel
   subnetwork                        = var.vpc_subnet
