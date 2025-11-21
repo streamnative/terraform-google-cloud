@@ -191,30 +191,19 @@ module "gke" {
   database_encryption               = local.database_encryption
   deletion_protection               = var.deletion_protection
   enable_l4_ilb_subsetting          = var.enable_l4_ilb_subsetting
-  cluster_dns_provider              = var.cluster_dns_provider
-  cluster_dns_scope                 = var.cluster_dns_scope
-  cluster_dns_domain                = var.cluster_dns_domain
-  additive_vpc_scope_dns_domain     = var.additive_vpc_scope_dns_domain
+
+  cluster_dns_provider          = var.cluster_dns_provider
+  cluster_dns_scope             = var.cluster_dns_scope
+  cluster_dns_domain            = var.cluster_dns_domain
+  additive_vpc_scope_dns_domain = var.additive_vpc_scope_dns_domain
+
+  fleet_project = var.fleet_project
 }
 
 module "gke_private" {
   count   = var.enable_private_gke ? 1 : 0
   source  = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
-  version = "33.1.0"
-  # required_providers {
-  #   google = {
-  #     source  = "hashicorp/google"
-  #     version = ">= 5.40.0, < 7"
-  #   }
-  #   kubernetes = {
-  #     source  = "hashicorp/kubernetes"
-  #     version = "~> 2.10"
-  #   }
-  #   random = {
-  #     source  = "hashicorp/random"
-  #     version = ">= 2.1"
-  #   }
-  # }
+  version = "35.0.1"
 
   name                              = var.cluster_name
   add_cluster_firewall_rules        = var.add_cluster_firewall_rules
@@ -255,6 +244,14 @@ module "gke_private" {
   master_global_access_enabled      = var.master_global_access_enabled
   database_encryption               = local.database_encryption
   deletion_protection               = var.deletion_protection
+  enable_l4_ilb_subsetting          = var.enable_l4_ilb_subsetting
+
+  cluster_dns_provider          = var.cluster_dns_provider
+  cluster_dns_scope             = var.cluster_dns_scope
+  cluster_dns_domain            = var.cluster_dns_domain
+  additive_vpc_scope_dns_domain = var.additive_vpc_scope_dns_domain
+
+  fleet_project = var.fleet_project
 }
 
 moved {
