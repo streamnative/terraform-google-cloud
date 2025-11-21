@@ -532,3 +532,10 @@ variable "enable_l4_ilb_subsetting" {
   description = "Enable L4 ILB Subsetting on the cluster, this cannot be disabled once it has been enabled."
   default     = false
 }
+
+
+variable "fleet_project" {
+  type        = string
+  description = "The Fleet project to register the GKE cluster to. If not set, the GKE cluster's project will be used."
+  default     = null
+}
