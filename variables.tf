@@ -497,6 +497,24 @@ variable "enable_private_nodes" {
   default     = false
 }
 
+variable "enable_private_endpoint" {
+  default     = false
+  description = "Enables private endpoint for GKE master. Defaults to \"false\"."
+  type        = bool
+}
+
+variable "private_endpoint_subnetwork" {
+  default     = null
+  description = "The subnetwork to use for the hosted master network."
+  type        = string
+}
+
+variable "master_global_access_enabled" {
+  default     = false
+  description = "Whether the cluster master is accessible globally (from any region) or only within the same region as the private endpoint."
+  type        = bool
+}
+
 variable "master_ipv4_cidr_block" {
   type        = string
   description = "The IP range in CIDR notation to use for the hosted master network. Only used for private clusters"
@@ -513,4 +531,11 @@ variable "enable_l4_ilb_subsetting" {
   type        = bool
   description = "Enable L4 ILB Subsetting on the cluster, this cannot be disabled once it has been enabled."
   default     = false
+}
+
+
+variable "fleet_project" {
+  type        = string
+  description = "The Fleet project to register the GKE cluster to. If not set, the GKE cluster's project will be used."
+  default     = null
 }
