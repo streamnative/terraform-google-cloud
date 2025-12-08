@@ -197,6 +197,8 @@ module "gke" {
   cluster_dns_domain            = var.cluster_dns_domain
   additive_vpc_scope_dns_domain = var.additive_vpc_scope_dns_domain
 
+  create_service_account = var.create_service_account
+
   fleet_project = var.fleet_project
 }
 
@@ -250,6 +252,8 @@ module "gke_private" {
   cluster_dns_scope             = var.cluster_dns_scope
   cluster_dns_domain            = var.cluster_dns_domain
   additive_vpc_scope_dns_domain = var.additive_vpc_scope_dns_domain
+
+  create_service_account = var.create_service_account
 
   fleet_project = var.fleet_project
 }
