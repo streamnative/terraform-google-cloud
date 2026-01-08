@@ -195,6 +195,7 @@ module "gke" {
   cluster_dns_provider          = var.cluster_dns_provider
   cluster_dns_scope             = var.cluster_dns_scope
   cluster_dns_domain            = var.cluster_dns_domain
+  dns_cache                     = var.dns_cache 
   additive_vpc_scope_dns_domain = var.additive_vpc_scope_dns_domain
 
   fleet_project = var.fleet_project
