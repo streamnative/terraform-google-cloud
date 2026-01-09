@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.10.0...v0.11.0) (2026-01-09)
+
+
+### Features
+
+* Align Private GKE features ([#76](https://github.com/streamnative/terraform-google-cloud/issues/76)) ([f5d4347](https://github.com/streamnative/terraform-google-cloud/commit/f5d4347aec591452c9f3471453f0fb44adb8c3ec))
+* Pass DNS cache to module ([#78](https://github.com/streamnative/terraform-google-cloud/issues/78)) ([2590506](https://github.com/streamnative/terraform-google-cloud/commit/2590506d2e2ad31ebf5f1953dc627df82febb0c8))
+
 ## [0.10.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.9.0...v0.10.0) (2025-11-03)
 
 
