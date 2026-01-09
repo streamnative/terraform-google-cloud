@@ -127,6 +127,12 @@ variable "default_max_pods_per_node" {
   default     = 110
 }
 
+variable "dns_cache" {
+  default     = false
+  description = "The status of the NodeLocal DNSCache addon"
+  type        = bool
+}
+
 variable "enable_database_encryption" {
   default     = false
   description = "Enables etcd encryption via Google KMS."
