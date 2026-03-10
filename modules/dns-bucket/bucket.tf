@@ -13,6 +13,7 @@
 # limitations under the License.
 
 resource "google_storage_bucket" "velero" {
+  count    = var.enable_velero ? 1 : 0
   name     = format("%s-cluster-backup", var.pm_name)
   provider = google.target
 
