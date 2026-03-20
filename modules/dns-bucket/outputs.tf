@@ -26,7 +26,7 @@ output "tiered_storage_bucket" {
 }
 
 output "backup_bucket" {
-  value = google_storage_bucket.velero.name
+  value = var.enable_velero ? google_storage_bucket.velero[0].name : ""
 }
 
 output "loki_bucket" {
