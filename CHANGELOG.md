@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.11.0...v0.12.0) (2026-03-20)
+
+
+### Features
+
+* disable velero bucket by default ([#79](https://github.com/streamnative/terraform-google-cloud/issues/79)) ([38272f0](https://github.com/streamnative/terraform-google-cloud/commit/38272f06436dff8aac765a857c48f334b2f0f846))
+
 ## [0.11.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.10.0...v0.11.0) (2026-01-09)
 
 
