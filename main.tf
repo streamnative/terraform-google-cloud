@@ -105,10 +105,10 @@ locals {
   )
   node_pools = var.enable_func_pool ? [local.default_node_pool, local.func_pool] : [local.default_node_pool]
   node_pools_labels = {
-    all = {
+    all = merge({
       cluster_name = var.cluster_name
       managed_by   = "terraform"
-    }
+    }, var.additional_tags)
   }
   node_pools_metadata = {
     all = {}
