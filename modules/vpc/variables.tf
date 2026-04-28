@@ -81,8 +81,3 @@ variable "nat_gateway_name" {
   description = "The name of Cloud NAT Gateway"
 }
 
-variable "additional_tags" {
-  default     = {}
-  description = "Additional labels to apply to GCP resources."
-  type        = map(string)
-}
