@@ -20,6 +20,7 @@ resource "google_storage_bucket" "velero" {
   location                    = var.bucket_location
   uniform_bucket_level_access = var.bucket_uniform_bucket_level_access
   force_destroy               = true
+  labels                      = var.additional_tags
   encryption {
     default_kms_key_name = var.bucket_encryption_kms_key_id
   }
@@ -39,6 +40,7 @@ resource "google_storage_bucket" "tiered_storage" {
   location                    = var.bucket_location
   uniform_bucket_level_access = var.bucket_uniform_bucket_level_access
   force_destroy               = true
+  labels                      = var.additional_tags
   encryption {
     default_kms_key_name = var.bucket_encryption_kms_key_id
   }
@@ -60,6 +62,7 @@ resource "google_storage_bucket" "loki" {
   location                    = var.bucket_location
   uniform_bucket_level_access = var.bucket_uniform_bucket_level_access
   force_destroy               = true
+  labels                      = var.additional_tags
 
   dynamic "soft_delete_policy" {
     for_each = !var.bucket_cluster_backup_soft_delete ? ["apply"] : []

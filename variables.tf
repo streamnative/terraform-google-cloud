@@ -92,6 +92,12 @@ variable "cluster_http_load_balancing" {
   type        = bool
 }
 
+variable "additional_tags" {
+  default     = {}
+  description = "Additional labels to apply to GKE node pool resources."
+  type        = map(string)
+}
+
 variable "cluster_name" {
   description = "The name of your GKE cluster."
   type        = string

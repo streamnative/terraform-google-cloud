@@ -32,6 +32,7 @@ resource "google_kms_crypto_key" "gke_encryption_key" {
   name            = "sn-gke-key-${var.cluster_name}"
   key_ring        = google_kms_key_ring.keyring[0].id
   rotation_period = "12960000s" #150 days
+  labels          = var.additional_tags
 }
 
 # Required for GKE to use the encryption key
@@ -105,10 +106,10 @@ locals {
   )
   node_pools = var.enable_func_pool ? [local.default_node_pool, local.func_pool] : [local.default_node_pool]
   node_pools_labels = {
-    all = {
+    all = merge({
       cluster_name = var.cluster_name
       managed_by   = "terraform"
-    }
+    }, var.additional_tags)
   }
   node_pools_metadata = {
     all = {}
@@ -191,6 +192,7 @@ module "gke" {
   database_encryption               = local.database_encryption
   deletion_protection               = var.deletion_protection
   enable_l4_ilb_subsetting          = var.enable_l4_ilb_subsetting
+  cluster_resource_labels           = var.additional_tags
 
   cluster_dns_provider          = var.cluster_dns_provider
   cluster_dns_scope             = var.cluster_dns_scope
@@ -246,6 +248,7 @@ module "gke_private" {
   database_encryption               = local.database_encryption
   deletion_protection               = var.deletion_protection
   enable_l4_ilb_subsetting          = var.enable_l4_ilb_subsetting
+  cluster_resource_labels           = var.additional_tags
 
   cluster_dns_provider          = var.cluster_dns_provider
   cluster_dns_scope             = var.cluster_dns_scope

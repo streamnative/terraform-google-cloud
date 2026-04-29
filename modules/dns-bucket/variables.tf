@@ -79,3 +79,9 @@ variable "enable_velero" {
   default     = false
   description = "Enable velero for backups. If set to false, no velero resources will be created."
 }
+
+variable "additional_tags" {
+  default     = {}
+  description = "Additional labels to apply to GCS bucket resources."
+  type        = map(string)
+}
