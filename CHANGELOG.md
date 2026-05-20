@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.12.0...v0.13.0) (2026-05-20)
+
+
+### Features
+
+* add additional_tags support for standardized resource labeling ([#81](https://github.com/streamnative/terraform-google-cloud/issues/81)) ([bee40a5](https://github.com/streamnative/terraform-google-cloud/commit/bee40a50c5f23b90f47f6d26ac734ecf3d7219b6))
+* support additional pod ranges and per-node-pool pod_range mapping ([#83](https://github.com/streamnative/terraform-google-cloud/issues/83)) ([fa1386e](https://github.com/streamnative/terraform-google-cloud/commit/fa1386ef1f2cfec8158a928a2d85526596dc36f7))
+
 ## [0.12.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.11.0...v0.12.0) (2026-03-20)
 
 
