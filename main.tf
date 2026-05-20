@@ -166,6 +166,7 @@ module "gke" {
   datapath_provider                 = var.datapath_provider
   http_load_balancing               = var.cluster_http_load_balancing
   ip_range_pods                     = var.secondary_ip_range_pods
+  additional_ip_range_pods          = var.additional_pod_range_names
   ip_range_services                 = var.secondary_ip_range_services
   firewall_inbound_ports            = var.firewall_inbound_ports
   kubernetes_version                = var.kubernetes_version

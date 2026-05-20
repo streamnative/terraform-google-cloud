@@ -459,6 +459,12 @@ variable "secondary_ip_range_pods" {
   type        = string
 }
 
+variable "additional_pod_range_names" {
+  default     = []
+  description = "Names of additional secondary IP ranges (declared on the subnet) to attach to the cluster via additional_pod_ranges_config. Use this to extend pod IP capacity beyond the primary secondary range."
+  type        = list(string)
+}
+
 variable "secondary_ip_range_pods_cidr" {
   default     = null
   description = "The cidr of the secondary range, required when using cillium"

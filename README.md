@@ -39,8 +39,8 @@ tf apply
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 5.45.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.35.1 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 5.40.0, < 7 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | ~> 2.10 |
 
 ## Modules
 
@@ -69,6 +69,8 @@ tf apply
 | <a name="input_add_cluster_firewall_rules"></a> [add\_cluster\_firewall\_rules](#input\_add\_cluster\_firewall\_rules) | Creates additional firewall rules on the cluster. | `bool` | `false` | no |
 | <a name="input_add_master_webhook_firewall_rules"></a> [add\_master\_webhook\_firewall\_rules](#input\_add\_master\_webhook\_firewall\_rules) | Create master\_webhook firewall rules for ports defined in firewall\_inbound\_ports. | `bool` | `false` | no |
 | <a name="input_add_shadow_firewall_rules"></a> [add\_shadow\_firewall\_rules](#input\_add\_shadow\_firewall\_rules) | Create GKE shadow firewall (the same as default firewall rules with firewall logs enabled). | `bool` | `false` | no |
+| <a name="input_additional_pod_range_names"></a> [additional\_pod\_range\_names](#input\_additional\_pod\_range\_names) | Names of additional secondary IP ranges (declared on the subnet) to attach to the cluster via additional\_pod\_ranges\_config. Use this to extend pod IP capacity beyond the primary secondary range. | `list(string)` | `[]` | no |
+| <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | Additional labels to apply to GKE node pool resources. | `map(string)` | `{}` | no |
 | <a name="input_additive_vpc_scope_dns_domain"></a> [additive\_vpc\_scope\_dns\_domain](#input\_additive\_vpc\_scope\_dns\_domain) | This will enable Cloud DNS additive VPC scope. Must provide a domain name that is unique within the VPC. For this to work cluster\_dns = `CLOUD_DNS` and cluster\_dns\_scope = `CLUSTER_SCOPE` must both be set as well. | `string` | `""` | no |
 | <a name="input_authenticator_security_group"></a> [authenticator\_security\_group](#input\_authenticator\_security\_group) | The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com | `string` | `null` | no |
 | <a name="input_cluster_autoscaling_config"></a> [cluster\_autoscaling\_config](#input\_cluster\_autoscaling\_config) | Cluster autoscaling configuration for node auto-provisioning. This is disabled for our configuration, since we typically want to scale existing node pools rather than add new ones to the cluster | <pre>object({<br>    enabled             = bool<br>    min_cpu_cores       = number<br>    max_cpu_cores       = number<br>    min_memory_gb       = number<br>    max_memory_gb       = number<br>    gpu_resources       = list(object({ resource_type = string, minimum = number, maximum = number }))<br>    auto_repair         = bool<br>    auto_upgrade        = bool<br>    autoscaling_profile = string<br>  })</pre> | <pre>{<br>  "auto_repair": true,<br>  "auto_upgrade": false,<br>  "autoscaling_profile": "BALANCED",<br>  "enabled": false,<br>  "gpu_resources": [],<br>  "max_cpu_cores": null,<br>  "max_memory_gb": null,<br>  "min_cpu_cores": null,<br>  "min_memory_gb": null<br>}</pre> | no |
@@ -83,6 +85,7 @@ tf apply
 | <a name="input_datapath_provider"></a> [datapath\_provider](#input\_datapath\_provider) | the datapath provider to use, in the future, the default of this should be ADVANCED\_DATAPATH | `string` | `"DATAPATH_PROVIDER_UNSPECIFIED"` | no |
 | <a name="input_default_max_pods_per_node"></a> [default\_max\_pods\_per\_node](#input\_default\_max\_pods\_per\_node) | the number of pods per node, defaults to GKE default of 110, but in smaller CIDRs we want to tune this | `number` | `110` | no |
 | <a name="input_deletion_protection"></a> [deletion\_protection](#input\_deletion\_protection) | Whether or not to allow Terraform to destroy the cluster. | `bool` | `true` | no |
+| <a name="input_dns_cache"></a> [dns\_cache](#input\_dns\_cache) | The status of the NodeLocal DNSCache addon | `bool` | `false` | no |
 | <a name="input_enable_database_encryption"></a> [enable\_database\_encryption](#input\_enable\_database\_encryption) | Enables etcd encryption via Google KMS. | `bool` | `false` | no |
 | <a name="input_enable_func_pool"></a> [enable\_func\_pool](#input\_enable\_func\_pool) | Enable an additional dedicated pool for Pulsar Functions. Enabled by default. | `bool` | `true` | no |
 | <a name="input_enable_l4_ilb_subsetting"></a> [enable\_l4\_ilb\_subsetting](#input\_enable\_l4\_ilb\_subsetting) | Enable L4 ILB Subsetting on the cluster, this cannot be disabled once it has been enabled. | `bool` | `false` | no |
