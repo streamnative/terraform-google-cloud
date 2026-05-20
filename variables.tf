@@ -465,6 +465,12 @@ variable "additional_pod_range_names" {
   type        = list(string)
 }
 
+variable "node_pool_pod_range_mapping" {
+  default     = {}
+  description = "Map of node-pool name to secondary pod range name. Overrides the pod_range for each named pool. Pools not in the map fall back to secondary_ip_range_pods (the primary). Values should reference either secondary_ip_range_pods or one of additional_pod_range_names."
+  type        = map(string)
+}
+
 variable "secondary_ip_range_pods_cidr" {
   default     = null
   description = "The cidr of the secondary range, required when using cillium"
