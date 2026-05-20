@@ -57,7 +57,7 @@ locals {
     initial_node_count   = var.node_pool_autoscaling_initial_count
     local_ssd_count      = var.node_pool_ssd_count
     machine_type         = var.node_pool_machine_type
-    pod_range            = var.secondary_ip_range_pods
+    pod_range            = lookup(var.node_pool_pod_range_mapping, var.node_pool_name, var.secondary_ip_range_pods)
     enable_private_nodes = var.enable_private_nodes
     max_pods_per_node    = var.node_pool_max_pods_per_node
     max_count            = var.node_pool_autoscaling_max_size
@@ -79,7 +79,7 @@ locals {
     initial_node_count   = var.func_pool_autoscaling_initial_count
     local_ssd_count      = var.func_pool_ssd_count
     machine_type         = var.func_pool_machine_type
-    pod_range            = var.secondary_ip_range_pods
+    pod_range            = lookup(var.node_pool_pod_range_mapping, var.func_pool_name, var.secondary_ip_range_pods)
     enable_private_nodes = var.enable_private_nodes
     max_pods_per_node    = var.func_pool_max_pods_per_node
     max_count            = var.func_pool_autoscaling_max_size
@@ -166,6 +166,7 @@ module "gke" {
   datapath_provider                 = var.datapath_provider
   http_load_balancing               = var.cluster_http_load_balancing
   ip_range_pods                     = var.secondary_ip_range_pods
+  additional_ip_range_pods          = var.additional_pod_range_names
   ip_range_services                 = var.secondary_ip_range_services
   firewall_inbound_ports            = var.firewall_inbound_ports
   kubernetes_version                = var.kubernetes_version
@@ -197,7 +198,7 @@ module "gke" {
   cluster_dns_provider          = var.cluster_dns_provider
   cluster_dns_scope             = var.cluster_dns_scope
   cluster_dns_domain            = var.cluster_dns_domain
-  dns_cache                     = var.dns_cache 
+  dns_cache                     = var.dns_cache
   additive_vpc_scope_dns_domain = var.additive_vpc_scope_dns_domain
 
   fleet_project = var.fleet_project
