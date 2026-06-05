@@ -193,7 +193,7 @@ module "gke" {
   database_encryption               = local.database_encryption
   deletion_protection               = var.deletion_protection
   enable_l4_ilb_subsetting          = var.enable_l4_ilb_subsetting
-  cluster_resource_labels           = var.additional_tags
+  cluster_resource_labels           = { for k, v in var.additional_tags : lower(k) => lower(v) }
 
   cluster_dns_provider          = var.cluster_dns_provider
   cluster_dns_scope             = var.cluster_dns_scope
