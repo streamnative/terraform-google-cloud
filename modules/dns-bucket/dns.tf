@@ -27,7 +27,7 @@ resource "google_dns_managed_zone" "zone" {
   name          = local.new_zone_id
   dns_name      = local.new_zone_name
   force_destroy = true
-  labels        = var.additional_tags
+  labels        = { for k, v in var.additional_tags : lower(k) => lower(v) }
 
   cloud_logging_config {
     enable_logging = false
