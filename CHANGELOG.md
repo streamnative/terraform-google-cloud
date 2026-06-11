@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.13.0...v0.14.0) (2026-06-10)
+
+
+### Features
+
+* Force labels to lower ([#84](https://github.com/streamnative/terraform-google-cloud/issues/84)) ([68e2bf5](https://github.com/streamnative/terraform-google-cloud/commit/68e2bf5bd9973b676e72b197f9aa55daa297115a))
+
 ## [0.13.0](https://github.com/streamnative/terraform-google-cloud/compare/v0.12.0...v0.13.0) (2026-05-20)
 
 
